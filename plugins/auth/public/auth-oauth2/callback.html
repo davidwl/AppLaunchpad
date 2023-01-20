@@ -14,8 +14,8 @@
         switch (storageType) {
           case 'localStorage':
           case 'sessionStorage':
-            window[storageType].setItem('luigi.auth', JSON.stringify(data));
-            window[storageType].setItem('luigi.newlyAuthorized', true);
+            window[storageType].setItem('applaunchpad.auth', JSON.stringify(data));
+            window[storageType].setItem('applaunchpad.newlyAuthorized', true);
             break;
           default:
             console.error(
@@ -83,12 +83,12 @@
           setAuthData(data);
 
           const decodedState = atob(decodeURIComponent(hashParams['state'])).split(
-            '_luigiNonce='
+            '_applaunchpadNonce='
           );
           const appState = decodeURI(decodedState[0] || '');
           const nonce = decodedState[1];
 
-          if (nonce !== sessionStorage.getItem('luigi.nonceValue')) {
+          if (nonce !== sessionStorage.getItem('applaunchpad.nonceValue')) {
             document.getElementsByTagName('body')[0].innerHTML =
               'Something went wrong. Try to log in again.';
             throw new Error(

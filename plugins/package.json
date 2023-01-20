@@ -1,10 +1,10 @@
 {
   "name": "auth-plugins",
   "private": true,
-  "description": "luigi-auth-plugin-* development versions, only the public folders are being published to npm as a package",
+  "description": "applaunchpad-auth-plugin-* development versions, only the public folders are being published to npm as a package",
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/SAP/luigi.git"
+    "url": "ssh://github.com/davidwl/applaunchpad.git"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",

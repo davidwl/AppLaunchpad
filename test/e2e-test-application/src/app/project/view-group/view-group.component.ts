@@ -21,16 +21,16 @@ export class ViewGroupComponent implements OnInit {
 
   ngOnInit() {
     let iframes = Array.from(this.window.parent.document.querySelectorAll('iframe'));
-    if (!iframes || !iframes[0] || !iframes[0]['luigi']) {
+    if (!iframes || !iframes[0] || !iframes[0]['applaunchpad']) {
       return;
     }
 
-    console.log('this.window.parent.Luigi --> ', this.window.parent['Luigi'].config);
+    console.log('this.window.parent.AppLaunchpad --> ', this.window.parent['AppLaunchpad'].config);
 
     this.config = JSON.stringify(
       {
-        viewGroupSettings: this.window.parent['Luigi'].config.navigation.viewGroupSettings,
-        preloadViewGroups: this.window.parent['Luigi'].config.navigation.preloadViewGroups
+        viewGroupSettings: this.window.parent['AppLaunchpad'].config.navigation.viewGroupSettings,
+        preloadViewGroups: this.window.parent['AppLaunchpad'].config.navigation.preloadViewGroups
       },
       null,
       3
@@ -54,11 +54,11 @@ export class ViewGroupComponent implements OnInit {
   }
 
   transformIframes(iframe) {
-    let luigiMf = iframe['luigi'];
-    const clonedLuigiMf = Object.assign({}, luigiMf);
-    clonedLuigiMf.currentNode = Object.assign({}, luigiMf.currentNode);
-    delete clonedLuigiMf.currentNode.parent;
-    clonedLuigiMf.currentNode.children = ['...children removed'];
-    return clonedLuigiMf;
+    let applaunchpadMf = iframe['applaunchpad'];
+    const clonedAppLaunchpadMf = Object.assign({}, applaunchpadMf);
+    clonedAppLaunchpadMf.currentNode = Object.assign({}, applaunchpadMf.currentNode);
+    delete clonedAppLaunchpadMf.currentNode.parent;
+    clonedAppLaunchpadMf.currentNode.children = ['...children removed'];
+    return clonedAppLaunchpadMf;
   }
 }

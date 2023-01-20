@@ -100,7 +100,7 @@
 		}
 
 		// API Function names
-		.page-luigi-core-api, .page-luigi-client-api {
+		.page-applaunchpad-core-api, .page-applaunchpad-client-api {
 			h4 {
 				margin-top:35px;
 				display: inline-block;

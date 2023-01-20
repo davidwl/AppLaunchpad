@@ -109,7 +109,7 @@
 </script>
 
 <div
-  class="fd-shell__overlay luigi-alert--overlay"
+  class="fd-shell__overlay applaunchpad-alert--overlay"
   aria-hidden="false"
   bind:this={alertElement}
 >
@@ -120,7 +120,7 @@
       ]} fd-message-strip--dismissible"
       role="alert"
       id="j2ALl423"
-      data-testid="luigi-alert"
+      data-testid="applaunchpad-alert"
     >
       <p class="fd-message-strip__text">
         {@html al.dataSanitized ? al.settings.text : ''}
@@ -130,7 +130,7 @@
         on:click={() => dispatch('alertDismiss', { id: al.settings.id })}
         aria-label="Close"
         aria-controls="j2ALl423"
-        data-testid="luigi-alert-dismiss"
+        data-testid="applaunchpad-alert-dismiss"
       >
         <i class="sap-icon sap-icon--decline" />
       </button>
@@ -139,7 +139,7 @@
 </div>
 
 <style type="text/scss">
-  .luigi-alert--overlay {
+  .applaunchpad-alert--overlay {
     position: absolute;
     z-index: 1100;
     flex-direction: column;

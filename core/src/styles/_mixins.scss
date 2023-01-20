@@ -18,7 +18,7 @@
   -moz-border-radius: $radius;
 }
 
-@mixin luigi-menu__link--border-radius($position) {
+@mixin applaunchpad-menu__link--border-radius($position) {
   :global(.fd-menu__link) {
     border-#{$position}-left-radius: 0.25rem;
     border-#{$position}-left-radius: var(

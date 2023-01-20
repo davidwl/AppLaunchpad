@@ -1,9 +1,5 @@
-import {
-  AuthHelpers,
-  GenericHelpers,
-  StateHelpers
-} from '../../src/utilities/helpers';
-import { LuigiAuth, LuigiConfig } from '../../src/core-api';
+import { AuthHelpers, GenericHelpers, StateHelpers } from '../../src/utilities/helpers';
+import { AppLaunchpadAuth, AppLaunchpadConfig } from '../../src/core-api';
 
 const chai = require('chai');
 const expect = chai.expect;
@@ -27,15 +23,15 @@ describe('AuthLayer', () => {
     console.error.resetHistory();
     AuthLayerSvc.idpProviderInstance = undefined;
     AuthLayerSvc.setProfileLogoutFn();
-    sinon.stub(LuigiAuth, 'handleAuthEvent');
+    sinon.stub(AppLaunchpadAuth, 'handleAuthEvent');
     sinon.stub(AuthStoreSvc, 'isNewlyAuthorized');
     sinon.stub(AuthStoreSvc, 'removeAuthData');
     sinon.stub(AuthStoreSvc, 'removeNewlyAuthorized');
     sinon.stub(AuthStoreSvc, 'setNewlyAuthorized');
     sinon.stub(AuthHelpers, 'parseUrlAuthErrors');
     sinon.stub(AuthHelpers, 'handleUrlAuthErrors').returns(true);
-    sinon.stub(LuigiConfig, 'setErrorMessage');
-    sinon.stub(LuigiConfig, 'getConfigValue').returns(authConfigMock());
+    sinon.stub(AppLaunchpadConfig, 'setErrorMessage');
+    sinon.stub(AppLaunchpadConfig, 'getConfigValue').returns(authConfigMock());
   });
   afterEach(() => {
     sinon.restore();
@@ -74,7 +70,7 @@ describe('AuthLayer', () => {
       });
       it('non-promise provider', async () => {
         // given
-        LuigiConfig.getConfigValue.returns(authConfigMock().mock);
+        AppLaunchpadConfig.getConfigValue.returns(authConfigMock().mock);
 
         // when
         const result = await AuthLayerSvc.init();
@@ -85,7 +81,7 @@ describe('AuthLayer', () => {
       });
       it('promise provider success', async () => {
         // given
-        LuigiConfig.getConfigValue.returns(authConfigMock().mock);
+        AppLaunchpadConfig.getConfigValue.returns(authConfigMock().mock);
         const thisMock = Object.assign(authConfigMock().mock, {
           clientid: 'foo'
         });
@@ -102,7 +98,7 @@ describe('AuthLayer', () => {
       });
       it('promise provider failure', async () => {
         // given
-        LuigiConfig.getConfigValue.returns(authConfigMock().mock);
+        AppLaunchpadConfig.getConfigValue.returns(authConfigMock().mock);
         AuthLayerSvc.getIdpProviderInstance.rejects({
           message: 'Something failed'
         });
@@ -111,7 +107,7 @@ describe('AuthLayer', () => {
         const result = await AuthLayerSvc.init();
 
         // then
-        sinon.assert.calledOnce(LuigiConfig.setErrorMessage);
+        sinon.assert.calledOnce(AppLaunchpadConfig.setErrorMessage);
         sinon.assert.notCalled(AuthLayerSvc.checkAuth);
         assert.isUndefined(result);
       });
@@ -161,17 +157,13 @@ describe('AuthLayer', () => {
         };
         sinon.stub(AuthHelpers, 'getStoredAuthData').returns(mockAuthData);
         const customLogoutFn = sinon.spy();
-        LuigiConfig.getConfigValue.returns(customLogoutFn);
+        AppLaunchpadConfig.getConfigValue.returns(customLogoutFn);
 
         // when
         AuthLayerSvc.logout();
 
         // then
-        sinon.assert.calledWith(
-          customLogoutFn,
-          AuthLayerSvc.idpProviderInstance.settings,
-          mockAuthData
-        );
+        sinon.assert.calledWith(customLogoutFn, AuthLayerSvc.idpProviderInstance.settings, mockAuthData);
       });
       it('with provider logout function', () => {
         // given
@@ -181,16 +173,13 @@ describe('AuthLayer', () => {
           logout: sinon.spy()
         };
         sinon.stub(AuthHelpers, 'getStoredAuthData').returns(mockAuthData);
-        LuigiConfig.getConfigValue.returns(undefined);
+        AppLaunchpadConfig.getConfigValue.returns(undefined);
 
         // when
         AuthLayerSvc.logout();
 
         // then
-        sinon.assert.calledWith(
-          AuthLayerSvc.idpProviderInstance.logout,
-          mockAuthData
-        );
+        sinon.assert.calledWith(AuthLayerSvc.idpProviderInstance.logout, mockAuthData);
       });
       it('with profile logout function', () => {
         // given
@@ -199,7 +188,7 @@ describe('AuthLayer', () => {
           settings: 'something'
         };
         sinon.stub(AuthHelpers, 'getStoredAuthData').returns(mockAuthData);
-        LuigiConfig.getConfigValue.returns(undefined);
+        AppLaunchpadConfig.getConfigValue.returns(undefined);
         const profileLogoutFn = sinon.stub();
 
         // when
@@ -216,15 +205,15 @@ describe('AuthLayer', () => {
         AuthLayerSvc.idpProviderInstance = {
           settings: { logoutUrl: 'something' }
         };
-        LuigiConfig.getConfigValue.returns(undefined);
+        AppLaunchpadConfig.getConfigValue.returns(undefined);
 
         // when
         AuthLayerSvc.logout();
 
         // then
-        sinon.assert.calledOnce(LuigiAuth.handleAuthEvent);
+        sinon.assert.calledOnce(AppLaunchpadAuth.handleAuthEvent);
         sinon.assert.calledWith(
-          LuigiAuth.handleAuthEvent,
+          AppLaunchpadAuth.handleAuthEvent,
           'onLogout',
           AuthLayerSvc.idpProviderInstance.settings,
           undefined,
@@ -271,10 +260,7 @@ describe('AuthLayer', () => {
         let error;
         let result;
         try {
-          result = await AuthLayerSvc.getIdpProviderInstance(
-            'mock',
-            'settings'
-          );
+          result = await AuthLayerSvc.getIdpProviderInstance('mock', 'settings');
         } catch (e) {
           error = e;
         }
@@ -285,55 +271,39 @@ describe('AuthLayer', () => {
       });
       it('without idp, and defined onAuthConfigError event', async () => {
         GenericHelpers.getConfigValueFromObject.returns(undefined);
-        LuigiConfig.getConfigValue.returns(() => {});
+        AppLaunchpadConfig.getConfigValue.returns(() => {});
         // when
         let error;
         let result;
         try {
-          result = await AuthLayerSvc.getIdpProviderInstance(
-            'mock',
-            'settings'
-          );
+          result = await AuthLayerSvc.getIdpProviderInstance('mock', 'settings');
         } catch (e) {
           error = e;
         }
 
         // then
-        sinon.assert.calledWith(
-          LuigiConfig.getConfigValue,
-          'auth.events.onAuthConfigError'
-        );
-        sinon.assert.calledWithExactly(
-          LuigiAuth.handleAuthEvent,
-          'onAuthConfigError',
-          {
-            idpProviderName: 'mock',
-            type: 'IdpProviderException'
-          }
-        );
+        sinon.assert.calledWith(AppLaunchpadConfig.getConfigValue, 'auth.events.onAuthConfigError');
+        sinon.assert.calledWithExactly(AppLaunchpadAuth.handleAuthEvent, 'onAuthConfigError', {
+          idpProviderName: 'mock',
+          type: 'IdpProviderException'
+        });
         assert.isUndefined(error);
         assert.isUndefined(result);
       });
       it('without idp, standard IdpProviderException', async () => {
         GenericHelpers.getConfigValueFromObject.returns(undefined);
-        LuigiConfig.getConfigValue.returns(undefined);
+        AppLaunchpadConfig.getConfigValue.returns(undefined);
         // when
         let error;
         let result;
         try {
-          result = await AuthLayerSvc.getIdpProviderInstance(
-            'mock',
-            'settings'
-          );
+          result = await AuthLayerSvc.getIdpProviderInstance('mock', 'settings');
         } catch (e) {
           error = e;
         }
 
         // then
-        sinon.assert.calledWith(
-          LuigiConfig.getConfigValue,
-          'auth.events.onAuthConfigError'
-        );
+        sinon.assert.calledWith(AppLaunchpadConfig.getConfigValue, 'auth.events.onAuthConfigError');
 
         assert.deepEqual(error, {
           message: 'IDP Provider mock does not exist.',
@@ -351,75 +321,63 @@ describe('AuthLayer', () => {
         it('not logged in, enabled disableAutoLogin', async () => {
           AuthHelpers.getStoredAuthData.returns(null);
           AuthHelpers.isLoggedIn.returns(false);
-          LuigiConfig.getConfigValue.returns(true);
+          AppLaunchpadConfig.getConfigValue.returns(true);
 
           const result = await AuthLayerSvc.checkAuth({});
 
-          sinon.assert.calledWith(
-            LuigiConfig.getConfigValue,
-            'auth.disableAutoLogin'
-          );
+          sinon.assert.calledWith(AppLaunchpadConfig.getConfigValue, 'auth.disableAutoLogin');
           assert.isUndefined(result);
         });
         it('no authData, not logged in, default with autologin', async () => {
           AuthHelpers.getStoredAuthData.returns(null);
           AuthHelpers.isLoggedIn.returns(false);
-          LuigiConfig.getConfigValue.returns(undefined);
+          AppLaunchpadConfig.getConfigValue.returns(undefined);
           sinon.stub(AuthLayerSvc, 'startAuthorization').returns(true);
 
           const mockIdpSettings = { redirect_uri: '' };
 
           const result = await AuthLayerSvc.checkAuth(mockIdpSettings);
 
-          sinon.assert.calledWith(
-            LuigiConfig.getConfigValue,
-            'auth.disableAutoLogin'
-          );
+          sinon.assert.calledWith(AppLaunchpadConfig.getConfigValue, 'auth.disableAutoLogin');
           sinon.assert.calledOnce(AuthLayerSvc.startAuthorization);
           assert.isTrue(result);
         });
         it('authData, not logged in, onAuthExpired is skipping startAuthorization', async () => {
           AuthHelpers.getStoredAuthData.returns({});
           AuthHelpers.isLoggedIn.returns(false);
-          LuigiConfig.getConfigValue.returns(undefined);
+          AppLaunchpadConfig.getConfigValue.returns(undefined);
           sinon.stub(AuthLayerSvc, 'startAuthorization').returns(true);
-          LuigiAuth.handleAuthEvent.returns(false);
+          AppLaunchpadAuth.handleAuthEvent.returns(false);
 
           const mockIdpSettings = { redirect_uri: '' };
 
           const result = await AuthLayerSvc.checkAuth(mockIdpSettings);
 
-          sinon.assert.calledWith(
-            LuigiConfig.getConfigValue,
-            'auth.disableAutoLogin'
-          );
+          sinon.assert.calledWith(AppLaunchpadConfig.getConfigValue, 'auth.disableAutoLogin');
           sinon.assert.notCalled(AuthLayerSvc.startAuthorization);
           assert.isUndefined(result);
         });
         it('authData, logged in, onAuthExpired allows startAuthorization', async () => {
           AuthHelpers.getStoredAuthData.returns({});
           AuthHelpers.isLoggedIn.returns(false);
-          LuigiConfig.getConfigValue.returns(undefined);
+          AppLaunchpadConfig.getConfigValue.returns(undefined);
           sinon.stub(AuthLayerSvc, 'startAuthorization').returns(true);
-          LuigiAuth.handleAuthEvent.returns(true);
+          AppLaunchpadAuth.handleAuthEvent.returns(true);
 
           const mockIdpSettings = { redirect_uri: '' };
 
           const result = await AuthLayerSvc.checkAuth(mockIdpSettings);
 
-          sinon.assert.calledWith(
-            LuigiConfig.getConfigValue,
-            'auth.disableAutoLogin'
-          );
+          sinon.assert.calledWith(AppLaunchpadConfig.getConfigValue, 'auth.disableAutoLogin');
           sinon.assert.calledOnce(AuthLayerSvc.startAuthorization);
           assert.isTrue(result);
         });
         it('authData, logged in, onAuthExpired allows startAuthorization', async () => {
           AuthHelpers.getStoredAuthData.returns({});
           AuthHelpers.isLoggedIn.returns(false);
-          LuigiConfig.getConfigValue.returns(undefined);
+          AppLaunchpadConfig.getConfigValue.returns(undefined);
           sinon.stub(AuthLayerSvc, 'startAuthorization').returns(true);
-          LuigiAuth.handleAuthEvent.returns(true);
+          AppLaunchpadAuth.handleAuthEvent.returns(true);
         });
       });
       describe('auth setting loggedIn and userInfo', () => {
@@ -430,7 +388,7 @@ describe('AuthLayer', () => {
               userInfoFn: sinon.stub().returns(Promise.resolve(mockUserInfo))
             }
           };
-          const mockAuthData = 'luigiauthdata';
+          const mockAuthData = 'applaunchpadauthdata';
           AuthHelpers.getStoredAuthData.returns(mockAuthData);
           AuthHelpers.isLoggedIn.returns(true);
           sinon.stub(AuthLayerSvc, 'setUserInfo');
@@ -440,9 +398,7 @@ describe('AuthLayer', () => {
           await AuthLayerSvc.checkAuth();
 
           // then
-          sinon.assert.calledOnce(
-            AuthLayerSvc.idpProviderInstance.settings.userInfoFn
-          );
+          sinon.assert.calledOnce(AuthLayerSvc.idpProviderInstance.settings.userInfoFn);
           sinon.assert.calledWith(
             AuthLayerSvc.idpProviderInstance.settings.userInfoFn,
             AuthLayerSvc.idpProviderInstance.settings,
@@ -453,7 +409,7 @@ describe('AuthLayer', () => {
         });
         it('provider defined userInfo', async () => {
           const mockUserInfo = 'user';
-          const mockAuthData = 'luigiauthdata';
+          const mockAuthData = 'applaunchpadauthdata';
           const mockSettings = 'mocksettings';
           AuthLayerSvc.idpProviderInstance = {
             settings: {},
@@ -469,15 +425,12 @@ describe('AuthLayer', () => {
 
           // then
           sinon.assert.calledOnce(AuthLayerSvc.idpProviderInstance.userInfo);
-          sinon.assert.calledWith(
-            AuthLayerSvc.idpProviderInstance.userInfo,
-            mockSettings
-          );
+          sinon.assert.calledWith(AuthLayerSvc.idpProviderInstance.userInfo, mockSettings);
           sinon.assert.calledWith(AuthLayerSvc.setUserInfo, mockUserInfo);
           sinon.assert.calledWith(AuthLayerSvc.setLoggedIn, true);
         });
         it('provider default', async () => {
-          const mockAuthData = 'luigiauthdata';
+          const mockAuthData = 'applaunchpadauthdata';
           const mockSettings = 'mocksettings';
           AuthLayerSvc.idpProviderInstance = {
             settings: {}
@@ -499,7 +452,7 @@ describe('AuthLayer', () => {
         AuthLayerSvc.idpProviderInstance = {
           settings: {}
         };
-        const mockAuthData = 'luigiauthdata';
+        const mockAuthData = 'applaunchpadauthdata';
         const mockSettings = 'mocksettings';
         AuthHelpers.getStoredAuthData.returns(mockAuthData);
         AuthHelpers.isLoggedIn.returns(true);
@@ -507,26 +460,18 @@ describe('AuthLayer', () => {
         sinon.stub(AuthLayerSvc, 'setLoggedIn');
 
         // event if values
-        LuigiConfig.getConfigValue.returns(() => {});
+        AppLaunchpadConfig.getConfigValue.returns(() => {});
         AuthStoreSvc.isNewlyAuthorized.returns(true);
         // when
         await AuthLayerSvc.checkAuth(mockSettings);
 
         // then
-        sinon.assert.calledWith(
-          LuigiConfig.getConfigValue,
-          'auth.events.onAuthSuccessful'
-        );
+        sinon.assert.calledWith(AppLaunchpadConfig.getConfigValue, 'auth.events.onAuthSuccessful');
         sinon.assert.calledOnce(AuthStoreSvc.removeNewlyAuthorized);
-        sinon.assert.calledWith(
-          LuigiAuth.handleAuthEvent,
-          'onAuthSuccessful',
-          mockSettings,
-          mockAuthData
-        );
+        sinon.assert.calledWith(AppLaunchpadAuth.handleAuthEvent, 'onAuthSuccessful', mockSettings, mockAuthData);
       });
       describe('expiration handling', () => {
-        const mockAuthData = 'luigiauthdata';
+        const mockAuthData = 'applaunchpadauthdata';
         const mockSettings = 'mocksettings';
         beforeEach(() => {
           AuthHelpers.getStoredAuthData.returns(mockAuthData);
@@ -543,12 +488,8 @@ describe('AuthLayer', () => {
           await AuthLayerSvc.checkAuth(mockSettings);
 
           // then
-          sinon.assert.calledOnce(
-            AuthLayerSvc.idpProviderInstance.setTokenExpirationAction
-          );
-          sinon.assert.calledOnce(
-            AuthLayerSvc.idpProviderInstance.setTokenExpireSoonAction
-          );
+          sinon.assert.calledOnce(AuthLayerSvc.idpProviderInstance.setTokenExpirationAction);
+          sinon.assert.calledOnce(AuthLayerSvc.idpProviderInstance.setTokenExpireSoonAction);
         });
       });
     });

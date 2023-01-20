@@ -1,31 +1,31 @@
 <body>
   <script>
     let cookies = document.cookie;
-    let luigiCookie;
-    let luigiCookieKey;
+    let applaunchpadCookie;
+    let applaunchpadCookieKey;
     if (cookies) {
-      luigiCookie = cookies
+      applaunchpadCookie = cookies
         .split(';')
         .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+        .find(cookie => cookie == 'applaunchpadCookie=true');
     }
-    if (luigiCookie === 'luigiCookie=true') {
-      luigiCookieKey = luigiCookie.split('=')[0];
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+    if (applaunchpadCookie === 'applaunchpadCookie=true') {
+      applaunchpadCookieKey = applaunchpadCookie.split('=')[0];
+      document.cookie = applaunchpadCookieKey + '=; Max-Age=-99999999;';
     }
-    document.cookie = 'luigiCookie=true; SameSite=None; Secure';
+    document.cookie = 'applaunchpadCookie=true; SameSite=None; Secure';
     cookies = document.cookie;
     if (cookies) {
-      luigiCookie = cookies
+      applaunchpadCookie = cookies
         .split(';')
         .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+        .find(cookie => cookie == 'applaunchpadCookie=true');
     }
-    if (luigiCookie === 'luigiCookie=true') {
-      window.parent.postMessage('luigi.tpcEnabled', '*');
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+    if (applaunchpadCookie === 'applaunchpadCookie=true') {
+      window.parent.postMessage('applaunchpad.tpcEnabled', '*');
+      document.cookie = applaunchpadCookieKey + '=; Max-Age=-99999999;';
     } else {
-      window.parent.postMessage('luigi.tpcDisabled', '*');
+      window.parent.postMessage('applaunchpad.tpcDisabled', '*');
       console.warn('Third party cookies are not supported!');
     }
   </script>

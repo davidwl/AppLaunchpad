@@ -14,7 +14,7 @@ module.exports = {
   output: {
     filename: './[name]/plugin-ie11.js',
     libraryExport: 'default',
-    library: 'LuigiPlugin-[name]-IE11',
+    library: 'AppLaunchpadPlugin-[name]-IE11',
     libraryTarget: 'umd',
     path: path.join(path.resolve(__dirname), 'auth', 'public')
   },

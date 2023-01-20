@@ -166,7 +166,7 @@
     tabindex="0"
   >
     {#if hasLogo}
-      <img data-testid="luigi-topnav-logo" bind:this={logo} alt={title} />
+      <img data-testid="applaunchpad-topnav-logo" bind:this={logo} alt={title} />
     {/if}
   </a>
 {:else}
@@ -180,7 +180,7 @@
     tabindex="0"
   >
     {#if hasLogo}
-      <img data-testid="luigi-topnav-logo" bind:this={logo} alt={title} />
+      <img data-testid="applaunchpad-topnav-logo" bind:this={logo} alt={title} />
     {/if}
   </span>
 {/if}
@@ -189,7 +189,7 @@
     {#if addNavHrefForAnchor}
       <a
         class="fd-shellbar__title lui-shellbar-single-app-title"
-        data-testid="luigi-topnav-title"
+        data-testid="applaunchpad-topnav-title"
         on:click={event => {
           NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
             goTo('/');
@@ -201,7 +201,7 @@
     {:else}
       <span
         class="fd-shellbar__title lui-shellbar-single-app-title"
-        data-testid="luigi-topnav-title"
+        data-testid="applaunchpad-topnav-title"
         on:click={() => goTo('/')}
       >
         {$getTranslation(title)}
@@ -234,7 +234,7 @@
                 >
                   <span
                     class="fd-shellbar__title"
-                    data-testid="luigi-topnav-title"
+                    data-testid="applaunchpad-topnav-title"
                     >{$getTranslation(title)}</span
                   >
                   <i
@@ -254,7 +254,7 @@
                 toggleDropdownState('appSwitcherPopover')}
               data-testid="app-switcher"
             >
-              <span class="fd-shellbar__title" data-testid="luigi-topnav-title"
+              <span class="fd-shellbar__title" data-testid="applaunchpad-topnav-title"
                 >{$getTranslation(title)}</span
               >
               <i
@@ -271,7 +271,7 @@
               toggleDropdownState('appSwitcherPopover')}
             data-testid="app-switcher"
           >
-            <span class="fd-shellbar__title" data-testid="luigi-topnav-title"
+            <span class="fd-shellbar__title" data-testid="applaunchpad-topnav-title"
               >{$getTranslation(title)}</span
             >
             <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon" />

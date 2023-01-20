@@ -1,6 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/bc94a377-3681-456e-9318-a915b71038b9/deploy-status)](https://app.netlify.com/sites/dazzling-roentgen-7c50f8/deploys)
 
-Luigi landingpage, deployed via netlify and accessible at https://luigi-project.io
+AppLaunchpad landingpage, deployed via netlify and accessible at https://applaunchpad-project.io
 
 
 ## Blog entry creation
@@ -20,7 +20,7 @@ author:
 layout: blog
 ---
 
-This is a collection of advanced use cases and example implementations. If you are new to Luigi, take a look at our [Getting Started](/docs/getting-started.md) section first.
+This is a collection of advanced use cases and example implementations. If you are new to AppLaunchpad, take a look at our [Getting Started](/docs/getting-started.md) section first.
 <!-- Excerpt -->
 
 Google's `id_token` contains basic identity data like name and user ID, which allows for this data to be shown in the profile.

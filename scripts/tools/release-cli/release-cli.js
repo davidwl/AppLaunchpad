@@ -73,9 +73,9 @@ const installPaths = {
  * FNS
  */
 async function getReleases() {
-  const input = await asyncRequest('https://api.github.com/repos/SAP/luigi/releases', {
+  const input = await asyncRequest('https://api.github.com/repos/davidwl/applaunchpad/releases', {
     headers: {
-      'User-Agent': 'Luigi Release CLI'
+      'User-Agent': 'AppLaunchpad Release CLI'
     }
   });
   return JSON.parse(input.body)
@@ -206,7 +206,7 @@ function addToChangelog(versionText, changelog, lastline) {
     // strip committers part
     changelog = changelog.slice(0, changelog.indexOf('#### Committers'));
 
-    const lastline = `[v${input.version}]: https://github.com/SAP/luigi/compare/${prevVersion}...v${input.version}`;
+    const lastline = `[v${input.version}]: https://github.com/davidwl/applaunchpad/compare/${prevVersion}...v${input.version}`;
 
     logHeadline('\nPrepared Changelog:');
     console.log(changelog);

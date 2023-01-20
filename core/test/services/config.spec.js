@@ -4,71 +4,71 @@ const sinon = require('sinon');
 const expect = chai.expect;
 const spy = sinon.spy;
 
-import { LuigiConfig } from '../../src/core-api';
+import { AppLaunchpadConfig } from '../../src/core-api';
 import { AsyncHelpers, GenericHelpers } from './../../src/utilities/helpers';
 
 describe('Config', () => {
   describe('getConfigBooleanValue', () => {
     it('should return correct boolean value', async () => {
       //given
-      LuigiConfig.config = {
+      AppLaunchpadConfig.config = {
         truthyAttribute: 'true',
         truthAttribute: true,
         falseAttribute: false
       };
 
       // then
-      assert.equal(LuigiConfig.getConfigBooleanValue('truthyAttribute'), true);
-      assert.equal(LuigiConfig.getConfigBooleanValue('truthAttribute'), true);
-      assert.equal(LuigiConfig.getConfigBooleanValue('falseAttribute'), false);
+      assert.equal(AppLaunchpadConfig.getConfigBooleanValue('truthyAttribute'), true);
+      assert.equal(AppLaunchpadConfig.getConfigBooleanValue('truthAttribute'), true);
+      assert.equal(AppLaunchpadConfig.getConfigBooleanValue('falseAttribute'), false);
     });
 
     it('should fallback to false in case if invalid value', async () => {
       // given
-      LuigiConfig.config = {
+      AppLaunchpadConfig.config = {
         foo: 'bar'
       };
 
       // then
-      assert.equal(LuigiConfig.getConfigBooleanValue('foo'), false);
+      assert.equal(AppLaunchpadConfig.getConfigBooleanValue('foo'), false);
     });
 
     it('should fallback to false in case if undefined value', async () => {
       // given
-      LuigiConfig.config = {};
+      AppLaunchpadConfig.config = {};
 
       // then
-      assert.equal(LuigiConfig.getConfigBooleanValue('whatever'), false);
-      assert.equal(LuigiConfig.getConfigBooleanValue('whateverparent.whateverchild'), false);
+      assert.equal(AppLaunchpadConfig.getConfigBooleanValue('whatever'), false);
+      assert.equal(AppLaunchpadConfig.getConfigBooleanValue('whateverparent.whateverchild'), false);
     });
   });
 
   describe('executeConfigFnAsync', () => {
     it('returns correct value', async () => {
       //given
-      LuigiConfig.config = {
+      AppLaunchpadConfig.config = {
         truthyFn: (param1, param2) => 'value' + param1 + param2,
         truthyFnAsync: (param1, param2) => Promise.resolve('value' + param1 + param2)
       };
 
-      const resultTruthyFn = await LuigiConfig.executeConfigFnAsync('truthyFn', false, 'foo', 'bar');
+      const resultTruthyFn = await AppLaunchpadConfig.executeConfigFnAsync('truthyFn', false, 'foo', 'bar');
       assert.equal(resultTruthyFn, 'valuefoobar');
 
-      const resultTruthyFnAsync = await LuigiConfig.executeConfigFnAsync('truthyFnAsync', false, 'foo', 'bar');
+      const resultTruthyFnAsync = await AppLaunchpadConfig.executeConfigFnAsync('truthyFnAsync', false, 'foo', 'bar');
       assert.equal(resultTruthyFnAsync, 'valuefoobar');
     });
 
     it('returns undefined on non-existing fn', async () => {
       //given
-      LuigiConfig.config = {};
+      AppLaunchpadConfig.config = {};
 
-      const resultUndefined = await LuigiConfig.executeConfigFnAsync('not.existing.value');
+      const resultUndefined = await AppLaunchpadConfig.executeConfigFnAsync('not.existing.value');
       assert.isUndefined(resultUndefined, 'async fn result is not undefined');
     });
 
     it('returns undefined on error/rejected promise', async () => {
       //given
-      LuigiConfig.config = {
+      AppLaunchpadConfig.config = {
         rejectFnAsync: (param1, param2) => Promise.reject(new Error('rejected')),
         errFnAsync: (param1, param2) => {
           throw new Error({
@@ -78,17 +78,17 @@ describe('Config', () => {
         }
       };
 
-      const resultRejectFnAsync = await LuigiConfig.executeConfigFnAsync('rejectFnAsync');
+      const resultRejectFnAsync = await AppLaunchpadConfig.executeConfigFnAsync('rejectFnAsync');
       assert.isUndefined(resultRejectFnAsync, 'rejection did not return');
 
-      const resultErrFnAsync = await LuigiConfig.executeConfigFnAsync('errFnAsync');
+      const resultErrFnAsync = await AppLaunchpadConfig.executeConfigFnAsync('errFnAsync');
       assert.isUndefined(resultErrFnAsync, 'error did not return');
     });
 
     it('throws an error if throwError flag is set', async () => {
       sinon.stub(AsyncHelpers, 'applyFunctionPromisified').returns(Promise.reject(new Error('rejected')));
       //given
-      LuigiConfig.config = {
+      AppLaunchpadConfig.config = {
         rejectFnAsync: (param1, param2) => {}
       };
 
@@ -96,7 +96,7 @@ describe('Config', () => {
       // catching it here to be able to evaluate the error message
       let res;
       try {
-        res = await LuigiConfig.executeConfigFnAsync('rejectFnAsync', true);
+        res = await AppLaunchpadConfig.executeConfigFnAsync('rejectFnAsync', true);
       } catch (error) {
         res = error;
       }
@@ -131,35 +131,35 @@ describe('Config', () => {
     };
 
     it('write user settings to local storage', async () => {
-      sinon.stub(LuigiConfig, 'configChanged');
-      await LuigiConfig.storeUserSettings(userSettingsObj, userSettingsObj);
+      sinon.stub(AppLaunchpadConfig, 'configChanged');
+      await AppLaunchpadConfig.storeUserSettings(userSettingsObj, userSettingsObj);
       sinon.assert.called(global.localStorage.setItem);
     });
     it('write user settings to custom storage', async () => {
-      sinon.stub(LuigiConfig, 'configChanged');
+      sinon.stub(AppLaunchpadConfig, 'configChanged');
       console.log = sinon.spy();
-      sinon.stub(LuigiConfig, 'getConfigValueAsync').returns(myConfig);
+      sinon.stub(AppLaunchpadConfig, 'getConfigValueAsync').returns(myConfig);
       sinon.stub(GenericHelpers, 'isFunction').returns(true);
-      await LuigiConfig.storeUserSettings(userSettingsObj, userSettingsObj);
+      await AppLaunchpadConfig.storeUserSettings(userSettingsObj, userSettingsObj);
       sinon.assert.calledOnce(console.log);
     });
     it('read user settings from local storage', async () => {
       sinon.stub(JSON, 'parse').returns(JSON.stringify(userSettingsObj));
-      await LuigiConfig.readUserSettings();
+      await AppLaunchpadConfig.readUserSettings();
       sinon.assert.called(global.localStorage.getItem);
     });
     it('read user settings from custom storage', async () => {
       console.log = sinon.spy();
-      sinon.stub(LuigiConfig, 'getConfigValueAsync').returns(myConfig);
+      sinon.stub(AppLaunchpadConfig, 'getConfigValueAsync').returns(myConfig);
       sinon.stub(GenericHelpers, 'isFunction').returns(true);
-      await LuigiConfig.readUserSettings();
+      await AppLaunchpadConfig.readUserSettings();
       sinon.assert.calledOnce(console.log);
     });
   });
 
   describe('clearNavigationCache', () => {
     it('should clean navigation titleResolver cache', () => {
-      LuigiConfig.config = {
+      AppLaunchpadConfig.config = {
         navigation: {
           nodes: {
             titleResolver: {
@@ -172,9 +172,9 @@ describe('Config', () => {
           }
         }
       };
-      LuigiConfig.clearNavigationCache();
+      AppLaunchpadConfig.clearNavigationCache();
 
-      const actual = LuigiConfig.getConfigValue('navigation.titleResolver._cache');
+      const actual = AppLaunchpadConfig.getConfigValue('navigation.titleResolver._cache');
       const expected = undefined;
       assert.equal(actual, expected);
     });

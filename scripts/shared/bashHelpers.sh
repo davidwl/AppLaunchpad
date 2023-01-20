@@ -21,7 +21,7 @@ echoe() {
 
 #
 # runWebserver PORT FOLDER TESTLINK
-# runWebserver 4200 dist /luigi-core/luigi.js
+# runWebserver 4200 dist /applaunchpad-core/applaunchpad.js
 # returns/exposes $PID
 #
 runWebserver() {

@@ -31,13 +31,13 @@
     NavigationHelpers,
   } from './utilities/helpers';
   import {
-    LuigiI18N,
-    LuigiConfig,
-    LuigiElements,
-    LuigiGlobalSearch,
-    LuigiTheming,
-    LuigiRouting,
-    LuigiUX,
+    AppLaunchpadI18N,
+    AppLaunchpadConfig,
+    AppLaunchpadElements,
+    AppLaunchpadGlobalSearch,
+    AppLaunchpadTheming,
+    AppLaunchpadRouting,
+    AppLaunchpadUX,
   } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
@@ -104,7 +104,7 @@
   let burgerTooltip;
   export let isSearchFieldVisible;
   export let inputElem;
-  export let luigiCustomSearchRenderer__slot;
+  export let applaunchpadCustomSearchRenderer__slot;
   export let displaySearchResult;
   export let displayCustomSearchResult = true;
   export let searchResult;
@@ -112,10 +112,10 @@
   let breadcrumbsEnabled;
 
   const prepareInternalData = async (config) => {
-    const iframeConf = config.iframe.luigi;
+    const iframeConf = config.iframe.applaunchpad;
     const userSettingsGroupName =
       iframeConf.currentNode && iframeConf.currentNode.userSettingsGroup;
-    const userSettingGroups = await LuigiConfig.readUserSettings();
+    const userSettingGroups = await AppLaunchpadConfig.readUserSettings();
     const hasUserSettings =
       userSettingsGroupName &&
       typeof userSettingGroups === 'object' &&
@@ -129,7 +129,7 @@
       userSettings: hasUserSettings
         ? userSettingGroups[userSettingsGroupName]
         : null,
-      anchor: LuigiRouting.getAnchor(),
+      anchor: AppLaunchpadRouting.getAnchor(),
     });
 
     IframeHelpers.specialIframeTypes
@@ -148,7 +148,7 @@
     }
 
     const message = {
-      msg: 'luigi.init',
+      msg: 'applaunchpad.init',
       context: JSON.stringify(
         Object.assign({}, config.context || context, goBackContext)
       ),
@@ -162,19 +162,19 @@
         Object.assign(
           {},
           RoutingHelpers.prepareSearchParamsForClient(
-            config.iframe.luigi.currentNode
+            config.iframe.applaunchpad.currentNode
           )
         )
       ),
       internal: JSON.stringify(await prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData(),
     };
-    config.iframe.luigi._lastUpdatedMessage = message;
+    config.iframe.applaunchpad._lastUpdatedMessage = message;
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
   const sendAuthDataToClient = (authData) => {
     const message = {
-      msg: 'luigi.auth.tokenIssued',
+      msg: 'applaunchpad.auth.tokenIssued',
       authData,
     };
     IframeHelpers.broadcastMessageToAllIframes(message);
@@ -189,10 +189,10 @@
 
       $: preservedViews.push({
         path:
-          config.iframe.luigi && config.iframe.luigi.pathParams
+          config.iframe.applaunchpad && config.iframe.applaunchpad.pathParams
             ? GenericHelpers.replaceVars(
                 nodePath,
-                config.iframe.luigi.pathParams,
+                config.iframe.applaunchpad.pathParams,
                 ':',
                 false
               )
@@ -400,7 +400,7 @@
       }
 
       // remove backdrop
-      LuigiUX.removeBackdrop();
+      AppLaunchpadUX.removeBackdrop();
 
       closeSplitView();
 
@@ -443,7 +443,7 @@
       const node = [...localNavPath].reverse().find((n) => n.virtualTree);
       if (!node) {
         console.error(
-          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
+          'AppLaunchpadClient Error: fromVirtualTreeRoot() is not possible because you are not inside a AppLaunchpad virtualTree navigation node.'
         );
         return;
       }
@@ -565,7 +565,7 @@
 
   export const toggleSearch = () => {
     isSearchFieldVisible = !isSearchFieldVisible;
-    LuigiGlobalSearch.clearSearchField();
+    AppLaunchpadGlobalSearch.clearSearchField();
   };
 
   export const getGlobalSearchString = () => {
@@ -611,7 +611,7 @@
           };
           searchProvider.customSearchResultRenderer(
             arr,
-            luigiCustomSearchRenderer__slot,
+            applaunchpadCustomSearchRenderer__slot,
             searchApiObj
           );
         } else {
@@ -628,10 +628,10 @@
     if (checkSearchProvider(searchProvider)) {
       displaySearchResult = false;
       searchResult = [];
-      if (luigiCustomSearchRenderer__slot) {
-        while (luigiCustomSearchRenderer__slot.lastElementChild) {
-          luigiCustomSearchRenderer__slot.removeChild(
-            luigiCustomSearchRenderer__slot.lastElementChild
+      if (applaunchpadCustomSearchRenderer__slot) {
+        while (applaunchpadCustomSearchRenderer__slot.lastElementChild) {
+          applaunchpadCustomSearchRenderer__slot.removeChild(
+            applaunchpadCustomSearchRenderer__slot.lastElementChild
           );
         }
       }
@@ -750,7 +750,7 @@
   };
 
   export const showAlert = (settings, openFromClient = false) => {
-    const customAlertHandler = LuigiConfig.getConfigValue(
+    const customAlertHandler = AppLaunchpadConfig.getConfigValue(
       'settings.customAlertHandler'
     );
     if (GenericHelpers.isFunction(customAlertHandler)) {
@@ -762,7 +762,7 @@
     const currentAlerts = alerts;
 
     if (!settings.id) {
-      //generate the ID in case it hasn't came from an old version of LuigiClient
+      //generate the ID in case it hasn't came from an old version of AppLaunchpadClient
       settings.id = GenericHelpers.getRandomId();
     }
 
@@ -812,7 +812,7 @@
     if (alert.openFromClient) {
       const iframe = Iframe.getActiveIframe(contentNode);
       const message = {
-        msg: 'luigi.ux.alert.hide',
+        msg: 'applaunchpad.ux.alert.hide',
         id,
         dismissKey,
         //TODO: update docu for this param
@@ -867,7 +867,7 @@
 
     if (openFromClient && targetIframe) {
       const message = {
-        msg: 'luigi.ux.confirmationModal.hide',
+        msg: 'applaunchpad.ux.confirmationModal.hide',
         data: { confirmed: result },
       };
       IframeHelpers.sendMessageToIframe(targetIframe, message);
@@ -890,10 +890,10 @@
 
   const showUnsavedChangesModal = () => {
     return showModal({
-      header: LuigiI18N.getTranslation('luigi.unsavedChangesAlert.header'),
-      body: LuigiI18N.getTranslation('luigi.unsavedChangesAlert.body'),
-      buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
-      buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm'),
+      header: AppLaunchpadI18N.getTranslation('applaunchpad.unsavedChangesAlert.header'),
+      body: AppLaunchpadI18N.getTranslation('applaunchpad.unsavedChangesAlert.body'),
+      buttonDismiss: AppLaunchpadI18N.getTranslation('applaunchpad.button.dismiss'),
+      buttonConfirm: AppLaunchpadI18N.getTranslation('applaunchpad.button.confirm'),
     });
   };
 
@@ -940,7 +940,7 @@
     mfModalList = [...mfModalList, newModal];
 
     // check if modalPath feature enable and set URL accordingly
-    const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
+    const showModalPathInUrl = AppLaunchpadConfig.getConfigBooleanValue(
       'routing.showModalPathInUrl'
     );
 
@@ -978,7 +978,7 @@
    */
   const closeModal = (index, isClosedInternal, goBackContext) => {
     const resetModalData = (index, isClosedInternal) => {
-      const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
+      const showModalPathInUrl = AppLaunchpadConfig.getConfigBooleanValue(
         'routing.showModalPathInUrl'
       );
       // only remove the modal path in URL when closing the first modal
@@ -1107,7 +1107,7 @@
       internalUserSettingsObject.displayed = true;
     } else {
       console.info(
-        'There are no user setting groups in the settings section of the luigi config defined.'
+        'There are no user setting groups in the settings section of the applaunchpad config defined.'
       );
     }
   };
@@ -1123,7 +1123,7 @@
       return;
     }
 
-    const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
+    const hashRouting = AppLaunchpadConfig.getConfigValue('routing.useHashRouting');
     if (hashRouting) {
       nodepath = '#' + nodepath;
     }
@@ -1159,7 +1159,7 @@
         .find((n) => n.virtualTree);
       if (!virtualTreeNode) {
         console.error(
-          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
+          'AppLaunchpadClient Error: fromVirtualTreeRoot() is not possible because you are not inside a AppLaunchpad virtualTree navigation node.'
         );
         return;
       }
@@ -1192,19 +1192,19 @@
   };
 
   function init(node) {
-    // remove historyState if modal is closed by entering a new luigi route in url bar
+    // remove historyState if modal is closed by entering a new applaunchpad route in url bar
     sessionStorage.removeItem('historyState');
     ViewGroupPreloading.shouldPreload = true;
     ViewGroupPreloading.preload(true);
     ViewGroupPreloading.shouldPreload = false;
 
-    const isolateAllViews = LuigiConfig.getConfigValue(
+    const isolateAllViews = AppLaunchpadConfig.getConfigValue(
       'navigation.defaults.isolateView'
     );
-    const defaultPageErrorHandler = LuigiConfig.getConfigValue(
+    const defaultPageErrorHandler = AppLaunchpadConfig.getConfigValue(
       'navigation.defaults.pageErrorHandler'
     );
-    const defaultRunTimeErrorHandler = LuigiConfig.getConfigValue(
+    const defaultRunTimeErrorHandler = AppLaunchpadConfig.getConfigValue(
       'navigation.defaults.runTimeErrorHandler'
     );
     const config = {
@@ -1214,9 +1214,9 @@
       isolateAllViews,
       defaultPageErrorHandler,
     };
-    LuigiI18N.addCurrentLocaleChangeListener((locale) => {
+    AppLaunchpadI18N.addCurrentLocaleChangeListener((locale) => {
       const message = {
-        msg: 'luigi.current-locale-changed',
+        msg: 'applaunchpad.current-locale-changed',
         currentLocale: locale,
       };
       IframeHelpers.broadcastMessageToAllIframes(message);
@@ -1272,7 +1272,7 @@
       const isSpecialIframe =
         specialIframeMessageSource && specialIframeMessageSource.length > 0;
 
-      const skipInactiveConfig = LuigiConfig.getConfigValue(
+      const skipInactiveConfig = AppLaunchpadConfig.getConfigValue(
         'communication.skipEventsWhenInactive'
       );
 
@@ -1290,13 +1290,13 @@
 
       if ('custom' === e.data.msg) {
         const customMessagesListeners =
-          LuigiConfig.getConfigValue('communication.customMessagesListeners') ||
+          AppLaunchpadConfig.getConfigValue('communication.customMessagesListeners') ||
           {};
         const message = MessagesListeners.convertCustomMessageInternalToUser(
           e.data
         );
         const customMessageListener = customMessagesListeners[message.id];
-        const userSettingsCMKey = 'luigi.updateUserSettings';
+        const userSettingsCMKey = 'applaunchpad.updateUserSettings';
         if (internalUserSettingsObject && message.id === userSettingsCMKey) {
           if (customMessageListener) {
             console.warn(
@@ -1306,14 +1306,14 @@
           return;
         }
         if (typeof customMessageListener === 'function') {
-          const microfrontend = LuigiElements.getMicrofrontends().find((mf) =>
+          const microfrontend = AppLaunchpadElements.getMicrofrontends().find((mf) =>
             IframeHelpers.isMessageSource(e, mf.container)
           );
 
           customMessageListener(
             message,
             microfrontend,
-            GenericHelpers.removeInternalProperties(iframe.luigi.currentNode)
+            GenericHelpers.removeInternalProperties(iframe.applaunchpad.currentNode)
           );
         } else {
           console.warn(
@@ -1326,23 +1326,23 @@
        * Persist the answer of the init handshake
        * to prevent half-initialized clients
        */
-      if ('luigi.init.ok' === e.data.msg) {
-        iframe.luigi.initOk = true;
+      if ('applaunchpad.init.ok' === e.data.msg) {
+        iframe.applaunchpad.initOk = true;
       }
 
-      if ('luigi.navigate.ok' === e.data.msg) {
-        iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
-        iframe.luigi.nextViewUrl = '';
-        iframe.luigi.clientPermissions = iframe.luigi.nextClientPermissions;
-        delete iframe.luigi.nextClientPermissions;
+      if ('applaunchpad.navigate.ok' === e.data.msg) {
+        iframe.applaunchpad.viewUrl = iframe.applaunchpad.nextViewUrl;
+        iframe.applaunchpad.nextViewUrl = '';
+        iframe.applaunchpad.clientPermissions = iframe.applaunchpad.nextClientPermissions;
+        delete iframe.applaunchpad.nextClientPermissions;
         config.navigateOk = true;
 
         ViewGroupPreloading.preload();
       }
 
-      if ('luigi.get-context' === e.data.msg) {
-        iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
-        iframe.luigi.initOk = false; // get-context indication. used for handshake verification
+      if ('applaunchpad.get-context' === e.data.msg) {
+        iframe.applaunchpad.clientVersion = e.data.clientVersion; // undefined for v0.x clients
+        iframe.applaunchpad.initOk = false; // get-context indication. used for handshake verification
 
         if (isSpecialIframe) {
           specialIframeMessageSource.forEach(async (typ) => {
@@ -1354,7 +1354,7 @@
               pathParams: specialIframeProps[typ.dataKey].pathParams,
               nodeParams: specialIframeProps[typ.dataKey].nodeParams,
               searchParams: RoutingHelpers.prepareSearchParamsForClient(
-                specialIframeProps[typ.iframeKey].luigi.currentNode
+                specialIframeProps[typ.iframeKey].applaunchpad.currentNode
               ),
               modal: typ.iframeKey.startsWith('modal'),
               drawer: typ.iframeKey.startsWith('drawer'),
@@ -1375,7 +1375,7 @@
             showLoadingIndicator = false;
           }
           ViewGroupPreloading.preload();
-        } else if (iframe.luigi.preloading) {
+        } else if (iframe.applaunchpad.preloading) {
           // set empty context to an existing but inactive iframe; this is a valid use case (view group pre-loading)
           await sendContextToClient(
             {
@@ -1405,22 +1405,22 @@
         ViewGroupPreloading.viewGroupLoaded(iframe);
       }
 
-      if ('luigi.show-loading-indicator' === e.data.msg) {
+      if ('applaunchpad.show-loading-indicator' === e.data.msg) {
         showLoadingIndicator = true;
       }
 
-      if ('luigi.hide-loading-indicator' === e.data.msg) {
+      if ('applaunchpad.hide-loading-indicator' === e.data.msg) {
         showLoadingIndicator = false;
       }
 
-      if ('luigi.navigation.open' === e.data.msg) {
+      if ('applaunchpad.navigation.open' === e.data.msg) {
         isNavigateBack = false;
 
         const previousUrl = window.location.href;
 
-        const srcNode = isSpecialIframe ? iframe.luigi.currentNode : undefined;
+        const srcNode = isSpecialIframe ? iframe.applaunchpad.currentNode : undefined;
         const srcPathParams = isSpecialIframe
-          ? iframe.luigi.pathParams
+          ? iframe.applaunchpad.pathParams
           : undefined;
         const params = e.data.params;
         const { intent, newTab, modal, splitView, drawer, withoutSync } =
@@ -1531,7 +1531,7 @@
         }
       }
 
-      if ('luigi.navigation.back' === e.data.msg) {
+      if ('applaunchpad.navigation.back' === e.data.msg) {
         const mfModalTopMostElement = mfModalList[mfModalList.length - 1];
         const _goBackContext =
           e.data.goBackContext && JSON.parse(e.data.goBackContext);
@@ -1583,7 +1583,7 @@
           } else {
             if (_goBackContext) {
               console.warn(
-                `Warning: goBack() does not support goBackContext value. This is available only when using the Luigi preserveView feature.`
+                `Warning: goBack() does not support goBackContext value. This is available only when using the AppLaunchpad preserveView feature.`
               );
             }
             // TODO: does not work with default child node behavior, fixed by #216
@@ -1593,13 +1593,13 @@
       }
 
       // handle getCurrentRoute message coming from client
-      if ('luigi.navigation.currentRoute' === e.data.msg) {
+      if ('applaunchpad.navigation.currentRoute' === e.data.msg) {
         const data = e.data.data;
         const path = buildPathForGetCurrentRoute(data);
 
         // send answer back to client
         const message = {
-          msg: 'luigi.navigation.currentRoute.answer',
+          msg: 'applaunchpad.navigation.currentRoute.answer',
           data: {
             route: path,
             correlationId: data.id,
@@ -1608,17 +1608,17 @@
         IframeHelpers.sendMessageToIframe(iframe, message);
       }
 
-      if ('luigi.auth.tokenIssued' === e.data.msg) {
+      if ('applaunchpad.auth.tokenIssued' === e.data.msg) {
         sendAuthDataToClient(e.data.authData);
       }
 
-      if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
+      if ('applaunchpad.navigation.updateModalDataPath' === e.data.msg) {
         if (isSpecialIframe) {
           const route = GenericHelpers.addLeadingSlash(
             buildPath(
               e.data.params,
-              iframe.luigi.currentNode,
-              iframe.luigi.pathParams
+              iframe.applaunchpad.currentNode,
+              iframe.applaunchpad.pathParams
             )
           );
           Routing.updateModalDataInUrl(
@@ -1633,19 +1633,19 @@
         }
       }
 
-      if ('luigi.navigation.pathExists' === e.data.msg) {
-        const srcNode = iframe.luigi.currentNode;
-        const srcPathParams = iframe.luigi.pathParams;
+      if ('applaunchpad.navigation.pathExists' === e.data.msg) {
+        const srcNode = iframe.applaunchpad.currentNode;
+        const srcPathParams = iframe.applaunchpad.pathParams;
         const data = e.data.data;
         const path = buildPath(data, srcNode, srcPathParams);
         const pathData = path
           ? await Navigation.getNavigationPath(
-              LuigiConfig.getConfigValueAsync('navigation.nodes'),
+              AppLaunchpadConfig.getConfigValueAsync('navigation.nodes'),
               path
             )
           : false;
         const message = {
-          msg: 'luigi.navigation.pathExists.answer',
+          msg: 'applaunchpad.navigation.pathExists.answer',
           data: {
             correlationId: data.id,
             pathExists: pathData ? pathData.isExistingRoute : false,
@@ -1654,7 +1654,7 @@
         IframeHelpers.sendMessageToIframe(iframe, message);
       }
 
-      if ('luigi.set-page-dirty' === e.data.msg) {
+      if ('applaunchpad.set-page-dirty' === e.data.msg) {
         if (!unsavedChanges.dirtySet) {
           const dirtySet = new Set();
           dirtySet.add(e.source);
@@ -1670,7 +1670,7 @@
         }
       }
 
-      if ('luigi.ux.confirmationModal.show' === e.data.msg) {
+      if ('applaunchpad.ux.confirmationModal.show' === e.data.msg) {
         const settings = e.data.data.settings;
         contentNode = node;
         resetConfirmationModalData();
@@ -1679,16 +1679,16 @@
         });
       }
 
-      if ('luigi.ux.alert.show' === e.data.msg) {
+      if ('applaunchpad.ux.alert.show' === e.data.msg) {
         const { settings } = e.data.data;
         if (
           !settings.text &&
           !GenericHelpers.isFunction(
-            LuigiConfig.getConfigValue('settings.customAlertHandler')
+            AppLaunchpadConfig.getConfigValue('settings.customAlertHandler')
           )
         ) {
           console.error(
-            "Luigi Client alert: 'text' field for alert is empty or not present, therefore alert will not be displayed"
+            "AppLaunchpad Client alert: 'text' field for alert is empty or not present, therefore alert will not be displayed"
           );
           return;
         }
@@ -1698,14 +1698,14 @@
         });
       }
 
-      if ('luigi.ux.set-current-locale' === e.data.msg) {
+      if ('applaunchpad.ux.set-current-locale' === e.data.msg) {
         if (
-          iframe.luigi.clientPermissions &&
-          iframe.luigi.clientPermissions.changeCurrentLocale
+          iframe.applaunchpad.clientPermissions &&
+          iframe.applaunchpad.clientPermissions.changeCurrentLocale
         ) {
           const { currentLocale } = e.data.data;
           if (currentLocale) {
-            LuigiI18N.setCurrentLocale(currentLocale);
+            AppLaunchpadI18N.setCurrentLocale(currentLocale);
           }
         } else {
           console.error(
@@ -1716,7 +1716,7 @@
       if (
         thirdPartyCookiesCheck &&
         !thirdPartyCookiesCheck.thirdPartyCookieScriptLocation &&
-        'luigi.third-party-cookie' === e.data.msg
+        'applaunchpad.third-party-cookie' === e.data.msg
       ) {
         if (e.data.tpc === 'disabled') {
           tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1725,7 +1725,7 @@
 
       if ('storage' === e.data.msg) {
         StorageHelper.process(
-          iframe.luigi.id,
+          iframe.applaunchpad.id,
           e.origin,
           e.data.data.id,
           e.data.data.operation,
@@ -1733,8 +1733,8 @@
         );
       }
 
-      if ('luigi-runtime-error-handling' === e.data.msg) {
-        let currentNode = iframe.luigi.currentNode;
+      if ('applaunchpad-runtime-error-handling' === e.data.msg) {
+        let currentNode = iframe.applaunchpad.currentNode;
         if (
           currentNode &&
           currentNode.runTimeErrorHandler &&
@@ -1749,14 +1749,14 @@
         }
       }
 
-      if ('luigi.addSearchParams' === e.data.msg) {
+      if ('applaunchpad.addSearchParams' === e.data.msg) {
         if (
-          iframe.luigi.currentNode.clientPermissions &&
-          iframe.luigi.currentNode.clientPermissions.urlParameters
+          iframe.applaunchpad.currentNode.clientPermissions &&
+          iframe.applaunchpad.currentNode.clientPermissions.urlParameters
         ) {
           const { data, keepBrowserHistory } = e.data;
           RoutingHelpers.addSearchParamsFromClient(
-            iframe.luigi.currentNode,
+            iframe.applaunchpad.currentNode,
             data,
             keepBrowserHistory
           );
@@ -1767,16 +1767,16 @@
         }
       }
 
-      if ('luigi.addNodeParams' === e.data.msg) {
+      if ('applaunchpad.addNodeParams' === e.data.msg) {
         if (isSpecialIframe) return;
 
         const { data, keepBrowserHistory } = e.data;
-        LuigiRouting.addNodeParams(data, keepBrowserHistory);
+        AppLaunchpadRouting.addNodeParams(data, keepBrowserHistory);
       }
 
-      if ('luigi.setAnchor' === e.data.msg) {
+      if ('applaunchpad.setAnchor' === e.data.msg) {
         const { anchor } = e.data;
-        LuigiRouting.setAnchor(anchor);
+        AppLaunchpadRouting.setAnchor(anchor);
       }
     });
 
@@ -1810,7 +1810,7 @@
     const builtPath = buildPath(data);
     const pathData = builtPath
       ? await Navigation.getNavigationPath(
-          LuigiConfig.getConfigValueAsync('navigation.nodes'),
+          AppLaunchpadConfig.getConfigValueAsync('navigation.nodes'),
           builtPath
         )
       : false;
@@ -1822,9 +1822,9 @@
   };
 
   onMount(() => {
-    LuigiTheming._init();
-    searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
-    responsiveNavSetting = LuigiConfig.getConfigValue(
+    AppLaunchpadTheming._init();
+    searchProvider = AppLaunchpadConfig.getConfigValue('globalSearch.searchProvider');
+    responsiveNavSetting = AppLaunchpadConfig.getConfigValue(
       'settings.responsiveNavigation'
     );
     previousWindowWidth = window.innerWidth;
@@ -1858,7 +1858,7 @@
       }
       document.body.classList.add('lui-semiCollapsible');
     }
-    thirdPartyCookiesCheck = LuigiConfig.getConfigValue(
+    thirdPartyCookiesCheck = AppLaunchpadConfig.getConfigValue(
       'settings.thirdPartyCookieCheck'
     );
     if (
@@ -1891,9 +1891,9 @@
   beforeUpdate(() => {
     breadcrumbsEnabled =
       GenericHelpers.requestExperimentalFeature('breadcrumbs');
-    searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
-    configTag = LuigiConfig.getConfigValue('tag');
-    isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
+    searchProvider = AppLaunchpadConfig.getConfigValue('globalSearch.searchProvider');
+    configTag = AppLaunchpadConfig.getConfigValue('tag');
+    isHeaderDisabled = AppLaunchpadConfig.getConfigValue('settings.header.disabled');
   });
 </script>
 
@@ -1985,7 +1985,7 @@
         class="fd-busy-indicator--m"
         aria-hidden="false"
         aria-label="Loading"
-        data-testid="luigi-loading-spinner"
+        data-testid="applaunchpad-loading-spinner"
       >
         <div class="fd-busy-indicator--circle-0" />
         <div class="fd-busy-indicator--circle-1" />
@@ -2007,7 +2007,7 @@
       bind:displayCustomSearchResult
       bind:searchResult
       bind:inputElem
-      bind:luigiCustomSearchRenderer__slot
+      bind:applaunchpadCustomSearchRenderer__slot
       {burgerTooltip}
     />
   {/if}
@@ -2051,11 +2051,11 @@
 
   /* custom width of left side nav, single App title width or Multiple-App dropdown width*/
   :root {
-    --luigi__left-sidenav--width: 15rem;
-    --luigi__app-title--width: 60vw;
-    --luigi__multi-app-dropdown--width: 60vw;
-    --luigi__breadcrumb--height: 2.75rem;
-    --luigi__shellbar--height: 2.75rem;
+    --applaunchpad__left-sidenav--width: 15rem;
+    --applaunchpad__app-title--width: 60vw;
+    --applaunchpad__multi-app-dropdown--width: 60vw;
+    --applaunchpad__breadcrumb--height: 2.75rem;
+    --applaunchpad__shellbar--height: 2.75rem;
   }
 
   :global(html) {
@@ -2084,7 +2084,7 @@
   :global(a) {
     cursor: pointer;
   }
-  :global([luigi-app-loading-indicator]) {
+  :global([applaunchpad-app-loading-indicator]) {
     z-index: 10;
     background-color: var(--fd-background-color);
     position: absolute;
@@ -2096,7 +2096,7 @@
     align-items: center;
     justify-content: center;
   }
-  :global([luigi-app-loading-indicator].hidden) {
+  :global([applaunchpad-app-loading-indicator].hidden) {
     visibility: hidden;
     opacity: 0;
     @include transition(visibility 0s 0.3s, opacity 0.3s linear);
@@ -2104,14 +2104,14 @@
 
   :global(.lui-breadcrumb) .iframeContainer,
   :global(.lui-breadcrumb) .spinnerContainer {
-    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+    top: calc(#{$topNavHeight} + var(--applaunchpad__breadcrumb--height));
   }
 
   .iframeContainer,
   .spinnerContainer {
     position: absolute;
     top: $topNavHeight;
-    left: var(--luigi__left-sidenav--width);
+    left: var(--applaunchpad__left-sidenav--width);
     bottom: 0;
     right: 0;
     width: auto;
@@ -2148,7 +2148,7 @@
 
   :global(.lui-breadcrumb) .iframeContainerTabNav {
     top: calc(
-      #{$topNavHeight} + #{$topNavHeightTab} + var(--luigi__breadcrumb--height)
+      #{$topNavHeight} + #{$topNavHeightTab} + var(--applaunchpad__breadcrumb--height)
     );
   }
 
@@ -2199,7 +2199,7 @@
   }
 
   .no-top-nav {
-    --luigi__shellbar--height: 0px;
+    --applaunchpad__shellbar--height: 0px;
   }
 
   :global(body.lui-simpleSlideInNav) {
@@ -2252,13 +2252,13 @@
   :global(.lui-global-nav-visible) {
     :global(.iframeContainer),
     :global(.spinnerContainer) {
-      left: calc(var(--luigi__left-sidenav--width) + #{$globalNavWidth});
+      left: calc(var(--applaunchpad__left-sidenav--width) + #{$globalNavWidth});
     }
     :global(.splitViewContainer),
     :global(#splitViewDragger),
     :global(#splitViewDraggerBackdrop),
     :global(#tabsContainer) {
-      left: calc(var(--luigi__left-sidenav--width) + #{$globalNavWidth});
+      left: calc(var(--applaunchpad__left-sidenav--width) + #{$globalNavWidth});
     }
   }
 
@@ -2296,11 +2296,11 @@
   :global(.lui-shellbar-single-app-title) {
     padding: 0 0.625rem;
     text-decoration: none;
-    max-width: var(--luigi__app-title--width);
+    max-width: var(--applaunchpad__app-title--width);
   }
 
   :global(.lui-app-switch) {
-    max-width: var(--luigi__multi-app-dropdown--width);
+    max-width: var(--applaunchpad__multi-app-dropdown--width);
   }
 
   @media (max-width: $mobileMinWidth) {
@@ -2314,29 +2314,29 @@
 
     .no-side-nav {
       :global(.lui-shellbar-single-app-title) {
-        max-width: calc(var(--luigi__app-title--width) - 3rem);
+        max-width: calc(var(--applaunchpad__app-title--width) - 3rem);
       }
       :global(.lui-app-switch) {
-        max-width: calc(var(--luigi__app-title--width) - 2.15rem);
+        max-width: calc(var(--applaunchpad__app-title--width) - 2.15rem);
       }
     }
     :global(.lui-shellbar-single-app-title) {
-      max-width: calc(var(--luigi__app-title--width) - 5rem);
+      max-width: calc(var(--applaunchpad__app-title--width) - 5rem);
     }
     :global(.lui-app-switch) {
-      max-width: calc(var(--luigi__multi-app-dropdown--width) - 4rem);
+      max-width: calc(var(--applaunchpad__multi-app-dropdown--width) - 4rem);
     }
   }
 
   @media (min-width: $mobileMinWidth) and (max-width: $desktopMinWidth) {
     .no-side-nav {
       :global(.lui-shellbar-single-app-title) {
-        max-width: calc(var(--luigi__app-title--width) - 2rem);
+        max-width: calc(var(--applaunchpad__app-title--width) - 2rem);
       }
     }
     :global(.lui-shellbar-single-app-title),
     :global(.lui-app-switch) {
-      max-width: calc(var(--luigi__app-title--width) - 3rem);
+      max-width: calc(var(--applaunchpad__app-title--width) - 3rem);
     }
   }
   /*Enbd of the block for resoonsive App title*/
@@ -2367,7 +2367,7 @@
       }
 
       :global(.fd-app__sidebar) {
-        left: calc(var(--luigi__left-sidenav--width) * -1);
+        left: calc(var(--applaunchpad__left-sidenav--width) * -1);
       }
     }
   }
@@ -2385,7 +2385,7 @@
       }
 
       :global(.fd-app__sidebar) {
-        left: calc(var(--luigi__left-sidenav--width) * -1);
+        left: calc(var(--applaunchpad__left-sidenav--width) * -1);
       }
     }
 
@@ -2401,14 +2401,14 @@
       }
 
       :global(.fd-app__sidebar) {
-        left: calc(var(--luigi__left-sidenav--width) * -1);
+        left: calc(var(--applaunchpad__left-sidenav--width) * -1);
       }
     }
 
     :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
       :global(.fd-app__sidebar) {
         display: block;
-        width: var(--luigi__left-sidenav--width);
+        width: var(--applaunchpad__left-sidenav--width);
         left: 0;
         @include box-shadow(6px 0px 9px 0px rgba(0, 0, 0, 0.44));
       }
@@ -2440,10 +2440,10 @@
     }
   }
 
-  :global(html.luigi-app-in-custom-container) {
+  :global(html.applaunchpad-app-in-custom-container) {
     position: relative;
 
-    [luigi-app-root] {
+    [applaunchpad-app-root] {
       position: relative;
       overflow: hidden;
     }
@@ -2508,7 +2508,7 @@
       &:first-child {
         :global(.fd-menu__item) {
           &:first-child {
-            @include luigi-menu__link--border-radius('top');
+            @include applaunchpad-menu__link--border-radius('top');
           }
         }
       }
@@ -2516,7 +2516,7 @@
       &:last-child {
         :global(.fd-menu__item) {
           &:last-child {
-            @include luigi-menu__link--border-radius('bottom');
+            @include applaunchpad-menu__link--border-radius('bottom');
           }
         }
       }

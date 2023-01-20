@@ -1,4 +1,4 @@
-describe('Luigi Client linkManager Webcomponent, Drawer', () => {
+describe('AppLaunchpad Client linkManager Webcomponent, Drawer', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
@@ -45,7 +45,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
     it('Open and close drawer component with webcomponent', () => {
       cy.window().then(win => {
-        win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent');
+        win.AppLaunchpad.navigation().openAsDrawer('/projects/pr1/webcomponent');
         cy.get('.drawer').should('exist');
         cy.expectPathToBe('/projects/pr2');
 
@@ -105,7 +105,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
               .invoke('width')
               .should('eq', containerWidth);
 
-            win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent', { overlap: false });
+            win.AppLaunchpad.navigation().openAsDrawer('/projects/pr1/webcomponent', { overlap: false });
 
             cy.wait(300);
 

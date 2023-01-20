@@ -33,7 +33,7 @@ export default {
   settings: {
     responsiveNavigation: 'semiCollapsible',
     header: {
-      title: 'Luigi E2E'
+      title: 'AppLaunchpad E2E'
     }
   }
 };

@@ -1,38 +1,38 @@
 /* istanbul ignore file */
 
 /**
- * Functions to use Luigi Global Search
+ * Functions to use AppLaunchpad Global Search
  * @name GlobalSearch
  */
-class LuigiGlobalSearch {
+class AppLaunchpadGlobalSearch {
   /**
    * Opens the global search field.
    * @memberof GlobalSearch
    * @since 1.3.0
-   * @example Luigi.globalSearch().openSearchField();
+   * @example AppLaunchpad.globalSearch().openSearchField();
    */
   openSearchField() {
-    Luigi.openSearchField();
+    AppLaunchpad.openSearchField();
   }
 
   /**
    * Closes the global search field.
    * @memberof GlobalSearch
    * @since 1.3.0
-   * @example Luigi.globalSearch().closeSearchField();
+   * @example AppLaunchpad.globalSearch().closeSearchField();
    */
   closeSearchField() {
-    Luigi.closeSearchField();
+    AppLaunchpad.closeSearchField();
   }
 
   /**
    * Clears the global search field.
    * @memberof GlobalSearch
    * @since 1.3.0
-   * @example Luigi.globalSearch().clearSearchField();
+   * @example AppLaunchpad.globalSearch().clearSearchField();
    */
   clearSearchField() {
-    Luigi.clearSearchField();
+    AppLaunchpad.clearSearchField();
   }
 
   /**
@@ -50,30 +50,30 @@ class LuigiGlobalSearch {
    *   description
    * }
    *
-   * Luigi.globalSearch().showSearchResult([searchResultItem1, searchResultItem2]);
+   * AppLaunchpad.globalSearch().showSearchResult([searchResultItem1, searchResultItem2]);
    */
   showSearchResult(searchResultItems) {
-    Luigi.showSearchResult(searchResultItems);
+    AppLaunchpad.showSearchResult(searchResultItems);
   }
 
   /**
    * Closes the global search result. By standard it is rendered as a popover.
    * @memberof GlobalSearch
    * @since 1.3.0
-   * @example Luigi.globalSearch().closeSearchResult();
+   * @example AppLaunchpad.globalSearch().closeSearchResult();
    */
   closeSearchResult() {
-    Luigi.closeSearchResult();
+    AppLaunchpad.closeSearchResult();
   }
 
   /**
    * Gets the value of the search input field.
    * @memberof GlobalSearch
    * @since 1.3.0
-   * @example Luigi.globalSearch().getSearchString();
+   * @example AppLaunchpad.globalSearch().getSearchString();
    */
   getSearchString() {
-    return Luigi.getGlobalSearchString();
+    return AppLaunchpad.getGlobalSearchString();
   }
 
   /**
@@ -81,10 +81,10 @@ class LuigiGlobalSearch {
    * @memberof GlobalSearch
    * @param searchString search value
    * @since 1.3.0
-   * @example Luigi.globalSearch().setSearchString('searchString');
+   * @example AppLaunchpad.globalSearch().setSearchString('searchString');
    */
   setSearchString(searchString) {
-    Luigi.setGlobalSearchString(searchString);
+    AppLaunchpad.setGlobalSearchString(searchString);
   }
 
   /**
@@ -92,10 +92,10 @@ class LuigiGlobalSearch {
    * @memberof GlobalSearch
    * @param searchString search value
    * @since 1.7.1
-   * @example Luigi.globalSearch().setSearchInputPlaceholder('HERE input Placeholder');
+   * @example AppLaunchpad.globalSearch().setSearchInputPlaceholder('HERE input Placeholder');
    */
   setSearchInputPlaceholder(searchString) {
-    Luigi.setSearchInputPlaceholder(searchString);
+    AppLaunchpad.setSearchInputPlaceholder(searchString);
   }
 }
-export const globalSearch = new LuigiGlobalSearch();
+export const globalSearch = new AppLaunchpadGlobalSearch();

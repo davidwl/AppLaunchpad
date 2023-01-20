@@ -1,2 +1,2 @@
-export { LuigiMockUtil } from './luigi-mock-util.js';
-export { LuigiMockEngine } from './luigi-mock-engine.js';
+export { AppLaunchpadMockUtil } from './applaunchpad-mock-util.js';
+export { AppLaunchpadMockEngine } from './applaunchpad-mock-engine.js';

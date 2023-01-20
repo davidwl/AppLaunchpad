@@ -1,6 +1,6 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiConfig, LuigiI18N } from '../core-api';
+  import { AppLaunchpadConfig, AppLaunchpadI18N } from '../core-api';
   import {
     NavigationHelpers,
     RoutingHelpers,
@@ -22,7 +22,7 @@
   export let showBreadcrumb;
   export let hideNavComponent;
   export let responsiveNavSetting;
-  let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
+  let addNavHrefForAnchor = AppLaunchpadConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   const setNavData = async () => {
     if (pathData && 0 < pathData.length) {
@@ -52,7 +52,7 @@
         return;
       }
 
-      const breadcrumbConfig = LuigiConfig.getConfigValue('navigation.breadcrumbs');
+      const breadcrumbConfig = AppLaunchpadConfig.getConfigValue('navigation.breadcrumbs');
       showBreadcrumb = !!breadcrumbConfig;
       if (showBreadcrumb) {
         // if enabled in general, check node scope
@@ -66,7 +66,7 @@
       }
 
       if (showBreadcrumb) {
-        addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
+        addNavHrefForAnchor = AppLaunchpadConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
         if (breadcrumbConfig.renderer) {
           let items = [];
@@ -86,7 +86,7 @@
                   label:
                     node.titleResolver.prerenderFallback &&
                     node.titleResolver.fallbackTitle
-                      ? LuigiI18N.getTranslation(node.titleResolver.fallbackTitle)
+                      ? AppLaunchpadI18N.getTranslation(node.titleResolver.fallbackTitle)
                       : breadcrumbConfig.pendingItemLabel || '',
                   node: node,
                   route: route,
@@ -164,7 +164,7 @@
 
   async function getNodeLabel(node) {
     if (node.label && !node._virtualTree) {
-      return LuigiI18N.getTranslation(node.label) || node.label;
+      return AppLaunchpadI18N.getTranslation(node.label) || node.label;
     }
     if (node.pathSegment && node.pathSegment.indexOf(':') === 0) {
       const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), node);
@@ -190,7 +190,7 @@
     position: absolute;
     right: 0;
     top: $topNavHeight;
-    height: var(--luigi__breadcrumb--height);
+    height: var(--applaunchpad__breadcrumb--height);
     left: 0;
     display: none;
   }

@@ -27,7 +27,7 @@ notifications:
     secure: nls0RW4RKEHLnRBgOi25UTpjjSBFGnXgOnbxuiPsSjBFWehXvH8SfMYGfsDdp6lfH9ljDFA6KiJFauAAgQ+vImaZNHvrHeCitQDqWraXeD1CyzOYGp+8Bx/JyR1bcBKewvQVqNpnhk4hoIEI4Gu2i1NGq1/pAkHOeetw7PVmnpEG/QyQQ8YDXbySzWl39iZc8HWVT4svKV8BqYx+KzqRqE09XSfhiecZ00DVjZEMyKD6oCttOlJ/Vo0Z7QgzAEDaIhb+jrojJ2HD1PPWjiQqfpuyBY6GjeFGwNebevhmVngvQ3+69xn0ydOct3HTR/uSNJexY/Hq9W98QuGliihWwx1ksjFZnKtZ42FRY9p8jD/hw+ySJRwrAvbZtrWA0xmU85Fz/kRMocum5I7UJDGOTvklNYMFT/Rlh5w08DWXx8YCYyvXxsTee7dNELwefYnOL/FZRzHaNKnXqimYsE8dIlbfMBKD2Kh4Hr0+NZlBBaZ71w2+4Cp1mdJnSEFN7zuOrwqdQdjCDAeqttcSOvuQAR/BMGwtN30BrjW16n2YOuqwBoWsp7zUdpSyWp600mTn+vYulue4hvpwpbfELVXRtaggrVvolW9fBtACXE6+G9rqzJRgRLLNGM9i7dbiX2OFx1olMTu0n7XN7MNFdwFH4X0sycfi02GlZb/5L/ntrJY=
 
 integration-testing: &integration-testing
-  if: repo = SAP/luigi AND type != cron AND type != api
+  if: repo = davidwl/applaunchpad AND type != cron AND type != api
   script:
     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
     - ls $CYPRESS_CACHE_FOLDER
@@ -71,35 +71,35 @@ jobs:
         # WORKAROUND - START
         # Due to open bug at lerna, https://github.com/lerna/lerna/issues/2352
         # Link e2e-test-application manually:
-        - rm -rf $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/*
-        - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/core
-        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client
+        - rm -rf $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@applaunchpad-project/*
+        - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@applaunchpad-project/core
+        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@applaunchpad-project/client
         # Link client-support-angular manually
-        - mkdir -p $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/
-        - rm -rf $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/*
-        - ln -s $TRAVIS_BUILD_DIR/client-frameworks-support/testing-utilities/dist $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/testing-utilities
-        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/client
-        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oauth2
-        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc
+        - mkdir -p $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@applaunchpad-project/
+        - rm -rf $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@applaunchpad-project/*
+        - ln -s $TRAVIS_BUILD_DIR/client-frameworks-support/testing-utilities/dist $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@applaunchpad-project/testing-utilities
+        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@applaunchpad-project/client
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@applaunchpad-project/plugin-auth-oauth2
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@applaunchpad-project/plugin-auth-oidc
         # Link fiddle manually:
-        - rm -rf $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/*
-        - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/core
-        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/client
-        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/plugin-auth-oauth2
-        # - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oidc
+        - rm -rf $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@applaunchpad-project/*
+        - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@applaunchpad-project/core
+        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@applaunchpad-project/client
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@applaunchpad-project/plugin-auth-oauth2
+        # - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@applaunchpad-project/plugin-auth-oidc
         # WORKAROUND - END
         # Make sure client is build first, required for client-support-angular
-        - lerna run bundle --ignore docs --scope luigi-client-private || travis_terminate 1
+        - lerna run bundle --ignore docs --scope applaunchpad-client-private || travis_terminate 1
         # Make sure testing-utilities is build first, required for client-support-angular
-        - lerna run bundle --ignore docs --scope @luigi-project/testing-utilities || travis_terminate 1
+        - lerna run bundle --ignore docs --scope @applaunchpad-project/testing-utilities || travis_terminate 1
         # Actual build
         - lerna run bundle --ignore docs || travis_terminate 1
         - lerna run bundlesizeOnly --ignore docs || travis_terminate 1
         # Verifying step
         - head $TRAVIS_BUILD_DIR/client/public/package.json
-        - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project
-        - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/
-        - echo "check if luigi-client.d.ts exists" && cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
+        - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@applaunchpad-project
+        - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@applaunchpad-project/client/
+        - echo "check if applaunchpad-client.d.ts exists" && cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@applaunchpad-project/client/applaunchpad-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
         - lerna run build --ignore docs || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
       before_cache:
@@ -108,7 +108,7 @@ jobs:
         - rm -rf $TRAVIS_BUILD_DIR/core/examples
 
     # ----- INTEGRATION WITH MOCKENGINE -----
-    - stage: 'Run LuigiMockEngine tests'
+    - stage: 'Run AppLaunchpadMockEngine tests'
       if: NOT (commit_message = test-setup-scripts) AND NOT (commit_message = publish)
       script: 
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
@@ -131,18 +131,18 @@ jobs:
     - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
       # run only when merging from release-v branch to master
-      if: repo = SAP/luigi AND branch = master AND type = push
+      if: repo = davidwl/applaunchpad AND branch = master AND type = push
       script:
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-        - rm -rf $TRAVIS_BUILD_DIR/../luigi-compatibility-testing # remove compatibility build cache
+        - rm -rf $TRAVIS_BUILD_DIR/../applaunchpad-compatibility-testing # remove compatibility build cache
 
     # ----- DOCU -----
     - name: 'Check Documentation'
-      if: repo = SAP/luigi AND type != cron AND type != api
+      if: repo = davidwl/applaunchpad AND type != cron AND type != api
       script:
         - cd $TRAVIS_BUILD_DIR/scripts && npm ci
         - cd $TRAVIS_BUILD_DIR && bash ./scripts/docuCheck.sh
@@ -152,7 +152,7 @@ jobs:
 
     # ----- WHITESOURCE -----
     - name: 'Whitesource check'
-      if: repo = SAP/luigi AND branch = master AND type != cron AND type != api
+      if: repo = davidwl/applaunchpad AND branch = master AND type != cron AND type != api
       # Whitesource can't deal with symlinking, therefore we can't use lerna
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
@@ -174,7 +174,7 @@ jobs:
     - stage: 'Publish'
       name: 'Publish to NPM'
       # run only when a release in github was created
-      if: repo = SAP/luigi AND tag ~= ^v AND type != cron AND type != api
+      if: repo = davidwl/applaunchpad AND tag ~= ^v AND type != cron AND type != api
       script:
         - bash ./scripts/npmPublish.sh
       before_cache:
@@ -195,7 +195,7 @@ jobs:
     
     - name: 'Publish CRA template to NPM'
       # run only when custom commit message given to Travis
-      if: repo = SAP/luigi AND (type = api AND commit_message = publish-cra-luigi)
+      if: repo = davidwl/applaunchpad AND (type = api AND commit_message = publish-cra-applaunchpad)
       script:
         - bash ./scripts/npmPublish.sh cra-release
       before_cache:
@@ -209,7 +209,7 @@ jobs:
       node_js: 16
       if: type = api AND commit_message = test-setup-scripts
       script:
-        - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh | tee /dev/fd/2)
+        - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/angular.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
         - echo "$RES"
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
@@ -218,7 +218,7 @@ jobs:
       node_js: 16
       if: type = api AND commit_message = test-setup-scripts
       script:
-        - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh | tee /dev/fd/2)
+        - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/vue.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
         - echo "$RES"
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
@@ -227,7 +227,7 @@ jobs:
       node_js: 16
       if: type = api AND commit_message = test-setup-scripts
       script:
-        - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh | tee /dev/fd/2)
+        - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/react.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 3000" <<< "$OUT")
         - echo "$RES"
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
@@ -236,7 +236,7 @@ jobs:
       node_js: 16
       if: type = api AND commit_message = test-setup-scripts
       script:
-        - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh | tee /dev/fd/2)
+        - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/openui5.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
         - echo "$RES"
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
@@ -245,7 +245,7 @@ jobs:
       node_js: 16
       if: type = api AND commit_message = test-setup-scripts
       script:
-        - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh | tee /dev/fd/2)
+        - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/no-framework.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
         - echo "$RES"
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi

@@ -16,12 +16,12 @@ meta -->
 
 # Navigation configuration example
 
-This example represents a Luigi navigation configuration example including parameters described in the [navigation parameters reference](navigation-parameters-reference.md).
+This example represents a AppLaunchpad navigation configuration example including parameters described in the [navigation parameters reference](navigation-parameters-reference.md).
 
 Note that this is not a functional example, as its purpose is to illustrate different configuration options. For example, the line `children: [node, node, node]` will return an error because `node` is just a placeholder which has to be replaced by actual nodes.
 
 ```javascript
-Luigi.setConfig({
+AppLaunchpad.setConfig({
   routing: {
     // uses hash-based navigation if set to true
     useHashRouting: true,
@@ -150,9 +150,9 @@ Luigi.setConfig({
         {
           icon: '',
           testId: 'myTestId',
-          label: 'Luigi landing page',
+          label: 'AppLaunchpad landing page',
           externalLink: {
-            url: 'https://luigi-project.io/',
+            url: 'https://applaunchpad-project.io/',
             sameWindow: false
           }
         },
@@ -170,10 +170,10 @@ Luigi.setConfig({
       items: [
         {
           icon: '',
-          label: 'Luigi landing page',
+          label: 'AppLaunchpad landing page',
           testId: 'myTestId',
           externalLink: {
-            url: 'https://luigi-project.io/',
+            url: 'https://applaunchpad-project.io/',
             sameWindow: false
           }
         },

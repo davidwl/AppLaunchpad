@@ -1,9 +1,9 @@
 describe('Navigation', () => {
-  const clearStorage = () => cy.clearLocalStorage('luigi.preferences.userSettings');
+  const clearStorage = () => cy.clearLocalStorage('applaunchpad.preferences.userSettings');
 
   const openSettingsDialogBox = () => {
     //Click on User Icon (top menu right)
-    cy.get('[data-testid="luigi-topnav-profile-btn"]')
+    cy.get('[data-testid="applaunchpad-topnav-profile-btn"]')
       .should('exist')
       .click();
 

@@ -1,16 +1,16 @@
-import { LuigiClientBase } from './baseClass';
+import { AppLaunchpadClientBase } from './baseClass';
 import { lifecycleManager } from './lifecycleManager';
 import { helpers } from './helpers';
 
 /**
- * Use the UX Manager to manage the appearance features in Luigi.
+ * Use the UX Manager to manage the appearance features in AppLaunchpad.
  * @name uxManager
  */
-class UxManager extends LuigiClientBase {
+class UxManager extends AppLaunchpadClientBase {
   /** @private */
   constructor() {
     super();
-    helpers.addEventListener('luigi.current-locale-changed', e => {
+    helpers.addEventListener('applaunchpad.current-locale-changed', e => {
       if (e.data.currentLocale && lifecycleManager.currentContext?.internal) {
         lifecycleManager.currentContext.internal.currentLocale = e.data.currentLocale;
         lifecycleManager._notifyUpdate();
@@ -23,7 +23,7 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   showLoadingIndicator() {
-    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.show-loading-indicator' });
+    helpers.sendPostMessageToAppLaunchpadCore({ msg: 'applaunchpad.show-loading-indicator' });
   }
 
   /**
@@ -31,7 +31,7 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   hideLoadingIndicator() {
-    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.hide-loading-indicator' });
+    helpers.sendPostMessageToAppLaunchpadCore({ msg: 'applaunchpad.hide-loading-indicator' });
   }
 
   /**
@@ -39,7 +39,7 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   closeCurrentModal() {
-    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.close-modal' });
+    helpers.sendPostMessageToAppLaunchpadCore({ msg: 'applaunchpad.close-modal' });
   }
 
   /**
@@ -47,14 +47,14 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   addBackdrop() {
-    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.add-backdrop' });
+    helpers.sendPostMessageToAppLaunchpadCore({ msg: 'applaunchpad.add-backdrop' });
   }
   /**
    * Removes the backdrop.
    * @memberof uxManager
    */
   removeBackdrop() {
-    helpers.sendPostMessageToLuigiCore({ msg: 'luigi.remove-backdrop' });
+    helpers.sendPostMessageToAppLaunchpadCore({ msg: 'applaunchpad.remove-backdrop' });
   }
   /**
    * This method informs the main application that there are unsaved changes in the current view in the iframe. It can be used to prevent navigation away from the current view, for example with form fields which were edited but not submitted. However, this functionality is not restricted to forms. If you use `withoutSync()` together with `setDirtyStatus()`, this is a special case in which the dirty state logic needs to be handled by the micro frontend. For example, if the user navigates with an Angular router, which would trigger `withoutSync()`, Angular needs to take care about dirty state, prevent the navigation and ask for permission to navigate away, through `uxManager().showConfirmationModal(settings)`.
@@ -62,8 +62,8 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   setDirtyStatus(isDirty) {
-    helpers.sendPostMessageToLuigiCore({
-      msg: 'luigi.set-page-dirty',
+    helpers.sendPostMessageToAppLaunchpadCore({
+      msg: 'applaunchpad.set-page-dirty',
       dirty: isDirty
     });
   }
@@ -78,7 +78,7 @@ class UxManager extends LuigiClientBase {
    * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
    * @example
-   * import LuigiClient from '@luigi-project/client';
+   * import AppLaunchpadClient from '@applaunchpad-project/client';
    * const settings = {
    *  type: "confirmation",
    *  header: "Confirmation",
@@ -86,7 +86,7 @@ class UxManager extends LuigiClientBase {
    *  buttonConfirm: "Yes",
    *  buttonDismiss: "No"
    * }
-   * LuigiClient
+   * AppLaunchpadClient
    *  .uxManager()
    *  .showConfirmationModal(settings)
    *  .then(() => {
@@ -94,12 +94,12 @@ class UxManager extends LuigiClientBase {
    *  });
    */
   showConfirmationModal(settings) {
-    helpers.addEventListener('luigi.ux.confirmationModal.hide', (e, listenerId) => {
+    helpers.addEventListener('applaunchpad.ux.confirmationModal.hide', (e, listenerId) => {
       this.hideConfirmationModal(e.data.data);
       helpers.removeEventListener(listenerId);
     });
-    helpers.sendPostMessageToLuigiCore({
-      msg: 'luigi.ux.confirmationModal.show',
+    helpers.sendPostMessageToAppLaunchpadCore({
+      msg: 'applaunchpad.ux.confirmationModal.show',
       data: { settings }
     });
 
@@ -136,10 +136,10 @@ class UxManager extends LuigiClientBase {
    * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
    * @param {string} settings.links.LINK_KEY.url URL to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
    * @param {string} settings.links.LINK_KEY.dismissKey dismissKey which represents the key of the link.
-   * @param {number} settings.closeAfter (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
+   * @param {number} settings.closeAfter (optional) time in milliseconds that tells AppLaunchpad when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
    * @returns {promise} which is resolved when the alert is dismissed
    * @example
-   * import LuigiClient from '@luigi-project/client';
+   * import AppLaunchpadClient from '@applaunchpad-project/client';
    * const settings = {
    *  text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
    *  type: 'info',
@@ -151,7 +151,7 @@ class UxManager extends LuigiClientBase {
    *  },
    *  closeAfter: 3000
    * }
-   * LuigiClient
+   * AppLaunchpadClient
    *  .uxManager()
    *  .showAlert(settings)
    *  .then(() => {
@@ -159,7 +159,7 @@ class UxManager extends LuigiClientBase {
    *  });
    */
   showAlert(settings) {
-    helpers.addEventListener('luigi.ux.alert.hide', (e, listenerId) => {
+    helpers.addEventListener('applaunchpad.ux.alert.hide', (e, listenerId) => {
       this.hideAlert(e.data);
       helpers.removeEventListener(listenerId);
     });
@@ -170,8 +170,8 @@ class UxManager extends LuigiClientBase {
       console.warn(`Message with id='${settings.id}' has too small 'closeAfter' value. It needs to be at least 100ms.`);
       settings.closeAfter = undefined;
     }
-    helpers.sendPostMessageToLuigiCore({
-      msg: 'luigi.ux.alert.show',
+    helpers.sendPostMessageToAppLaunchpadCore({
+      msg: 'applaunchpad.ux.alert.show',
       data: { settings }
     });
 
@@ -218,8 +218,8 @@ class UxManager extends LuigiClientBase {
    */
   setCurrentLocale(locale) {
     if (locale) {
-      helpers.sendPostMessageToLuigiCore({
-        msg: 'luigi.ux.set-current-locale',
+      helpers.sendPostMessageToAppLaunchpadCore({
+        msg: 'applaunchpad.ux.set-current-locale',
         data: {
           currentLocale: locale
         }

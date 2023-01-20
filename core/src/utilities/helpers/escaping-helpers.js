@@ -73,7 +73,7 @@ class EscapingHelpersClass {
     }
 
     return Object.entries(links).reduce((acc, [key, content]) => {
-      const elemId = `_luigi_alert_${uniqueID}_link_${this.sanitizeParam(key)}`;
+      const elemId = `_applaunchpad_alert_${uniqueID}_link_${this.sanitizeParam(key)}`;
       const escapedText = this.restoreSanitizedBrs(this.sanitizeHtml(content.text));
       const processedData = `<a id="${elemId}">${escapedText}</a>`;
       const keyForRegex = this.escapeKeyForRegexp(key);

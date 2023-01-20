@@ -1,8 +1,8 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Luigi
+Upstream-Name: AppLaunchpad
 Upstream-Contact: Philipp Pracht <philipp.pracht@sap.com>
-Source: https://github.com/SAP/luigi
+Source: https://github.com/davidwl/applaunchpad
 
 Files: *
-Copyright: 2020 SAP SE or an SAP affiliate company and Luigi contributors
+Copyright: 2020 SAP SE or an SAP affiliate company and AppLaunchpad contributors
 License: Apache-2.0

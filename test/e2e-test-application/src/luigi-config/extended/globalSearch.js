@@ -22,7 +22,7 @@ class GlobalSearch {
     // },
 
     toggleSearch: (inputElem, fieldVisible) => {
-      // Luigi.showAlert({
+      // AppLaunchpad.showAlert({
       //   text: `In toggleSearch: element visible=${fieldVisible}`,
       //   type: 'info',
       //   closeAfter: 1500
@@ -31,13 +31,13 @@ class GlobalSearch {
     },
 
     onInput: () => {
-      if (Luigi.globalSearch().getSearchString() === '') {
+      if (AppLaunchpad.globalSearch().getSearchString() === '') {
         this.searchResult = [];
-        Luigi.globalSearch().closeSearchResult();
+        AppLaunchpad.globalSearch().closeSearchResult();
       } else {
         this.searchResult = [];
 
-        Luigi.config.navigation.nodes.map(n => {
+        AppLaunchpad.config.navigation.nodes.map(n => {
           if (n.pathSegment && !n.children && n.label) {
             this.searchResult.push({
               pathObject: {
@@ -46,7 +46,7 @@ class GlobalSearch {
               label: n.label,
               description: n.label,
               onActivate() {
-                Luigi.globalSearch().closeSearchResult();
+                AppLaunchpad.globalSearch().closeSearchResult();
               }
             });
           } else if (Array.isArray(n.children) && n.label) {
@@ -60,7 +60,7 @@ class GlobalSearch {
                     label: `${n.label} ${n.children[k].label}`,
                     description: `${n.label} ${n.children[k].label}`,
                     onActivate() {
-                      Luigi.globalSearch().closeSearchResult();
+                      AppLaunchpad.globalSearch().closeSearchResult();
                     }
                   });
                 }
@@ -69,7 +69,7 @@ class GlobalSearch {
           }
         });
 
-        Luigi.config.navigation.nodes[1].children().then(childrens => {
+        AppLaunchpad.config.navigation.nodes[1].children().then(childrens => {
           childrens[0]
             .children('pr1')
             .then(nodes => {
@@ -82,7 +82,7 @@ class GlobalSearch {
                     label: `${nodes[j].label}`,
                     description: `${nodes[j].label}`,
                     onActivate() {
-                      Luigi.globalSearch().closeSearchResult();
+                      AppLaunchpad.globalSearch().closeSearchResult();
                     }
                   });
                 }
@@ -92,16 +92,16 @@ class GlobalSearch {
             .then(r => {
               const result = this.searchResult.filter(res =>
                 res.label.toLowerCase().includes(
-                  Luigi.globalSearch()
+                  AppLaunchpad.globalSearch()
                     .getSearchString()
                     .toLowerCase()
                 )
               );
 
               if (result.length > 0) {
-                Luigi.globalSearch().showSearchResult(result);
+                AppLaunchpad.globalSearch().showSearchResult(result);
               } else {
-                Luigi.globalSearch().showSearchResult([
+                AppLaunchpad.globalSearch().showSearchResult([
                   {
                     pathObject: {
                       path: '',
@@ -122,15 +122,15 @@ class GlobalSearch {
     },
     onEnter: () => {},
     onEscape: () => {
-      Luigi.globalSearch().closeSearchResult();
-      Luigi.globalSearch().clearSearchField();
+      AppLaunchpad.globalSearch().closeSearchResult();
+      AppLaunchpad.globalSearch().clearSearchField();
       this.searchResult = [];
     },
     // customSearchResultRenderer: (searchResults, slot, searchApiObj) => {
     //   let div = document.createElement('div');
     //   div.setAttribute(
     //     'class',
-    //     'fd-popover__body fd-popover__body--right luigi-search__popover__body'
+    //     'fd-popover__body fd-popover__body--right applaunchpad-search__popover__body'
     //   );
     //   let nav = document.createElement('nav');
     //   nav.setAttribute('class', 'fd-menu');
@@ -178,14 +178,14 @@ class GlobalSearch {
       if (searchResultItem.pathObject.externalLink) {
         window.open(searchResultItem.pathObject.externalLink.url, '_blank');
       } else if (searchResultItem.pathObject.link && !searchResultItem.pathObject.params) {
-        Luigi.navigation().navigate(searchResultItem.pathObject.link);
+        AppLaunchpad.navigation().navigate(searchResultItem.pathObject.link);
       } else if (searchResultItem.pathObject.link && searchResultItem.pathObject.params) {
-        Luigi.navigation()
+        AppLaunchpad.navigation()
           .withParams(searchResultItem.pathObject.params)
           .navigate(searchResultItem.pathObject.link);
       }
-      Luigi.globalSearch().closeSearchResult();
-      Luigi.globalSearch().clearSearchField();
+      AppLaunchpad.globalSearch().closeSearchResult();
+      AppLaunchpad.globalSearch().clearSearchField();
       this.searchResult = [];
     }
   };

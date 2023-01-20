@@ -1,5 +1,5 @@
 // Helper methods for 'navigation.js' file. They don't require any method from 'navigation.js` but are required by them.
-import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../core-api';
+import { AppLaunchpadAuth, AppLaunchpadConfig, AppLaunchpadFeatureToggles, AppLaunchpadI18N } from '../../core-api';
 import { AuthHelpers, GenericHelpers, RoutingHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
@@ -7,13 +7,13 @@ import { reject, get } from 'lodash';
 
 class NavigationHelpersClass {
   constructor() {
-    this.EXP_CAT_KEY = 'luigi.preferences.navigation.expandedCategories';
-    this.COL_NAV_KEY = 'luigi.preferences.navigation.collapsedNavigation';
+    this.EXP_CAT_KEY = 'applaunchpad.preferences.navigation.expandedCategories';
+    this.COL_NAV_KEY = 'applaunchpad.preferences.navigation.collapsedNavigation';
     this.virtualGroupPrefix = '___';
   }
 
   getProductSwitcherConfig() {
-    const userConfig = LuigiConfig.getConfigValue('navigation.productSwitcher');
+    const userConfig = AppLaunchpadConfig.getConfigValue('navigation.productSwitcher');
     return Object.assign({ icon: 'grid', label: 'My Products' }, userConfig);
   }
 
@@ -57,7 +57,7 @@ class NavigationHelpersClass {
 
   checkVisibleForFeatureToggles(nodeToCheckPermission) {
     if (nodeToCheckPermission && nodeToCheckPermission.visibleForFeatureToggles) {
-      const activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
+      const activeFeatureToggles = AppLaunchpadFeatureToggles.getActiveFeatureToggleList();
       for (const ft of nodeToCheckPermission.visibleForFeatureToggles) {
         if (ft.startsWith('!')) {
           if (activeFeatureToggles.includes(ft.slice(1))) {
@@ -74,7 +74,7 @@ class NavigationHelpersClass {
   }
 
   isNodeAccessPermitted(nodeToCheckPermissionFor, parentNode, currentContext) {
-    if (LuigiAuth.isAuthorizationEnabled()) {
+    if (AppLaunchpadAuth.isAuthorizationEnabled()) {
       const loggedIn = AuthHelpers.isLoggedIn();
       const anon = nodeToCheckPermissionFor.anonymousAccess;
 
@@ -85,7 +85,7 @@ class NavigationHelpersClass {
 
     if (!this.checkVisibleForFeatureToggles(nodeToCheckPermissionFor)) return false;
 
-    const permissionCheckerFn = LuigiConfig.getConfigValue('navigation.nodeAccessibilityResolver');
+    const permissionCheckerFn = AppLaunchpadConfig.getConfigValue('navigation.nodeAccessibilityResolver');
     if (typeof permissionCheckerFn !== 'function') {
       return true;
     }
@@ -114,7 +114,7 @@ class NavigationHelpersClass {
   }
 
   groupNodesBy(nodes, property, useVirtualGroups) {
-    const defaultTooltipForExpandCollapseCategories = LuigiConfig.getConfigValue('navigation.defaults.category');
+    const defaultTooltipForExpandCollapseCategories = AppLaunchpadConfig.getConfigValue('navigation.defaults.category');
     let result = {};
     let groupCounter = 0;
     let virtualGroupCounter = 0;
@@ -198,7 +198,7 @@ class NavigationHelpersClass {
   generateTooltipText(node, translation) {
     let ttText = node.tooltipText;
     if (ttText === undefined) {
-      ttText = LuigiConfig.getConfigValue('navigation.defaults.tooltipText');
+      ttText = AppLaunchpadConfig.getConfigValue('navigation.defaults.tooltipText');
     }
 
     if (ttText === undefined) {
@@ -206,7 +206,7 @@ class NavigationHelpersClass {
     } else if (ttText === false) {
       return '';
     } else {
-      return LuigiI18N.getTranslation(ttText);
+      return AppLaunchpadI18N.getTranslation(ttText);
     }
   }
 
@@ -363,13 +363,13 @@ class NavigationHelpersClass {
   }
 
   getBurgerTooltipConfig() {
-    const burgerTooltipSettings = LuigiConfig.getConfigValue('settings.burgerTooltip');
+    const burgerTooltipSettings = AppLaunchpadConfig.getConfigValue('settings.burgerTooltip');
     if (GenericHelpers.isObject(burgerTooltipSettings) || burgerTooltipSettings === true) {
       const expandNavTooltip = burgerTooltipSettings.navExpanded
-        ? LuigiI18N.getTranslation(burgerTooltipSettings.navExpanded)
+        ? AppLaunchpadI18N.getTranslation(burgerTooltipSettings.navExpanded)
         : 'Collapse navigation';
       const collapseNavTooltip = burgerTooltipSettings.navCollapsed
-        ? LuigiI18N.getTranslation(burgerTooltipSettings.navCollapsed)
+        ? AppLaunchpadI18N.getTranslation(burgerTooltipSettings.navCollapsed)
         : 'Expand navigation';
       return [collapseNavTooltip, expandNavTooltip];
     }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { uxManager, addInitListener, addContextUpdateListener } from '@luigi-project/client';
+import { uxManager, addInitListener, addContextUpdateListener } from '@applaunchpad-project/client';
 
 @Component({
   selector: 'app-miscellaneous2',

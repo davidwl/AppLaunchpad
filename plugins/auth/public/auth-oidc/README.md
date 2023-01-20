@@ -14,32 +14,32 @@
 }
 meta -->
 
-# OpenID Connect - Authorization Plugin for Luigi Core
+# OpenID Connect - Authorization Plugin for AppLaunchpad Core
 
 ## Overview
 
-This [authorization plugin](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc) contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/master/core) with an OpenID Connect authorization provider.
-Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration). We support Authorization Code with PKCE and Implicit Grant flow.
+This [authorization plugin](https://github.com/davidwl/applaunchpad/tree/master/plugins/auth/public/auth-oidc) contains a library that allows your application to extend the [AppLaunchpad framework](https://github.com/davidwl/applaunchpad/tree/master/core) with an OpenID Connect authorization provider.
+Further configuration details can be found in the [main documentation](https://docs.applaunchpad-project.io/docs/authorization-configuration#openid-connect-configuration). We support Authorization Code with PKCE and Implicit Grant flow.
 
 ## Installation
 
 Install the plugin in your project using npm:
 ```bash
-npm install @luigi-project/plugin-auth-oidc
+npm install @applaunchpad-project/plugin-auth-oidc
 ```
 
 Import the plugin in places where you want to use it, depending on the environment of your choice:
 ```javascript
-var OpenIdConnect = require('@luigi-project/plugin-auth-oidc');
+var OpenIdConnect = require('@applaunchpad-project/plugin-auth-oidc');
 ```
 or
 ```javascript
-import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
+import OpenIdConnect from '@applaunchpad-project/plugin-auth-oidc';
 ```
 
-Then, integrate it as an authorization provider in your Luigi configuration file:
+Then, integrate it as an authorization provider in your AppLaunchpad configuration file:
 ```javascript
-Luigi.setConfig({
+AppLaunchpad.setConfig({
   auth: {
     use: 'myProviderConfig',
     myProviderConfig: {
@@ -62,7 +62,7 @@ Luigi.setConfig({
 })
 ```
 
-If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation,
+If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your AppLaunchpad Core installation,
 which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`.
 
 Next, you must install `oidc-client` in your project as a dev dependency:
@@ -76,11 +76,11 @@ Then, you need to copy certain auxiliary plugin files and the callback file, as 
 Respectively from `oidc-client` library you need:
 - `oidc-client.min.js` which normally resides in `node_modules/oidc-client/dist`
 
-and from our library `@luigi-project/plugin-auth-oidc` you need:
+and from our library `@applaunchpad-project/plugin-auth-oidc` you need:
 - `plugin.js`
 - `silent-callback.html`
 - `plugin-ie11.js` (for IE11 only)
-which all reside under `node_modules/@luigi-project/plugin-auth-oidc/plugin.js`.
+which all reside under `node_modules/@applaunchpad-project/plugin-auth-oidc/plugin.js`.
 
 The above mentioned files should be copied to `assets/auth-oidc` as the default location.
 
@@ -97,15 +97,15 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
   plugins: [
     new CopyWebpackPlugin([
      {
-         from: 'node_modules/@luigi-project/plugin-auth-oidc/plugin.js',
+         from: 'node_modules/@applaunchpad-project/plugin-auth-oidc/plugin.js',
          to: 'assets/auth-oidc'
      },
      {
-         from: 'node_modules/@luigi-project/plugin-auth-oidc/plugin-ie11.js',
+         from: 'node_modules/@applaunchpad-project/plugin-auth-oidc/plugin-ie11.js',
          to: 'assets/auth-oidc'
      },
      {
-         from: 'node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html',
+         from: 'node_modules/@applaunchpad-project/plugin-auth-oidc/silent-callback.html',
          to: 'assets/auth-oidc'
      },
      {
@@ -117,12 +117,12 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 }
 ```
 
-If your application does not use webpack or you installed Luigi without a framework, you can use an alternative way of copying the `silent-callback.html` file. You can use any copy plugin to copy the file and then modify the `package.json` script to copy the file when building. One package that could be helpful is [copyfiles](https://www.npmjs.com/package/copyfiles). Below is an example:
+If your application does not use webpack or you installed AppLaunchpad without a framework, you can use an alternative way of copying the `silent-callback.html` file. You can use any copy plugin to copy the file and then modify the `package.json` script to copy the file when building. One package that could be helpful is [copyfiles](https://www.npmjs.com/package/copyfiles). Below is an example:
 
 ```javascript
-"buildConfig": "webpack --entry ./src/luigi-config/luigi-config.es6.js --output-path ./public/assets --output-filename luigi-config.js --mode production",
+"buildConfig": "webpack --entry ./src/applaunchpad-config/applaunchpad-config.es6.js --output-path ./public/assets --output-filename applaunchpad-config.js --mode production",
 "build": "npm run buildConfig && npm run copyCallbackOIdc",
-"copyCallbackOidc": "copyfiles -f node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html node_modules/@luigi-project/plugin-auth-oidc/plugin.js node_modules/@luigi-project/plugin-auth-oidc/plugin-ie11.js node_modules/oidc-client/dist/oidc-client.min.js public/assets/auth-oidc"
+"copyCallbackOidc": "copyfiles -f node_modules/@applaunchpad-project/plugin-auth-oidc/silent-callback.html node_modules/@applaunchpad-project/plugin-auth-oidc/plugin.js node_modules/@applaunchpad-project/plugin-auth-oidc/plugin-ie11.js node_modules/oidc-client/dist/oidc-client.min.js public/assets/auth-oidc"
 ```
 
 Running `npm run build` should then suffice to bundle the config and also copy the callback file.

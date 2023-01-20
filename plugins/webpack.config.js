@@ -17,7 +17,7 @@ const config = {
   output: {
     filename: './[name]/plugin.js',
     libraryExport: 'default',
-    library: 'LuigiPlugin-[name]',
+    library: 'AppLaunchpadPlugin-[name]',
     libraryTarget: 'umd',
     path: path.join(path.resolve(__dirname), 'auth', 'public')
   },

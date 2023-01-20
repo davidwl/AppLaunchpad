@@ -3,7 +3,7 @@
   "node": {
     "label": "Lifecycle hooks",
     "category": {
-      "label": "Luigi Core",
+      "label": "AppLaunchpad Core",
       "collapsible": true
     },
     "metaData": {
@@ -16,16 +16,16 @@ meta -->
 
 # Lifecycle hooks
 
-You can use any of the Luigi lifecycle hooks by adding additional setup to the root of the Luigi configuration object. Here is an example:
+You can use any of the AppLaunchpad lifecycle hooks by adding additional setup to the root of the AppLaunchpad configuration object. Here is an example:
 
 ```javascript
 {
   ...
   lifecycleHooks: {
-    luigiAfterInit: () => {
+    applaunchpadAfterInit: () => {
       // initializing with a different language
       myGeoLocationService.getLanguage().then(lang => {
-        Luigi.i18n().setCurrentLocale(lang);
+        AppLaunchpad.i18n().setCurrentLocale(lang);
       })
     }
   }
@@ -33,7 +33,7 @@ You can use any of the Luigi lifecycle hooks by adding additional setup to the r
 }
 ```
 
-### luigiAfterInit()
+### applaunchpadAfterInit()
 
-This method will be called after [Luigi.setConfig({})](luigi-core-api.md#setconfig) is executed.
+This method will be called after [AppLaunchpad.setConfig({})](applaunchpad-core-api.md#setconfig) is executed.
 

@@ -8,7 +8,7 @@
       rel="stylesheet"
     />
     <link href="../../styles/styles.css" rel="stylesheet" />
-    <script src="/node_modules/@luigi-project/client/luigi-client.js"></script>
+    <script src="/node_modules/@applaunchpad-project/client/applaunchpad-client.js"></script>
     <style>
       html,
       body {
@@ -70,7 +70,7 @@
 
     <script>
       function goToAnotherMf() {
-        LuigiClient.linkManager().openAsModal('/home/usersettings');
+        AppLaunchpadClient.linkManager().openAsModal('/home/usersettings');
       }
       function updateFn(context) {
         if (context.title) {
@@ -94,8 +94,8 @@
         }
         document.getElementById('textCnt').classList.add('visible');
       }
-      LuigiClient.addInitListener(updateFn);
-      LuigiClient.addContextUpdateListener(updateFn);
+      AppLaunchpadClient.addInitListener(updateFn);
+      AppLaunchpadClient.addContextUpdateListener(updateFn);
 
       // fallback visibility if no initlistener called for 3 seconds
       setTimeout(function() {

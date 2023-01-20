@@ -1,6 +1,6 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
-import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../core-api';
+import { AppLaunchpadConfig, AppLaunchpadFeatureToggles, AppLaunchpadI18N, AppLaunchpadRouting } from '../../core-api';
 import { AsyncHelpers, EscapingHelpers, EventListenerHelpers, GenericHelpers, IframeHelpers } from './';
 import { Routing } from '../../services/routing';
 
@@ -114,7 +114,7 @@ class RoutingHelpersClass {
   }
 
   getContentViewParamPrefix() {
-    let prefix = LuigiConfig.getConfigValue('routing.nodeParamPrefix');
+    let prefix = AppLaunchpadConfig.getConfigValue('routing.nodeParamPrefix');
     if (prefix === false) {
       prefix = '';
     } else if (!prefix) {
@@ -124,7 +124,7 @@ class RoutingHelpersClass {
   }
 
   getModalViewParamName() {
-    let paramName = LuigiConfig.getConfigValue('routing.modalPathParam');
+    let paramName = AppLaunchpadConfig.getConfigValue('routing.modalPathParam');
     if (!paramName) {
       paramName = this.defaultModalViewParamName;
     }
@@ -146,7 +146,7 @@ class RoutingHelpersClass {
   }
 
   getQueryParams() {
-    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    const hashRoutingActive = AppLaunchpadConfig.getConfigBooleanValue('routing.useHashRouting');
     return hashRoutingActive ? this.getLocationHashQueryParams() : this.getLocationSearchQueryParams();
   }
 
@@ -173,7 +173,7 @@ class RoutingHelpersClass {
     @returns resulting route with or without appended params, for example /someroute?query=test
   */
   composeSearchParamsToRoute(route) {
-    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    const hashRoutingActive = AppLaunchpadConfig.getConfigBooleanValue('routing.useHashRouting');
     if (hashRoutingActive) {
       const queryParamIndex = location.hash.indexOf(this.defaultQueryParamSeparator);
       return queryParamIndex !== -1 ? route + location.hash.slice(queryParamIndex) : route;
@@ -192,7 +192,7 @@ class RoutingHelpersClass {
   }
 
   addRouteChangeListener(callback) {
-    const hashRoutingActive = LuigiConfig.getConfigValue('routing.useHashRouting');
+    const hashRoutingActive = AppLaunchpadConfig.getConfigValue('routing.useHashRouting');
 
     EventListenerHelpers.addEventListener('message', e => {
       if (e.data.msg === 'refreshRoute' && e.origin === window.origin) {
@@ -251,13 +251,13 @@ class RoutingHelpersClass {
     const link = RoutingHelpers.getRouteLink(
       node,
       pathParams,
-      LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
+      AppLaunchpadConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
     );
     return this.getI18nViewUrl(link.url) || link;
   }
 
   getNodeHref(node, pathParams) {
-    if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
+    if (AppLaunchpadConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
       return this.calculateNodeHref(node, pathParams);
     }
     return undefined;
@@ -326,13 +326,13 @@ class RoutingHelpersClass {
   }
 
   /**
-   * Returns the viewUrl with current locale, e.g. luigi/{i18n.currentLocale}/ -> luigi/en
+   * Returns the viewUrl with current locale, e.g. applaunchpad/{i18n.currentLocale}/ -> applaunchpad/en
    * if viewUrl contains {i18n.currentLocale} term, it will be replaced by current locale
    * @param {*} viewUrl
    */
   getI18nViewUrl(viewUrl) {
     const i18n_currentLocale = '{i18n.currentLocale}';
-    const locale = LuigiI18N.getCurrentLocale();
+    const locale = AppLaunchpadI18N.getCurrentLocale();
     const hasI18n = viewUrl && viewUrl.includes(i18n_currentLocale);
 
     return hasI18n ? viewUrl.replace(i18n_currentLocale, locale) : viewUrl;
@@ -352,8 +352,8 @@ class RoutingHelpersClass {
       const viewUrlSearchParam = viewUrl.split('?')[1];
       if (viewUrlSearchParam) {
         const key = viewUrlSearchParam.split('=')[0];
-        if (LuigiRouting.getSearchParams()[key]) {
-          viewUrl = viewUrl.replace(`{${searchQuery}.${key}}`, LuigiRouting.getSearchParams()[key]);
+        if (AppLaunchpadRouting.getSearchParams()[key]) {
+          viewUrl = viewUrl.replace(`{${searchQuery}.${key}}`, AppLaunchpadRouting.getSearchParams()[key]);
         } else {
           viewUrl = viewUrl.replace(`?${key}={${searchQuery}.${key}}`, '');
         }
@@ -382,7 +382,7 @@ class RoutingHelpersClass {
     }
     const featureToggleList = featureTogglesFromUrl.split(',');
     if (featureToggleList.length > 0 && featureToggleList[0] !== '') {
-      featureToggleList.forEach(ft => LuigiFeatureToggles.setFeatureToggle(ft, true));
+      featureToggleList.forEach(ft => AppLaunchpadFeatureToggles.setFeatureToggle(ft, true));
     }
   }
 
@@ -424,7 +424,7 @@ class RoutingHelpersClass {
    * Example:
    *
    * For intentLink = `#?intent=Sales-order?foo=bar`
-   * and Luigi configuration:
+   * and AppLaunchpad configuration:
    * ```
    * intentMapping: [{
    *                     semanticObject: 'Sales',
@@ -438,7 +438,7 @@ class RoutingHelpersClass {
    * this case resulting in: `/projects/pr2/order?~foo=bar`
    *
    * Or for external intent links: intentLink = `#?intent=External-external`
-   * and Luigi configuration:
+   * and AppLaunchpad configuration:
    * ```
    * intentMapping: [{
    *                     semanticObject: 'External',
@@ -458,7 +458,7 @@ class RoutingHelpersClass {
    *                        i.e.: #?intent=semanticObject-action?param=value
    */
   getIntentPath(intentLink) {
-    const mappings = LuigiConfig.getConfigValue('navigation.intentMapping');
+    const mappings = AppLaunchpadConfig.getConfigValue('navigation.intentMapping');
     if (mappings && mappings.length > 0) {
       const caseInsensitiveLink = intentLink.replace(/\?intent=/i, '?intent=');
       const intentObject = this.getIntentObject(caseInsensitiveLink);
@@ -483,7 +483,7 @@ class RoutingHelpersClass {
           // resolve dynamic parameters in the path if any
           realPath = this.resolveDynamicIntentPath(realPath, intentObject.params);
           // get custom node param prefixes if any or default to ~
-          let nodeParamPrefix = LuigiConfig.getConfigValue('routing.nodeParamPrefix');
+          let nodeParamPrefix = AppLaunchpadConfig.getConfigValue('routing.nodeParamPrefix');
           nodeParamPrefix = nodeParamPrefix || '~';
           realPath = realPath.concat(`?${nodeParamPrefix}`);
           params.forEach(([key, value], index) => {
@@ -495,7 +495,7 @@ class RoutingHelpersClass {
         console.warn('Could not parse given intent link.');
       }
     } else {
-      console.warn('No intent mappings are defined in Luigi configuration.');
+      console.warn('No intent mappings are defined in AppLaunchpad configuration.');
     }
     return false;
   }
@@ -535,8 +535,11 @@ class RoutingHelpersClass {
     const filteredObj = {};
     if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
       Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
-        if (key in LuigiRouting.getSearchParams() && currentNode.clientPermissions.urlParameters[key].read === true) {
-          filteredObj[key] = LuigiRouting.getSearchParams()[key];
+        if (
+          key in AppLaunchpadRouting.getSearchParams() &&
+          currentNode.clientPermissions.urlParameters[key].read === true
+        ) {
+          filteredObj[key] = AppLaunchpadRouting.getSearchParams()[key];
         }
       });
     }
@@ -561,7 +564,7 @@ class RoutingHelpersClass {
         console.warn(`No permission to add the search param "${key}" to the url`);
       }
       if (Object.keys(filteredObj).length > 0) {
-        LuigiRouting.addSearchParams(filteredObj, keepBrowserHistory);
+        AppLaunchpadRouting.addSearchParams(filteredObj, keepBrowserHistory);
       }
     }
   }
@@ -581,7 +584,7 @@ class RoutingHelpersClass {
    * @returns an object optionally containing the path to redirect, the keepURL option or an empty object if handler is undefined
    */
   getPageNotFoundRedirectResult(notFoundPath, isAnyPathMatched = false) {
-    const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
+    const pageNotFoundHandler = AppLaunchpadConfig.getConfigValue('routing.pageNotFoundHandler');
     if (typeof pageNotFoundHandler === 'function') {
       // custom 404 handler is provided, use it
       const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
@@ -627,9 +630,12 @@ class RoutingHelpersClass {
    */
   showRouteNotFoundAlert(component, path, isAnyPathMatched = false) {
     const alertSettings = {
-      text: LuigiI18N.getTranslation(isAnyPathMatched ? 'luigi.notExactTargetNode' : 'luigi.requestedRouteNotFound', {
-        route: path
-      }),
+      text: AppLaunchpadI18N.getTranslation(
+        isAnyPathMatched ? 'applaunchpad.notExactTargetNode' : 'applaunchpad.requestedRouteNotFound',
+        {
+          route: path
+        }
+      ),
       type: 'error',
       ttl: 1 //how many redirections the alert will 'survive'.
     };
@@ -661,9 +667,9 @@ class RoutingHelpersClass {
   }
 
   /**
-   * Get an url without modal data. It's necessary on page refresh or loading Luigi with modal data in a new tab
+   * Get an url without modal data. It's necessary on page refresh or loading AppLaunchpad with modal data in a new tab
    * @param {String} searchParamsString url search parameter as string
-   * @param {String} modalParamName  modalPathParam value defined in Luigi routing settings
+   * @param {String} modalParamName  modalPathParam value defined in AppLaunchpad routing settings
    * @returns {String} url search parameter as string without modal data
    */
   getURLWithoutModalData(searchParamsString, modalParamName) {

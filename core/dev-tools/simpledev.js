@@ -55,14 +55,14 @@ try {
   } else {
     console.log(
       '\x1b[33mCould not find ' + indexPath,
-      '\nInitializing new minimalistic Luigi app from template...',
+      '\nInitializing new minimalistic AppLaunchpad app from template...',
       '\x1b[0m'
     );
     if (!fs.existsSync(rootPath)) {
       fs.mkdirSync(rootPath);
     }
     fs.copy('./dev-tools/templates/simple', rootPath);
-    console.log('\x1b[32mNew Luigi app created under ' + rootPath, '\x1b[0m');
+    console.log('\x1b[32mNew AppLaunchpad app created under ' + rootPath, '\x1b[0m');
   }
 } catch (err) {
   console.error(err);
@@ -91,7 +91,7 @@ const watching = webpack_compiler.watch(
       console.log(
         '\x1b[33mWebpack [' + new Date().toLocaleTimeString() + ']: ',
         '\x1b[31m',
-        'Rebuild of Luigi core failed! \n',
+        'Rebuild of AppLaunchpad core failed! \n',
         stats.toString({
           all: false,
           errors: true,
@@ -102,7 +102,7 @@ const watching = webpack_compiler.watch(
       console.log(
         '\x1b[33mWebpack [' + new Date().toLocaleTimeString() + ']: ',
         '\x1b[32m',
-        'Luigi core rebuilt without errors.\n',
+        'AppLaunchpad core rebuilt without errors.\n',
         '\x1b[0m'
       );
     }

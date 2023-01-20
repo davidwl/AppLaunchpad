@@ -2,12 +2,12 @@
 
 kind: Component
 metadata:
-  displayName: Luigi Client Support for angular
-  description: This library contains angular services and components for easier integration with Luigi micro frontend framework
+  displayName: AppLaunchpad Client Support for angular
+  description: This library contains angular services and components for easier integration with AppLaunchpad micro frontend framework
   labels:
     language: typescript
   tags:
-    - luigi
+    - applaunchpad
     - angular
 spec:
   type:

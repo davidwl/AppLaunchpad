@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { addInitListener, removeInitListener } from '@luigi-project/client';
+import { addInitListener, removeInitListener } from '@applaunchpad-project/client';
 @Component({
   selector: 'app-developers',
   templateUrl: './developers.component.html',

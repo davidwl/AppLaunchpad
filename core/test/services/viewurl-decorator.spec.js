@@ -56,8 +56,8 @@ describe('ViewUrlDecorator', () => {
       { uid: 'ccc', type: 'anotherInvalid', key: 'something' }
     ];
 
-    const result = ViewUrlDecorator.applyDecorators('http://luigi-project.io');
-    assert.equal(result, 'http://luigi-project.io/?viewUrlAAA=one&viewUrlBBB=two');
+    const result = ViewUrlDecorator.applyDecorators('http://applaunchpad-project.io');
+    assert.equal(result, 'http://applaunchpad-project.io/?viewUrlAAA=one&viewUrlBBB=two');
   });
 
   it('applyDecorators decoding', () => {
@@ -71,13 +71,13 @@ describe('ViewUrlDecorator', () => {
     ];
 
     assert.equal(
-      ViewUrlDecorator.applyDecorators('http://luigi-project.io?someURL=http://some.url/foo/bar'),
-      'http://luigi-project.io/?someURL=http%3A%2F%2Fsome.url%2Ffoo%2Fbar&viewUrlAAA=one'
+      ViewUrlDecorator.applyDecorators('http://applaunchpad-project.io?someURL=http://some.url/foo/bar'),
+      'http://applaunchpad-project.io/?someURL=http%3A%2F%2Fsome.url%2Ffoo%2Fbar&viewUrlAAA=one'
     );
 
     assert.equal(
-      ViewUrlDecorator.applyDecorators('http://luigi-project.io?someURL=http://some.url/foo/bar', true),
-      'http://luigi-project.io/?someURL=http://some.url/foo/bar&viewUrlAAA=one'
+      ViewUrlDecorator.applyDecorators('http://applaunchpad-project.io?someURL=http://some.url/foo/bar', true),
+      'http://applaunchpad-project.io/?someURL=http://some.url/foo/bar&viewUrlAAA=one'
     );
   });
 });

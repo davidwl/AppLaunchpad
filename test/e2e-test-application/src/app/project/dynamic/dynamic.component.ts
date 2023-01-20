@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { getPathParams, getNodeParams, linkManager, PathParams, NodeParams } from '@luigi-project/client';
-import { LuigiContextService, IContextMessage } from '../../services/luigi-context.service';
+import { getPathParams, getNodeParams, linkManager, PathParams, NodeParams } from '@applaunchpad-project/client';
+import { AppLaunchpadContextService, IContextMessage } from '../../services/applaunchpad-context.service';
 import { toTitleCase } from '../../services/helpers';
 
 @Component({
@@ -26,11 +26,11 @@ export class DynamicComponent implements OnInit, OnDestroy {
 
   private lcSubscription: Subscription = new Subscription();
 
-  constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) {}
+  constructor(private applaunchpadService: AppLaunchpadContextService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.lcSubscription.add(
-      this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
+      this.applaunchpadService.getContext().subscribe((ctx: IContextMessage) => {
         if (!ctx.context) {
           console.warn(
             `To use this component properly, node configuration requires context.label to be defined.

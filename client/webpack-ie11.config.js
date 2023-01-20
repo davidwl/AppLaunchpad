@@ -6,13 +6,13 @@ const babelSettings = JSON.parse(readFileSync('.babelrc-ie11'));
 
 module.exports = {
   entry: {
-    luigiClient: './src/luigi-client.js'
+    applaunchpadClient: './src/applaunchpad-client.js'
   },
 
   output: {
-    filename: 'luigi-client-ie11.js',
+    filename: 'applaunchpad-client-ie11.js',
     libraryExport: 'default',
-    library: 'LuigiClient',
+    library: 'AppLaunchpadClient',
     libraryTarget: 'umd',
     path: path.join(path.resolve(__dirname), 'public-ie11')
   },
@@ -34,8 +34,8 @@ module.exports = {
     new CopyWebpackPlugin(
       [
         {
-          from: 'luigi-client.d.ts',
-          to: 'luigi-client-ie11.d.ts'
+          from: 'applaunchpad-client.d.ts',
+          to: 'applaunchpad-client-ie11.d.ts'
         }
       ],
       {

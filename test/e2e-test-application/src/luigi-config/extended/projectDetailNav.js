@@ -197,13 +197,16 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'modal-with-callback',
     label: 'Modal with Callback',
     onNodeActivation: () => {
-      Luigi.navigation().openAsModal('/projects/pr2/settings', {
-        title: 'Modal with callback function',
-        size: 'm',
-      },
+      AppLaunchpad.navigation().openAsModal(
+        '/projects/pr2/settings',
+        {
+          title: 'Modal with callback function',
+          size: 'm'
+        },
         () => {
           alert('Callback called');
-        })
+        }
+      );
     }
   },
   {
@@ -218,7 +221,7 @@ export const projectDetailNavStructure = projectId => [
         icon: 'stop',
         viewUrl: '/sampleapp.html#/on-node-activation/not-navigated',
         onNodeActivation: () => {
-          Luigi.showAlert({
+          AppLaunchpad.showAlert({
             text: 'Showing an alert instead of navigating.',
             type: 'info',
             closeAfter: 3000
@@ -239,7 +242,10 @@ export const projectDetailNavStructure = projectId => [
             buttonConfirm: 'Yes',
             buttonDismiss: 'No'
           };
-          return Luigi.showConfirmationModal(settings).then(() => true, () => false);
+          return AppLaunchpad.showConfirmationModal(settings).then(
+            () => true,
+            () => false
+          );
         }
       }
     ]

@@ -1,5 +1,5 @@
 {
-  "name": "@luigi-project/client-support-angular",
+  "name": "@applaunchpad-project/client-support-angular",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -21,8 +21,8 @@
     "@angular/platform-browser": "~11.0.0",
     "@angular/platform-browser-dynamic": "~11.0.0",
     "@angular/router": "~11.0.0",
-    "@luigi-project/client": "^1.25.0",
-    "@luigi-project/testing-utilities": "^1.25.0",
+    "@applaunchpad-project/client": "^1.25.0",
+    "@applaunchpad-project/testing-utilities": "^1.25.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

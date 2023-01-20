@@ -1,4 +1,4 @@
-import { LuigiContextService, IContextMessage } from '../../services/luigi-context.service';
+import { AppLaunchpadContextService, IContextMessage } from '../../services/applaunchpad-context.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import {
@@ -10,7 +10,7 @@ import {
   getActiveFeatureToggles,
   getUserSettings,
   addContextUpdateListener
-} from '@luigi-project/client';
+} from '@applaunchpad-project/client';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -37,7 +37,7 @@ export class SettingsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private luigiService: LuigiContextService
+    private applaunchpadService: AppLaunchpadContextService
   ) {}
 
   ngOnInit() {
@@ -64,13 +64,13 @@ export class SettingsComponent implements OnInit {
       this.userSettings = getUserSettings();
     });
 
-    // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
+    // We suggest to use a centralized approach of AppLaunchpadClient.addContextUpdateListener
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
-    this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
+    this.lcSubscription = this.applaunchpadService.getContext().subscribe((ctx: IContextMessage) => {
       if (ctx.contextType === 'init' || ctx.contextType === 'update') {
         this.preservedViewCallbackContext = ctx.context.goBackContext;
         this.nodeParams = Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
-        // Since Luigi runs outside of Zone.js, changes need
+        // Since AppLaunchpad runs outside of Zone.js, changes need
         // to be updated manually
         // Be sure to check for destroyed ChangeDetectorRef,
         // else you get runtime Errors

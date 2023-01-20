@@ -5,7 +5,7 @@ const sinon = require('sinon');
 import { Iframe, ViewUrlDecorator } from '../../src/services';
 
 import { GenericHelpers, RoutingHelpers, IframeHelpers, NavigationHelpers } from '../../src/utilities/helpers';
-import { LuigiConfig } from '../../src/core-api';
+import { AppLaunchpadConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
   let clock;
@@ -34,7 +34,7 @@ describe('Iframe', () => {
     };
     sinon.stub(Iframe, 'setOkResponseHandler');
     sinon.stub(NavigationHelpers, 'handleUnresponsiveClient');
-    sinon.stub(LuigiConfig, 'getConfigValue').callsFake();
+    sinon.stub(AppLaunchpadConfig, 'getConfigValue').callsFake();
     sinon.stub(GenericHelpers);
     GenericHelpers.getRandomId.returns('abc');
     sinon.stub(RoutingHelpers, 'substituteViewUrl');
@@ -174,15 +174,15 @@ describe('Iframe', () => {
       ]);
       const config = {
         iframe: {
-          src: 'http://luigi.url.de',
+          src: 'http://applaunchpad.url.de',
           vg: 'tets2'
         }
       };
       component.set({
-        viewUrl: 'http://luigi.url.de/1',
+        viewUrl: 'http://applaunchpad.url.de/1',
         viewGroup: 'tets2',
         previousNodeValues: {
-          viewUrl: 'http://luigi.url.desdf/1'
+          viewUrl: 'http://applaunchpad.url.desdf/1'
         },
         currentNode: {}
       });
@@ -200,17 +200,17 @@ describe('Iframe', () => {
           src: 'http://url.com/app.html!#/prevUrl',
           style: { display: 'block' },
           vg: 'tets1',
-          luigi: {}
+          applaunchpad: {}
         }
       ]);
       const config = {
         builderCompatibilityMode: true
       };
       component.set({
-        viewUrl: 'http://luigi.url.de/1',
+        viewUrl: 'http://applaunchpad.url.de/1',
         viewGroup: 'tets2',
         previousNodeValues: {
-          viewUrl: 'http://luigi.url.desdf/1'
+          viewUrl: 'http://applaunchpad.url.desdf/1'
         },
         currentNode: {}
       });
@@ -225,7 +225,7 @@ describe('Iframe', () => {
     });
   });
 
-  describe('check if luigi respond, if not, callback again to replace the iframe', () => {
+  describe('check if applaunchpad respond, if not, callback again to replace the iframe', () => {
     it('navigate', async () => {
       sinon.stub(Iframe, 'initHandshakeFailed').returns(false);
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
@@ -233,24 +233,24 @@ describe('Iframe', () => {
           src: 'http://url.com/app.html!#/prevUrl',
           style: { display: 'block' },
           vg: 'tets1',
-          luigi: {}
+          applaunchpad: {}
         }
       ]);
       const config = {
         iframe: {
-          src: 'http://luigi.url.de',
+          src: 'http://applaunchpad.url.de',
           vg: 'tets2'
         }
       };
       component.set({
-        viewUrl: 'http://luigi.url.de/1',
+        viewUrl: 'http://applaunchpad.url.de/1',
         viewGroup: 'tets1',
         previousNodeValues: {
-          viewUrl: 'http://luigi.url.desdf/1'
+          viewUrl: 'http://applaunchpad.url.desdf/1'
         },
         currentNode: {}
       });
-      assert.equal(config.iframe.src, 'http://luigi.url.de');
+      assert.equal(config.iframe.src, 'http://applaunchpad.url.de');
       await Iframe.navigateIframe(config, component, node);
 
       assert(Iframe.setOkResponseHandler.called, 'setOkResponseHandler call');
@@ -271,7 +271,7 @@ describe('Iframe', () => {
       const config = {
         navigateOk: true,
         iframe: {
-          src: 'http://luigi.url.de'
+          src: 'http://applaunchpad.url.de'
         }
       };
       component.set({
@@ -287,7 +287,7 @@ describe('Iframe', () => {
       assert.deepEqual(config, {
         navigateOk: undefined,
         iframe: {
-          src: 'http://luigi.url.de'
+          src: 'http://applaunchpad.url.de'
         }
       });
       assert(Iframe.navigateIframe.notCalled, 'Iframe.navigateIframe not called');
@@ -298,7 +298,7 @@ describe('Iframe', () => {
       const config = {
         navigateOk: undefined,
         iframe: {
-          src: 'http://luigi.url.de'
+          src: 'http://applaunchpad.url.de'
         }
       };
       component.set({
@@ -377,37 +377,37 @@ describe('Iframe', () => {
       sinon.stub(Iframe, 'initHandshakeFailed').returns(false);
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
         {
-          src: 'http://luigi.url.de',
+          src: 'http://applaunchpad.url.de',
           vg: 'tets1',
-          luigi: {
-            nextViewUrl: 'http://luigi.url.de/2'
+          applaunchpad: {
+            nextViewUrl: 'http://applaunchpad.url.de/2'
           },
           style: { display: 'block' }
         }
       ]);
       const config = {
         iframe: {
-          src: 'http://luigi.url.de',
+          src: 'http://applaunchpad.url.de',
           vg: 'tets1',
-          luigi: {
-            nextViewUrl: 'http://luigi.url.de/2'
+          applaunchpad: {
+            nextViewUrl: 'http://applaunchpad.url.de/2'
           }
         },
         navigateOk: true
       };
       component.set({
-        viewUrl: 'http://luigi.url.de/1',
+        viewUrl: 'http://applaunchpad.url.de/1',
         viewGroup: 'tets1',
         previousNodeValues: {
-          viewUrl: 'http://luigi.url.de/previous'
+          viewUrl: 'http://applaunchpad.url.de/previous'
         },
         currentNode: {}
       });
-      RoutingHelpers.substituteViewUrl.returns('http://luigi.url.de/1m');
+      RoutingHelpers.substituteViewUrl.returns('http://applaunchpad.url.de/1m');
 
-      assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/2');
+      assert.equal(config.iframe.applaunchpad.nextViewUrl, 'http://applaunchpad.url.de/2');
       await Iframe.navigateIframe(config, component, node);
-      assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/1m');
+      assert.equal(config.iframe.applaunchpad.nextViewUrl, 'http://applaunchpad.url.de/1m');
     });
   });
 
@@ -422,29 +422,29 @@ describe('Iframe', () => {
           src: 'http://url.com/app.html!#/prevUrl',
           style: { display: 'block' },
           vg: 'tets1',
-          luigi: {}
+          applaunchpad: {}
         }
       ]);
       const config = {
         iframe: {
-          src: 'http://luigi.url.de',
+          src: 'http://applaunchpad.url.de',
           vg: 'tets2'
         }
       };
       component.set({
-        viewUrl: 'http://luigi.url.de/1',
+        viewUrl: 'http://applaunchpad.url.de/1',
         viewGroup: 'tets1',
         previousNodeValues: {
-          viewUrl: 'http://luigi.url.desdf/1'
+          viewUrl: 'http://applaunchpad.url.desdf/1'
         },
         currentNode: {},
         isNavigationSyncEnabled: false
       });
-      assert.equal(config.iframe.src, 'http://luigi.url.de');
+      assert.equal(config.iframe.src, 'http://applaunchpad.url.de');
       await Iframe.navigateIframe(config, component, node);
       clock.tick(3000);
       assert(spy.notCalled, 'console.info() call should not apply');
-      // assert.equal(config.iframe.src, 'http://luigi.url.de');
+      // assert.equal(config.iframe.src, 'http://applaunchpad.url.de');
       assert.isTrue(component.get().isNavigationSyncEnabled);
     });
   });
@@ -455,15 +455,15 @@ describe('Iframe', () => {
         iframe: {}
       };
     });
-    it('init handshake failed no luigi object on iframe', () => {
+    it('init handshake failed no applaunchpad object on iframe', () => {
       assert.equal(Iframe.initHandshakeFailed(someConfig), true);
     });
     it('init handshake failed initOk undefined', () => {
-      someConfig.iframe.luigi = {};
+      someConfig.iframe.applaunchpad = {};
       assert.equal(Iframe.initHandshakeFailed(someConfig), true);
     });
     it('init handshake success', () => {
-      someConfig.iframe.luigi = {
+      someConfig.iframe.applaunchpad = {
         initOk: true,
         clientVersion: '1.4.0'
       };

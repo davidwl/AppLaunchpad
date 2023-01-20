@@ -1,10 +1,10 @@
 {
-  "name": "luigi-client-private",
+  "name": "applaunchpad-client-private",
   "private": true,
-  "description": "luigi-client development version, only the public folder is being published to npm as a package",
+  "description": "applaunchpad-client development version, only the public folder is being published to npm as a package",
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/SAP/luigi.git"
+    "url": "ssh://github.com/davidwl/applaunchpad.git"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
@@ -19,12 +19,12 @@
   },
   "bundlesize": [
     {
-      "path": "./public/luigi-client.js",
+      "path": "./public/applaunchpad-client.js",
       "maxSize": "50 kB",
       "compression": "none"
     },
     {
-      "path": "./public-ie11/luigi-client-ie11.js",
+      "path": "./public-ie11/applaunchpad-client-ie11.js",
       "maxSize": "110 kB",
       "compression": "none"
     }

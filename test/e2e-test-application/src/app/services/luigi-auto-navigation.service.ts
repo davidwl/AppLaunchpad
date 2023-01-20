@@ -2,12 +2,12 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { linkManager } from '@luigi-project/client';
+import { linkManager } from '@applaunchpad-project/client';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LuigiAutoNavigationService implements OnDestroy {
+export class AppLaunchpadAutoNavigationService implements OnDestroy {
   private subscriptions: Subscription = new Subscription();
 
   constructor(private router: Router) {}

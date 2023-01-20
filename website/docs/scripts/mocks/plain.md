@@ -11,6 +11,6 @@ Lorem ipsum dolor sit amet:
 2. At vero eos et accusam et justo duo dolores et ea rebum.
 
 ````
-npm install --save @luigi-project/core
-npm install --save @luigi-project/client
+npm install --save @applaunchpad-project/core
+npm install --save @applaunchpad-project/client
 ````

@@ -139,7 +139,7 @@ class Navigation {
     },
     {
       externalLink: {
-        url: 'https://github.com/SAP/luigi',
+        url: 'https://github.com/davidwl/applaunchpad',
         sameWindow: true
       },
       label: 'Git',
@@ -297,8 +297,8 @@ class Navigation {
         position: 'bottom',
         clickHandler: node => {
           const p = addProject();
-          Luigi.configChanged('navigation');
-          Luigi.showAlert({
+          AppLaunchpad.configChanged('navigation');
+          AppLaunchpad.showAlert({
             text: `${p.name} created.`,
             type: 'info',
             closeAfter: 3000
@@ -315,8 +315,8 @@ class Navigation {
         position: 'bottom',
         clickHandler: node => {
           const p = removeProject();
-          Luigi.configChanged('navigation');
-          Luigi.showAlert({
+          AppLaunchpad.configChanged('navigation');
+          AppLaunchpad.showAlert({
             text: `${p.name} removed.`,
             type: 'info',
             closeAfter: 3000
@@ -391,9 +391,9 @@ class Navigation {
   getProfileItems = () => {
     const items = [
       {
-        label: 'Luigi in Github',
+        label: 'AppLaunchpad in Github',
         externalLink: {
-          url: 'https://github.com/SAP/luigi',
+          url: 'https://github.com/davidwl/applaunchpad',
           sameWindow: false
         }
       }
@@ -423,9 +423,9 @@ class Navigation {
         resolve({
           name: 'Static User',
           initials: 'LU',
-          email: 'other.luigi.user@example.com',
+          email: 'other.applaunchpad.user@example.com',
           picture: '/assets/favicon-sap.ico',
-          description: 'Luigi Developer'
+          description: 'AppLaunchpad Developer'
         });
       });
     }

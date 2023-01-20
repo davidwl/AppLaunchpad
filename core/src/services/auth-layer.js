@@ -1,4 +1,4 @@
-import { LuigiAuth, LuigiConfig } from '../core-api';
+import { AppLaunchpadAuth, AppLaunchpadConfig } from '../core-api';
 import { AuthHelpers, GenericHelpers } from '../utilities/helpers';
 import { AuthStoreSvc } from './';
 import { get, writable } from 'svelte/store';
@@ -30,12 +30,12 @@ class AuthLayerSvcClass {
   }
 
   async init() {
-    const idpProviderName = LuigiConfig.getConfigValue('auth.use');
+    const idpProviderName = AppLaunchpadConfig.getConfigValue('auth.use');
     if (!idpProviderName) {
       // No Authentication active
       return Promise.resolve(true);
     }
-    const idpProviderSettings = LuigiConfig.getConfigValue(`auth.${idpProviderName}`);
+    const idpProviderSettings = AppLaunchpadConfig.getConfigValue(`auth.${idpProviderName}`);
 
     /**
      * Prevent IDP Provider initialization, if an error is present
@@ -58,7 +58,7 @@ class AuthLayerSvcClass {
         .catch(err => {
           const errorMsg = `Error: ${err.message || err}`;
           console.error(errorMsg, err.message && err);
-          LuigiConfig.setErrorMessage(errorMsg);
+          AppLaunchpadConfig.setErrorMessage(errorMsg);
         });
     }
     return this.checkAuth(idpProviderSettings);
@@ -67,7 +67,7 @@ class AuthLayerSvcClass {
   async checkAuth(idpProviderSettings) {
     const authData = AuthHelpers.getStoredAuthData();
     if (!authData || !AuthHelpers.isLoggedIn()) {
-      if (LuigiConfig.getConfigValue('auth.disableAutoLogin')) {
+      if (AppLaunchpadConfig.getConfigValue('auth.disableAutoLogin')) {
         return;
       }
 
@@ -79,7 +79,7 @@ class AuthLayerSvcClass {
        */
       let startAuth = true;
       if (authData) {
-        startAuth = await LuigiAuth.handleAuthEvent('onAuthExpired', idpProviderSettings);
+        startAuth = await AppLaunchpadAuth.handleAuthEvent('onAuthExpired', idpProviderSettings);
       }
       if (startAuth) {
         return this.startAuthorization();
@@ -104,10 +104,12 @@ class AuthLayerSvcClass {
       }
     }
 
-    const hasAuthSuccessFulFn = GenericHelpers.isFunction(LuigiConfig.getConfigValue('auth.events.onAuthSuccessful'));
+    const hasAuthSuccessFulFn = GenericHelpers.isFunction(
+      AppLaunchpadConfig.getConfigValue('auth.events.onAuthSuccessful')
+    );
 
     if (hasAuthSuccessFulFn && AuthStoreSvc.isNewlyAuthorized()) {
-      await LuigiAuth.handleAuthEvent('onAuthSuccessful', idpProviderSettings, authData);
+      await AppLaunchpadAuth.handleAuthEvent('onAuthSuccessful', idpProviderSettings, authData);
     }
     AuthStoreSvc.removeNewlyAuthorized();
 
@@ -136,10 +138,12 @@ class AuthLayerSvcClass {
   logout() {
     const authData = AuthHelpers.getStoredAuthData();
     const logoutCallback = async redirectUrl => {
-      await LuigiAuth.handleAuthEvent('onLogout', this.idpProviderInstance.settings, undefined, redirectUrl);
+      await AppLaunchpadAuth.handleAuthEvent('onLogout', this.idpProviderInstance.settings, undefined, redirectUrl);
       AuthStoreSvc.removeAuthData();
     };
-    const customLogoutFn = LuigiConfig.getConfigValue(`auth.${LuigiConfig.getConfigValue('auth.use')}.logoutFn`);
+    const customLogoutFn = AppLaunchpadConfig.getConfigValue(
+      `auth.${AppLaunchpadConfig.getConfigValue('auth.use')}.logoutFn`
+    );
     if (GenericHelpers.isFunction(customLogoutFn)) {
       customLogoutFn(this.idpProviderInstance.settings, authData, logoutCallback);
     } else if (GenericHelpers.isFunction(this.idpProviderInstance.logout)) {
@@ -174,9 +178,11 @@ class AuthLayerSvcClass {
     }
 
     // handle non-existing providers
-    const onAuthConfigError = GenericHelpers.isFunction(LuigiConfig.getConfigValue('auth.events.onAuthConfigError'));
+    const onAuthConfigError = GenericHelpers.isFunction(
+      AppLaunchpadConfig.getConfigValue('auth.events.onAuthConfigError')
+    );
     if (onAuthConfigError) {
-      await LuigiAuth.handleAuthEvent('onAuthConfigError', {
+      await AppLaunchpadAuth.handleAuthEvent('onAuthConfigError', {
         idpProviderName: idpProviderName,
         type: 'IdpProviderException'
       });

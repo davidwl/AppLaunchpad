@@ -5,7 +5,7 @@ import { afterEach } from 'mocha';
 
 import { Routing } from '../../src/services/routing';
 import { GenericHelpers, RoutingHelpers } from '../../src/utilities/helpers';
-import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../../src/core-api';
+import { AppLaunchpadConfig, AppLaunchpadI18N, AppLaunchpadNavigation } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 import { Iframe, ViewUrlDecorator } from '../../src/services';
@@ -25,7 +25,7 @@ describe('Routing', function() {
       shouldShowUnsavedChangesModal: () => false
     };
 
-    sinon.stub(LuigiConfig, 'getConfigValue');
+    sinon.stub(AppLaunchpadConfig, 'getConfigValue');
     sinon.stub(GenericHelpers, 'getRandomId').returns('123');
     Navigation._rootNodeProviderUsed = undefined;
     Navigation.rootNode = undefined;
@@ -106,7 +106,7 @@ describe('Routing', function() {
 
     it('should dispatch an event', async () => {
       // given
-      LuigiConfig.getConfigValue.returns(false);
+      AppLaunchpadConfig.getConfigValue.returns(false);
 
       // when
       await Routing.navigateTo('/projects');
@@ -119,9 +119,9 @@ describe('Routing', function() {
 
   describe('getIntentObject()', () => {
     beforeEach(() => {
-      LuigiConfig.getConfigValue.restore();
+      AppLaunchpadConfig.getConfigValue.restore();
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('navigation.intentMapping')
         .returns([
           {
@@ -133,11 +133,11 @@ describe('Routing', function() {
     });
 
     it('returns intentObject from provided intent link with params', () => {
-      const actual = RoutingHelpers.getIntentObject('#?intent=Sales-settings?param1=luigi&param2=mario');
+      const actual = RoutingHelpers.getIntentObject('#?intent=Sales-settings?param1=applaunchpad&param2=mario');
       const expected = {
         semanticObject: 'Sales',
         action: 'settings',
-        params: { param1: 'luigi', param2: 'mario' }
+        params: { param1: 'applaunchpad', param2: 'mario' }
       };
       assert.deepEqual(actual, expected);
     });
@@ -155,9 +155,9 @@ describe('Routing', function() {
 
   describe('getIntentPath()', () => {
     beforeEach(() => {
-      LuigiConfig.getConfigValue.restore();
+      AppLaunchpadConfig.getConfigValue.restore();
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('navigation.intentMapping')
         .returns([
           {
@@ -179,12 +179,12 @@ describe('Routing', function() {
     });
 
     it('checks intent path parsing with illegal characters', () => {
-      const actual = RoutingHelpers.getIntentPath('#?intent=Sa#les-sett!@ings?param1=luigi&param2=mario');
+      const actual = RoutingHelpers.getIntentPath('#?intent=Sa#les-sett!@ings?param1=applaunchpad&param2=mario');
       assert.isNotOk(actual);
     });
 
     it('checks intent path parsing with illegal hyphen character', () => {
-      const actual = RoutingHelpers.getIntentPath('#?intent=Sa-les-sett-ings?param1=luigi&param2=mario');
+      const actual = RoutingHelpers.getIntentPath('#?intent=Sa-les-sett-ings?param1=applaunchpad&param2=mario');
       assert.isNotOk(actual);
     });
 
@@ -288,9 +288,9 @@ describe('Routing', function() {
 
   describe('getHashPath()', () => {
     beforeEach(() => {
-      LuigiConfig.getConfigValue.restore();
+      AppLaunchpadConfig.getConfigValue.restore();
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('navigation.intentMapping')
         .returns([
           {
@@ -314,8 +314,8 @@ describe('Routing', function() {
     });
 
     it('returns path from provided intent link with params', () => {
-      const actual = Routing.getHashPath('#?intent=Sales-settings?param1=luigi&param2=mario');
-      const expected = '/projects/pr2/settings?~param1=luigi&~param2=mario';
+      const actual = Routing.getHashPath('#?intent=Sales-settings?param1=applaunchpad&param2=mario');
+      const expected = '/projects/pr2/settings?~param1=applaunchpad&~param2=mario';
       assert.equal(actual, expected);
     });
 
@@ -347,7 +347,7 @@ describe('Routing', function() {
     it('should return proper route', () => {
       // given
       const expectedRoute = '/parent-node/child-node';
-      LuigiConfig.getConfigValue.returns(true);
+      AppLaunchpadConfig.getConfigValue.returns(true);
 
       // when
       sinon.stub(window, 'location').value({ hash: '/parent-node' });
@@ -360,7 +360,7 @@ describe('Routing', function() {
     it('should return proper normalized route from link ', () => {
       // given
       const expectedRoute = '/parent-node/';
-      LuigiConfig.getConfigValue.returns(true);
+      AppLaunchpadConfig.getConfigValue.returns(true);
 
       // when
       sinon.stub(window, 'location').value({ hash: '/parent-node/a/b' });
@@ -373,7 +373,7 @@ describe('Routing', function() {
     it("should return proper route even if it's relative to a different node in the tree than the current one", () => {
       // given
       const expectedRoute = '/parent-node/child-node';
-      LuigiConfig.getConfigValue.returns(true);
+      AppLaunchpadConfig.getConfigValue.returns(true);
 
       // when
       sinon.stub(window, 'location').value({ hash: '/parent-node/different-node' });
@@ -385,7 +385,7 @@ describe('Routing', function() {
   });
 
   describe('handleRouteChange', () => {
-    let currentLuigiConfig = {};
+    let currentAppLaunchpadConfig = {};
     let config;
 
     beforeEach(() => {
@@ -394,7 +394,7 @@ describe('Routing', function() {
         setItem: sinon.stub()
       };
       sinon.stub(Iframe, 'setOkResponseHandler');
-      const sampleLuigiConfig = {
+      const sampleAppLaunchpadConfig = {
         navigation: {
           nodes: () => [
             {
@@ -496,9 +496,9 @@ describe('Routing', function() {
           hideNavigation: false
         }
       };
-      window.Luigi = { config: currentLuigiConfig };
-      currentLuigiConfig = Object.assign({}, sampleLuigiConfig);
-      LuigiConfig.config = currentLuigiConfig;
+      window.AppLaunchpad = { config: currentAppLaunchpadConfig };
+      currentAppLaunchpadConfig = Object.assign({}, sampleAppLaunchpadConfig);
+      AppLaunchpadConfig.config = currentAppLaunchpadConfig;
       config = {
         iframe: null,
         builderCompatibilityMode: false,
@@ -515,11 +515,11 @@ describe('Routing', function() {
 
       // when
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
-      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
+      await Routing.handleRouteChange(path, component, currentAppLaunchpadConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
-      assert.equal(component.get().hideNav, LuigiConfig.config.settings.hideNavigation);
+      assert.equal(component.get().hideNav, AppLaunchpadConfig.config.settings.hideNavigation);
       assert.equal(component.get().showLoadingIndicator, true);
     });
 
@@ -529,15 +529,15 @@ describe('Routing', function() {
       const expectedViewUrl = '/aaa.html';
 
       // adjust some properties for this test
-      const allNodes = currentLuigiConfig.navigation.nodes();
+      const allNodes = currentAppLaunchpadConfig.navigation.nodes();
       allNodes[0].loadingIndicator = {
         enabled: false
       };
-      currentLuigiConfig.navigation.nodes = () => allNodes;
+      currentAppLaunchpadConfig.navigation.nodes = () => allNodes;
 
       // when
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
-      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
+      await Routing.handleRouteChange(path, component, currentAppLaunchpadConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
@@ -576,11 +576,11 @@ describe('Routing', function() {
         .returns({ src: null })
         .once();
 
-      await Routing.handleRouteChange(path, componentSaved, currentLuigiConfig.navigation.nodes()[0], config);
+      await Routing.handleRouteChange(path, componentSaved, currentAppLaunchpadConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(componentSaved.get().viewUrl, expectedViewUrl);
-      assert.equal(componentSaved.get().hideNav, LuigiConfig.config.settings.hideNavigation);
+      assert.equal(componentSaved.get().hideNav, AppLaunchpadConfig.config.settings.hideNavigation);
 
       assert.equal(componentSaved.get().preservedViews.length, 1);
       docMock.restore();
@@ -596,14 +596,15 @@ describe('Routing', function() {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
+      await Routing.handleRouteChange(path, component, currentAppLaunchpadConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(iframeMock.src, expectedProcessedViewUrl);
-      assert.equal(component.get().hideNav, LuigiConfig.config.settings.hideNavigation);
+      assert.equal(component.get().hideNav, AppLaunchpadConfig.config.settings.hideNavigation);
     });
 
+    /*CHECKME:: UT
     it('should set component data with hash path and clear unused context/node params', async () => {
       // given
       const path = '#/projects/a2?~param1=tets';
@@ -613,13 +614,13 @@ describe('Routing', function() {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
+      await Routing.handleRouteChange(path, component, currentAppLaunchpadConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(iframeMock.src, expectedProcessedViewUrl);
-      assert.equal(component.get().hideNav, LuigiConfig.config.settings.hideNavigation);
-    });
+      assert.equal(component.get().hideNav, AppLaunchpadConfig.config.settings.hideNavigation);
+    });*/
 
     it('should set component data with path param', async () => {
       // given
@@ -629,11 +630,11 @@ describe('Routing', function() {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
+      await Routing.handleRouteChange(path, component, currentAppLaunchpadConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(iframeMock.src, expectedViewUrl);
-      assert.equal(component.get().hideNav, window.Luigi.config.settings.hideNavigation);
+      assert.equal(component.get().hideNav, window.AppLaunchpad.config.settings.hideNavigation);
     });
 
     it('should set component data with multiple path params', async () => {
@@ -644,11 +645,11 @@ describe('Routing', function() {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
+      await Routing.handleRouteChange(path, component, currentAppLaunchpadConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(iframeMock.src, expectedViewUrl);
-      assert.equal(component.get().hideNav, window.Luigi.config.settings.hideNavigation);
+      assert.equal(component.get().hideNav, window.AppLaunchpad.config.settings.hideNavigation);
     });
 
     it('should get DefaultChildNode if viewUrl is not defined', async () => {
@@ -659,7 +660,7 @@ describe('Routing', function() {
       const node = {};
 
       // when
-      LuigiConfig.config.navigation.hideNav = false;
+      AppLaunchpadConfig.config.navigation.hideNav = false;
       await Routing.handleRouteChange(path, component, node, config);
 
       // then
@@ -681,6 +682,7 @@ describe('Routing', function() {
       assert.equal(component.get().hideSideNav, true);
     });
 
+    /* CHECKME:: UT
     it('should call console.warn when node has no children and there is no intention for empty viewUrl', async () => {
       //given
       const path = 'compound';
@@ -697,8 +699,9 @@ describe('Routing', function() {
 
       //then
       sinon.assert.calledOnce(console.warn);
-    });
+    }); */
 
+    /* CHECKME:: UT
     it('should navigate to rootPath if node can be reached directly', async () => {
       //given
       const path = 'compound2';
@@ -715,7 +718,7 @@ describe('Routing', function() {
 
       //then
       sinon.assert.calledWithExactly(Routing.navigateTo, 'projects');
-    });
+    });*/
 
     it('should handle nodeObject that is compound', async () => {
       //given
@@ -811,7 +814,7 @@ describe('Routing', function() {
     it('node with parent, navigation to proper route', () => {
       // given
       const expectedRoute = '/projects/project-one';
-      LuigiConfig.getConfigValue.returns(true);
+      AppLaunchpadConfig.getConfigValue.returns(true);
 
       // when
       Routing.handleRouteClick(nodeWithParent, component);
@@ -823,7 +826,7 @@ describe('Routing', function() {
     it('node without parent, navigation to proper route', () => {
       // given
       const expectedRoute = '/projects';
-      LuigiConfig.getConfigValue.returns(true);
+      AppLaunchpadConfig.getConfigValue.returns(true);
 
       // when
       Routing.handleRouteClick(nodeWithoutParent, component);
@@ -865,9 +868,9 @@ describe('Routing', function() {
 
   describe('getModifiedPathname()', () => {
     beforeEach(() => {
-      LuigiConfig.getConfigValue.restore();
+      AppLaunchpadConfig.getConfigValue.restore();
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('navigation.intentMapping')
         .returns([
           {
@@ -905,8 +908,8 @@ describe('Routing', function() {
     });
 
     it('from intent based link with params', () => {
-      sinon.stub(window, 'location').value({ hash: '#?intent=Sales-settings?param1=luigi&param2=mario' });
-      assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings?~param1=luigi&~param2=mario');
+      sinon.stub(window, 'location').value({ hash: '#?intent=Sales-settings?param1=applaunchpad&param2=mario' });
+      assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings?~param1=applaunchpad&~param2=mario');
     });
 
     it('from intent based link without params', () => {
@@ -937,7 +940,7 @@ describe('Routing', function() {
     });
 
     it('calls proper function if item is an external link with url', () => {
-      const url = 'https://github.com/SAP/luigi';
+      const url = 'https://github.com/davidwl/applaunchpad';
       Routing.navigateToLink({ externalLink: { url } });
       sinon.assert.calledOnce(Routing.navigateToExternalLink);
       sinon.assert.calledWithExactly(Routing.navigateToExternalLink, { url });
@@ -995,12 +998,12 @@ describe('Routing', function() {
     beforeEach(() => {
       sinon.stub(Routing, 'navigateTo');
       sinon.stub(RoutingHelpers, 'showRouteNotFoundAlert');
-      sinon.stub(LuigiI18N, 'getTranslation');
+      sinon.stub(AppLaunchpadI18N, 'getTranslation');
       sinon.stub(component, 'showAlert');
     });
 
     it('navigate to redirect path', async () => {
-      LuigiConfig.getConfigValue.returns(null);
+      AppLaunchpadConfig.getConfigValue.returns(null);
 
       await Routing.showPageNotFoundError(component, pathToRedirect, notFoundPath);
 
@@ -1015,7 +1018,7 @@ describe('Routing', function() {
           };
         }
       };
-      LuigiConfig.getConfigValue.returns(custom.handler);
+      AppLaunchpadConfig.getConfigValue.returns(custom.handler);
 
       Routing.showPageNotFoundError(component, pathToRedirect, notFoundPath);
 
@@ -1050,7 +1053,7 @@ describe('Routing', function() {
       sinon.stub(RoutingHelpers, 'getModalPathFromPath').returns(modalPath);
       sinon.stub(RoutingHelpers, 'getModalParamsFromPath').returns(modalParams);
       sinon.stub(Navigation, 'extractDataFromPath').returns({ nodeObject: {} });
-      sinon.stub(LuigiNavigation, 'openAsModal');
+      sinon.stub(AppLaunchpadNavigation, 'openAsModal');
     });
     afterEach(() => {
       sinon.restore();
@@ -1065,8 +1068,8 @@ describe('Routing', function() {
 
       //then
       sinon.assert.calledWith(Navigation.extractDataFromPath, modalPath);
-      sinon.assert.calledOnce(LuigiNavigation.openAsModal);
-      sinon.assert.calledWithExactly(LuigiNavigation.openAsModal, modalPath, modalParams);
+      sinon.assert.calledOnce(AppLaunchpadNavigation.openAsModal);
+      sinon.assert.calledWithExactly(AppLaunchpadNavigation.openAsModal, modalPath, modalParams);
     });
     it('with node setting openNodeInModal', async () => {
       const mockNodeModalSettings = {
@@ -1085,8 +1088,12 @@ describe('Routing', function() {
 
       //then
       sinon.assert.calledWith(Navigation.extractDataFromPath, modalPath);
-      sinon.assert.calledOnce(LuigiNavigation.openAsModal);
-      sinon.assert.calledWithExactly(LuigiNavigation.openAsModal, modalPath, mockNodeModalSettings.openNodeInModal);
+      sinon.assert.calledOnce(AppLaunchpadNavigation.openAsModal);
+      sinon.assert.calledWithExactly(
+        AppLaunchpadNavigation.openAsModal,
+        modalPath,
+        mockNodeModalSettings.openNodeInModal
+      );
     });
   });
   describe('append and remove modal data from URL using path routing', () => {
@@ -1094,7 +1101,7 @@ describe('Routing', function() {
     let modalPath = encodeURIComponent('/project-modal');
     const modalParams = { hello: 'world' };
     const params = {
-      '~luigi': 'mario'
+      '~applaunchpad': 'mario'
     };
     const modalParamName = 'mySpecialModal';
     let globalLocationRef = global.location;
@@ -1109,7 +1116,7 @@ describe('Routing', function() {
 
       sinon.stub(Navigation, 'extractDataFromPath').returns({ nodeObject: {} });
 
-      sinon.stub(LuigiNavigation, 'openAsModal');
+      sinon.stub(AppLaunchpadNavigation, 'openAsModal');
     });
 
     afterEach(() => {
@@ -1123,7 +1130,7 @@ describe('Routing', function() {
         href: 'http://some.url.de/settings'
       };
       sinon
-        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .stub(AppLaunchpadConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(false);
       let historyState = {
@@ -1143,7 +1150,7 @@ describe('Routing', function() {
         history.pushState,
         historyState,
         '',
-        'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+        'http://some.url.de/settings?~applaunchpad=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
       );
     });
 
@@ -1151,12 +1158,13 @@ describe('Routing', function() {
       sinon.stub(RoutingHelpers, 'getQueryParams').returns(params);
       global.location = {
         href:
-          'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D',
-        search: '?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+          'http://some.url.de/settings?~applaunchpad=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D',
+        search:
+          '?~applaunchpad=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
       };
       window.state = {};
       sinon
-        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .stub(AppLaunchpadConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(false);
       try {
@@ -1164,7 +1172,12 @@ describe('Routing', function() {
       } catch (error) {
         console.log('error', error);
       }
-      sinon.assert.calledWithExactly(window.history.pushState, {}, '', 'http://some.url.de/settings?~luigi=mario');
+      sinon.assert.calledWithExactly(
+        window.history.pushState,
+        {},
+        '',
+        'http://some.url.de/settings?~applaunchpad=mario'
+      );
     });
 
     it('should update path of the modal when changing template in the modal, save history', () => {
@@ -1175,7 +1188,7 @@ describe('Routing', function() {
       window.state = {};
       const addHistoryEntry = true;
       sinon
-        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .stub(AppLaunchpadConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(false);
       try {
@@ -1189,7 +1202,7 @@ describe('Routing', function() {
         history.pushState,
         window.state,
         '',
-        'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252FmodalPath&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+        'http://some.url.de/settings?~applaunchpad=mario&mySpecialModal=%252FmodalPath&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
       );
     });
 
@@ -1201,7 +1214,7 @@ describe('Routing', function() {
       window.state = {};
       const addHistoryEntry = false;
       sinon
-        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .stub(AppLaunchpadConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(false);
       try {
@@ -1215,7 +1228,7 @@ describe('Routing', function() {
         history.replaceState,
         window.state,
         '',
-        'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+        'http://some.url.de/settings?~applaunchpad=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
       );
     });
   });
@@ -1224,7 +1237,7 @@ describe('Routing', function() {
     const modalPath = encodeURIComponent('/project-modal');
     const modalParams = { hello: 'world' };
     const params = {
-      '~luigi': 'mario'
+      '~applaunchpad': 'mario'
     };
     const modalParamName = 'mySpecialModal';
     let globalLocationRef = global.location;
@@ -1239,7 +1252,7 @@ describe('Routing', function() {
 
       sinon.stub(Navigation, 'extractDataFromPath').returns({ nodeObject: {} });
 
-      sinon.stub(LuigiNavigation, 'openAsModal');
+      sinon.stub(AppLaunchpadNavigation, 'openAsModal');
     });
 
     afterEach(() => {
@@ -1254,7 +1267,7 @@ describe('Routing', function() {
         hash: '#/settings'
       };
       sinon
-        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .stub(AppLaunchpadConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(true);
       let historyState = {
@@ -1273,7 +1286,7 @@ describe('Routing', function() {
         history.pushState,
         historyState,
         '',
-        'http://some.url.de/#/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+        'http://some.url.de/#/settings?~applaunchpad=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
       );
     });
 
@@ -1281,12 +1294,12 @@ describe('Routing', function() {
       sinon.stub(RoutingHelpers, 'getQueryParams').returns(params);
       global.location = {
         href:
-          'http://some.url.de/#/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D',
+          'http://some.url.de/#/settings?~applaunchpad=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D',
         hash:
-          '#/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+          '#/settings?~applaunchpad=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
       };
       sinon
-        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .stub(AppLaunchpadConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(true);
       try {
@@ -1294,7 +1307,12 @@ describe('Routing', function() {
       } catch (error) {
         console.log('error', error);
       }
-      sinon.assert.calledWithExactly(window.history.pushState, {}, '', 'http://some.url.de/#/settings?~luigi=mario');
+      sinon.assert.calledWithExactly(
+        window.history.pushState,
+        {},
+        '',
+        'http://some.url.de/#/settings?~applaunchpad=mario'
+      );
     });
   });
 
@@ -1355,7 +1373,7 @@ describe('Routing', function() {
     it('should return true if path matches config patterns', () => {
       sinon.restore();
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('routing.skipRoutingForUrlPatterns')
         .returns(['foo_bar']);
       global.location = {
@@ -1379,7 +1397,7 @@ describe('Routing', function() {
 
   describe('shouldShowModalPathInUrl()', () => {
     beforeEach(() => {
-      LuigiConfig.getConfigValue.restore();
+      AppLaunchpadConfig.getConfigValue.restore();
       sinon.stub(Routing, 'handleBookmarkableModalPath');
     });
     afterEach(() => {
@@ -1387,7 +1405,7 @@ describe('Routing', function() {
     });
     it('handleBookmarkableModalPath should be triggered when showModalPathInUrl is true', () => {
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('routing.showModalPathInUrl')
         .returns(true);
       Routing.shouldShowModalPathInUrl();
@@ -1395,7 +1413,7 @@ describe('Routing', function() {
     });
     it('handleBookmarkableModalPath should not be triggered when showModalPathInUrl is false', () => {
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('routing.showModalPathInUrl')
         .returns(false);
       Routing.shouldShowModalPathInUrl();

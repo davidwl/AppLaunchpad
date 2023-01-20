@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "luigisample": {
+    "applaunchpadsample": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -35,13 +35,13 @@
               },
               {
                 "glob": "**",
-                "input": "node_modules/@luigi-project/core",
-                "output": "/luigi-core"
+                "input": "node_modules/@applaunchpad-project/core",
+                "output": "/applaunchpad-core"
               },
               {
-                "glob": "luigi-client*.js",
-                "input": "node_modules/@luigi-project/client",
-                "output": "/luigi-client"
+                "glob": "applaunchpad-client*.js",
+                "input": "node_modules/@applaunchpad-project/client",
+                "output": "/applaunchpad-client"
               }
             ],
             "styles": [
@@ -72,18 +72,18 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "luigisample:build"
+            "browserTarget": "applaunchpadsample:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "luigisample:build:production"
+              "browserTarget": "applaunchpadsample:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "luigisample:build"
+            "browserTarget": "applaunchpadsample:build"
           }
         },
         "test": {
@@ -103,8 +103,8 @@
               "src/index.html",
               {
                 "glob": "**",
-                "input": "node_modules/@luigi-project/core",
-                "output": "/luigi-core"
+                "input": "node_modules/@applaunchpad-project/core",
+                "output": "/applaunchpad-core"
               }
             ]
           }
@@ -123,7 +123,7 @@
         }
       }
     },
-    "luigisample-e2e": {
+    "applaunchpadsample-e2e": {
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -132,7 +132,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "luigisample:serve"
+            "devServerTarget": "applaunchpadsample:serve"
           }
         },
         "lint": {

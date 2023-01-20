@@ -1,15 +1,15 @@
-import { LuigiClientBase } from './baseClass';
+import { AppLaunchpadClientBase } from './baseClass';
 import { helpers } from './helpers';
 
 const pendingOperation = new Map();
 
 /**
- * StorageManager allows you to use browser local storage of key/values. Every storage operation is sent to be managed by Luigi Core.
+ * StorageManager allows you to use browser local storage of key/values. Every storage operation is sent to be managed by AppLaunchpad Core.
  * The idea is that different micro frontends can share or persist items using local storage, as long as they come from the same domain and follow the [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy).
- * Since all storage operations are asynchronous (sending an event to Luigi Core that will reply once operation is finished), all the methods return Promises.
+ * Since all storage operations are asynchronous (sending an event to AppLaunchpad Core that will reply once operation is finished), all the methods return Promises.
  * @name storageManager
  */
-class StorageManager extends LuigiClientBase {
+class StorageManager extends AppLaunchpadClientBase {
   /** @private */
   constructor() {
     super();
@@ -22,9 +22,9 @@ class StorageManager extends LuigiClientBase {
    * @memberof storageManager
    * @param {string} key key used to identify the value
    * @param {Object} value item to store; object must be stringifyable
-   * @returns {Promise<void>} resolves an empty value when the storage operation is over. It will launch an error if storage is not supported, the value cannot be stringified, or if you are using a Luigi reserved key.
+   * @returns {Promise<void>} resolves an empty value when the storage operation is over. It will launch an error if storage is not supported, the value cannot be stringified, or if you are using a AppLaunchpad reserved key.
    * @example
-   * LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
+   * AppLaunchpadClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
    * @since 1.6.0
    */
   setItem(key, value) {
@@ -42,7 +42,7 @@ class StorageManager extends LuigiClientBase {
    * @param {string} key used to identify the value
    * @returns {Promise<Object>} resolves an item retrieved from storage. It will launch an error if storage is not supported.
    * @example
-   * LuigiClient.storageManager().getItem('keyExample').then((value) => console.log);
+   * AppLaunchpadClient.storageManager().getItem('keyExample').then((value) => console.log);
    * @since 1.6.0
    */
   getItem(key) {
@@ -55,9 +55,9 @@ class StorageManager extends LuigiClientBase {
    * Removes an item for a specific key.
    * @memberof storageManager
    * @param {string} key used to identify the value
-   * @returns {Promise<Object>} resolves an item just removed from storage. It will launch an error if storage is not supported or if you are using a Luigi reserved key.
+   * @returns {Promise<Object>} resolves an item just removed from storage. It will launch an error if storage is not supported or if you are using a AppLaunchpad reserved key.
    * @example
-   * LuigiClient.storageManager().removeItem('keyExample').then((value) => console.log(value + ' just removed')
+   * AppLaunchpadClient.storageManager().removeItem('keyExample').then((value) => console.log(value + ' just removed')
    * @since 1.6.0
    */
   removeItem(key) {
@@ -73,7 +73,7 @@ class StorageManager extends LuigiClientBase {
    * @memberof storageManager
    * @returns {Promise<void>} resolves when storage clear is over.
    * @example
-   * LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
+   * AppLaunchpadClient.storageManager().clear().then(() => console.log('storage cleared'))
    * @since 1.6.0
    */
   clear() {
@@ -88,7 +88,7 @@ class StorageManager extends LuigiClientBase {
    * @param {string} key key in the storage
    * @returns {Promise<boolean>} `true` if key is present, `false` if it is not
    * @example
-   * LuigiClient.storageManager().has(key).then((present) => console.log('item is present '+present))
+   * AppLaunchpadClient.storageManager().has(key).then((present) => console.log('item is present '+present))
    * @since 1.6.0
    */
   has(key) {
@@ -102,7 +102,7 @@ class StorageManager extends LuigiClientBase {
    * @memberof storageManager
    * @returns {Promise<string[]>} keys currently present in the storage
    * @example
-   * LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are '+keys))
+   * AppLaunchpadClient.storageManager().getAllKeys().then((keys) => console.log('keys are '+keys))
    * @since 1.6.0
    */
   getAllKeys() {
@@ -137,7 +137,7 @@ class StorageEventProcessor {
     while (!syncOperation.has(id)) {
       let exec = new Date().getTime() - start;
       if (exec > 10000) {
-        throw 'Storage operation is taking more than 1 second...Some problem with Luigi Core communication';
+        throw 'Storage operation is taking more than 1 second...Some problem with AppLaunchpad Core communication';
       }
     }
     const result = syncOperation.get(id);
@@ -158,7 +158,7 @@ class StorageEventProcessor {
     });
   }
   sendMessage(id, operation, params) {
-    helpers.sendPostMessageToLuigiCore({
+    helpers.sendPostMessageToAppLaunchpadCore({
       msg: 'storage',
       data: {
         id,

@@ -15,7 +15,7 @@
     onMount,
     getContext,
   } from 'svelte';
-  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
+  import { AppLaunchpadAuth, AppLaunchpadConfig, AppLaunchpadI18N } from '../core-api';
   import {
     AuthHelpers,
     NavigationHelpers,
@@ -54,7 +54,7 @@
   export let isGlobalSearchCentered;
   export let isSearchFieldVisible;
   export let inputElem;
-  export let luigiCustomSearchRenderer__slot;
+  export let applaunchpadCustomSearchRenderer__slot;
   export let displaySearchResult;
   export let displayCustomSearchResult;
   export let searchResult;
@@ -65,10 +65,10 @@
   let contextSwitcherToggle = false;
   let selectedLabel;
   let defaultLabelContextSwitcher;
-  let contextSwitcherConfig = LuigiConfig.getConfigValue(
+  let contextSwitcherConfig = AppLaunchpadConfig.getConfigValue(
     'navigation.contextSwitcher'
   );
-  export let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue(
+  export let addNavHrefForAnchor = AppLaunchpadConfig.getConfigBooleanValue(
     'navigation.addNavHrefs'
   );
   const setTopNavData = async () => {
@@ -92,29 +92,29 @@
     StateHelpers.doOnStoreChange(
       store,
       () => {
-        authorizationEnabled = LuigiAuth.isAuthorizationEnabled();
+        authorizationEnabled = AppLaunchpadAuth.isAuthorizationEnabled();
         profileItemsAvailable =
-          LuigiConfig.getConfigValue('navigation.profile');
+          AppLaunchpadConfig.getConfigValue('navigation.profile');
         autologinEnabled = !Boolean(
-          LuigiConfig.getConfigValue('auth.disableAutoLogin')
+          AppLaunchpadConfig.getConfigValue('auth.disableAutoLogin')
         );
-        isProductSwitcherAvailable = LuigiConfig.getConfigValue(
+        isProductSwitcherAvailable = AppLaunchpadConfig.getConfigValue(
           'navigation.productSwitcher'
         );
-        hideNavComponent = LuigiConfig.getConfigBooleanValue(
+        hideNavComponent = AppLaunchpadConfig.getConfigBooleanValue(
           'settings.hideNavigation'
         );
-        responsiveNavSetting = LuigiConfig.getConfigValue(
+        responsiveNavSetting = AppLaunchpadConfig.getConfigValue(
           'settings.responsiveNavigation'
         );
-        profileTypeSettings = LuigiConfig.getConfigValue(
+        profileTypeSettings = AppLaunchpadConfig.getConfigValue(
           'settings.profileType'
         );
-        responsiveShellbarPadding = LuigiConfig.getConfigValue(
+        responsiveShellbarPadding = AppLaunchpadConfig.getConfigValue(
           'settings.header.responsiveShellbarPaddings'
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
-        globalSearchConfig = LuigiConfig.getConfigValue('globalSearch');
+        globalSearchConfig = AppLaunchpadConfig.getConfigValue('globalSearch');
         isGlobalSearchCentered =
           globalSearchConfig &&
           globalSearchConfig.searchFieldCentered &&
@@ -123,12 +123,12 @@
             true
           );
         showGlobalNav =
-          LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
+          AppLaunchpadConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
-        addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue(
+        addNavHrefForAnchor = AppLaunchpadConfig.getConfigBooleanValue(
           'navigation.addNavHrefs'
         );
-        contextSwitcherConfig = LuigiConfig.getConfigValue(
+        contextSwitcherConfig = AppLaunchpadConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
       },
@@ -136,7 +136,7 @@
     );
 
     EventListenerHelpers.addEventListener('message', (e) => {
-      if ('luigi.navigation.update-badge-counters' === e.data.msg) {
+      if ('applaunchpad.navigation.update-badge-counters' === e.data.msg) {
         setTopNavData();
       }
     });
@@ -163,7 +163,7 @@
   }
 
   function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label);
+    return AppLaunchpadI18N.getTranslation(node.label);
   }
 
   function getTestId(node) {
@@ -239,7 +239,7 @@
     dispatch('toggleSearch', {
       isSearchFieldVisible,
       inputElem,
-      luigiCustomSearchRenderer__slot,
+      applaunchpadCustomSearchRenderer__slot,
     });
   }
 
@@ -345,7 +345,7 @@
           bind:displaySearchResult
           bind:displayCustomSearchResult
           bind:inputElem
-          bind:luigiCustomSearchRenderer__slot
+          bind:applaunchpadCustomSearchRenderer__slot
           on:closeSearchResult
         />
       </div>
@@ -363,7 +363,7 @@
             bind:displaySearchResult
             bind:displayCustomSearchResult
             bind:inputElem
-            bind:luigiCustomSearchRenderer__slot
+            bind:applaunchpadCustomSearchRenderer__slot
             on:closeSearchResult
             {globalSearchConfig}
           />
@@ -519,7 +519,7 @@
                               toggleSearch(),
                                 toggleDropdownState('overflowPopover');
                             }}
-                            data-testid="luigi-search-btn-mobile"
+                            data-testid="applaunchpad-search-btn-mobile"
                           >
                             <i
                               class="sap-icon sap-icon--search fd-top-nav__icon"
@@ -687,7 +687,7 @@
       {#if authorizationEnabled || profileItemsAvailable}
         <div
           class="fd-shellbar__action fd-shellbar__action--show-always"
-          data-testid="luigi-topnav-profile"
+          data-testid="applaunchpad-topnav-profile"
         >
           {#if profileTypeSettings === 'Fiori3' && GenericHelpers.requestExperimentalFeature('profileMenuFiori3', true)}
             <div class="fd-popover fd-popover--right fd-user-menu">
@@ -705,7 +705,7 @@
                     tabindex="0"
                     style="background-image:url('{userInfo.picture}')"
                     on:click={() => toggleDropdownState('profilePopover')}
-                    data-testid="luigi-topnav-profile-btn"
+                    data-testid="applaunchpad-topnav-profile-btn"
                   />
                 {:else}
                   <button
@@ -715,7 +715,7 @@
                     title={userInfo.name ? userInfo.name : undefined}
                     tabindex="0"
                     on:click={() => toggleDropdownState('profilePopover')}
-                    data-testid="luigi-topnav-profile-initials"
+                    data-testid="applaunchpad-topnav-profile-initials"
                   >
                     {userInfo.initials ? userInfo.initials : ''}
                   </button>
@@ -754,7 +754,7 @@
                       on:click={() => toggleDropdownState('profilePopover')}
                       title={userInfo.name ? userInfo.name : undefined}
                       tabindex="0"
-                      data-testid="luigi-topnav-profile-btn"
+                      data-testid="applaunchpad-topnav-profile-btn"
                     >
                       {#if userInfo.picture}
                         <span

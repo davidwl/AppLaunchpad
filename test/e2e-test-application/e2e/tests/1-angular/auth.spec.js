@@ -11,7 +11,7 @@ describe('Authorization', () => {
 
       //logout dynamically
       cy.window().then(win => {
-        win.Luigi.auth().logout();
+        win.AppLaunchpad.auth().logout();
       });
 
       //confirm redirect to logout page

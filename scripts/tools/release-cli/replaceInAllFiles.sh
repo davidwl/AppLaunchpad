@@ -23,7 +23,7 @@ SOURCES=(
   "docs"
   "core/src"
   "client/src"
-  "client/luigi-client.d.ts"
+  "client/applaunchpad-client.d.ts"
   "plugins/auth/src"
 )
 

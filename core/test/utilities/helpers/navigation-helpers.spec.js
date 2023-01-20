@@ -4,7 +4,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 import { AuthHelpers, NavigationHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
-import { LuigiAuth, LuigiConfig, LuigiFeatureToggles } from '../../../src/core-api';
+import { AppLaunchpadAuth, AppLaunchpadConfig, AppLaunchpadFeatureToggles } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
 import { Navigation } from '../../../src/navigation/services/navigation';
 
@@ -13,9 +13,9 @@ describe('Navigation-helpers', () => {
     let permissionCheckerFn;
     beforeEach(() => {
       permissionCheckerFn = sinon.spy();
-      sinon.stub(LuigiAuth, 'isAuthorizationEnabled');
+      sinon.stub(AppLaunchpadAuth, 'isAuthorizationEnabled');
       sinon.stub(AuthHelpers, 'isLoggedIn');
-      sinon.stub(LuigiConfig, 'getConfigValue');
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue');
     });
     afterEach(() => {
       permissionCheckerFn = undefined;
@@ -23,7 +23,7 @@ describe('Navigation-helpers', () => {
     });
 
     it('without permissionCheckerFn', () => {
-      LuigiConfig.getConfigValue.returns(null);
+      AppLaunchpadConfig.getConfigValue.returns(null);
       assert.isTrue(NavigationHelpers.isNodeAccessPermitted());
     });
 
@@ -32,7 +32,7 @@ describe('Navigation-helpers', () => {
         anonymousAccess: true
       };
 
-      LuigiAuth.isAuthorizationEnabled.returns(true);
+      AppLaunchpadAuth.isAuthorizationEnabled.returns(true);
       AuthHelpers.isLoggedIn.returns(true);
 
       assert.isTrue(NavigationHelpers.isNodeAccessPermitted(checkNode));
@@ -43,7 +43,7 @@ describe('Navigation-helpers', () => {
         anonymousAccess: true
       };
 
-      LuigiAuth.isAuthorizationEnabled.returns(true);
+      AppLaunchpadAuth.isAuthorizationEnabled.returns(true);
       AuthHelpers.isLoggedIn.returns(false);
 
       assert.isTrue(NavigationHelpers.isNodeAccessPermitted(checkNode));
@@ -54,9 +54,9 @@ describe('Navigation-helpers', () => {
         anonymousAccess: 'exclusive'
       };
 
-      LuigiAuth.isAuthorizationEnabled.returns(true);
+      AppLaunchpadAuth.isAuthorizationEnabled.returns(true);
       AuthHelpers.isLoggedIn.returns(true);
-      LuigiConfig.getConfigValue.returns(permissionCheckerFn);
+      AppLaunchpadConfig.getConfigValue.returns(permissionCheckerFn);
 
       assert.isFalse(NavigationHelpers.isNodeAccessPermitted(checkNode));
     });
@@ -66,9 +66,9 @@ describe('Navigation-helpers', () => {
         anonymousAccess: 'exclusive'
       };
 
-      LuigiAuth.isAuthorizationEnabled.returns(true);
+      AppLaunchpadAuth.isAuthorizationEnabled.returns(true);
       AuthHelpers.isLoggedIn.returns(false);
-      LuigiConfig.getConfigValue.returns(undefined);
+      AppLaunchpadConfig.getConfigValue.returns(undefined);
 
       assert.isTrue(NavigationHelpers.isNodeAccessPermitted(checkNode));
     });
@@ -78,7 +78,7 @@ describe('Navigation-helpers', () => {
         anonymousAccess: false
       };
 
-      LuigiAuth.isAuthorizationEnabled.returns(true);
+      AppLaunchpadAuth.isAuthorizationEnabled.returns(true);
       AuthHelpers.isLoggedIn.returns(false);
 
       assert.isFalse(NavigationHelpers.isNodeAccessPermitted(checkNode));
@@ -90,9 +90,9 @@ describe('Navigation-helpers', () => {
       const context = { data: '' };
       const permissionCheckerFn = sinon.stub().returns(true);
 
-      LuigiAuth.isAuthorizationEnabled.returns(true);
+      AppLaunchpadAuth.isAuthorizationEnabled.returns(true);
       AuthHelpers.isLoggedIn.returns(true);
-      LuigiConfig.getConfigValue.returns(permissionCheckerFn);
+      AppLaunchpadConfig.getConfigValue.returns(permissionCheckerFn);
 
       assert.isTrue(NavigationHelpers.isNodeAccessPermitted(checkNode, parentNode, context));
       assert(
@@ -117,13 +117,13 @@ describe('Navigation-helpers', () => {
 
   describe('getProductSwitcherColumnsNumber', () => {
     beforeEach(() => {
-      sinon.stub(LuigiConfig, 'getConfigValue');
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue');
     });
     afterEach(() => {
       sinon.restore();
     });
     it('should return number from config file if columns are defined', () => {
-      LuigiConfig.getConfigValue.returns({
+      AppLaunchpadConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
         columns: 'auto',
@@ -135,7 +135,7 @@ describe('Navigation-helpers', () => {
       assert.equal(columns, 3);
     });
     it('should return number from config file even if columns are not defined', () => {
-      LuigiConfig.getConfigValue.returns({
+      AppLaunchpadConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
         columns: 'auto',
@@ -148,7 +148,7 @@ describe('Navigation-helpers', () => {
     });
 
     it('should return number from config file even if columns are not defined and items proberty is an array', () => {
-      LuigiConfig.getConfigValue.returns({
+      AppLaunchpadConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
         columns: 'auto',
@@ -159,7 +159,7 @@ describe('Navigation-helpers', () => {
     });
 
     it('should return undefined if no items in config defined', () => {
-      LuigiConfig.getConfigValue.returns({
+      AppLaunchpadConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
         columns: 'auto'
@@ -169,7 +169,7 @@ describe('Navigation-helpers', () => {
     });
 
     it('should return undefined if empty array items in config defined', () => {
-      LuigiConfig.getConfigValue.returns({
+      AppLaunchpadConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
         columns: 'auto',
@@ -180,7 +180,7 @@ describe('Navigation-helpers', () => {
     });
 
     it('should return number from config file if columns are defined', () => {
-      LuigiConfig.getConfigValue.returns({
+      AppLaunchpadConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
         items: () => {
@@ -193,7 +193,7 @@ describe('Navigation-helpers', () => {
     });
 
     it('should return number from config file if columns are defined and items proberty is an array', () => {
-      LuigiConfig.getConfigValue.returns({
+      AppLaunchpadConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
         items: [],
@@ -204,7 +204,7 @@ describe('Navigation-helpers', () => {
     });
 
     it('should return number from config file if columns are defined', () => {
-      LuigiConfig.getConfigValue.returns({
+      AppLaunchpadConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
         items: () => {
@@ -217,7 +217,7 @@ describe('Navigation-helpers', () => {
     });
 
     it('should return number from config file if columns are defined and items proberty is an array', () => {
-      LuigiConfig.getConfigValue.returns({
+      AppLaunchpadConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
         items: [],
@@ -300,7 +300,7 @@ describe('Navigation-helpers', () => {
 
   describe('burger tooltip', () => {
     beforeEach(() => {
-      sinon.stub(LuigiConfig, 'getConfigValue');
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue');
     });
 
     afterEach(() => {
@@ -308,7 +308,7 @@ describe('Navigation-helpers', () => {
     });
 
     it('Burger tooltip with defined collapsed and expanded label', () => {
-      LuigiConfig.getConfigValue.returns({
+      AppLaunchpadConfig.getConfigValue.returns({
         navExpanded: 'Collapse navigation test',
         navCollapsed: 'Expand navigation test'
       });
@@ -318,7 +318,7 @@ describe('Navigation-helpers', () => {
     });
 
     it('Burger tooltip without defining a label, just use boolean', () => {
-      LuigiConfig.getConfigValue.returns(true);
+      AppLaunchpadConfig.getConfigValue.returns(true);
       const [collapseLabel, expandLabel] = NavigationHelpers.getBurgerTooltipConfig();
       assert.equal(collapseLabel, 'Expand navigation');
       assert.equal(expandLabel, 'Collapse navigation');
@@ -362,7 +362,7 @@ describe('Navigation-helpers', () => {
     let object;
 
     beforeEach(() => {
-      sinon.stub(LuigiConfig, 'getConfigValue');
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue');
       sinon.stub(NavigationHelpers, '_fetch');
       object = {
         some: {
@@ -539,8 +539,8 @@ describe('Navigation-helpers', () => {
         nodes = [
           {
             category: '1',
-            pathSegment: 'luigi',
-            label: 'luigi',
+            pathSegment: 'applaunchpad',
+            label: 'applaunchpad',
             viewUrl: '/microfrontend.html'
           },
           {
@@ -553,12 +553,12 @@ describe('Navigation-helpers', () => {
             pathSegment: 'amfe',
             label: 'a mfe',
             viewUrl: '/microfrontend.html',
-            category: { label: 'luigi' }
+            category: { label: 'applaunchpad' }
           },
           {
-            category: 'luigi',
-            pathSegment: 'luigi',
-            label: 'luigi',
+            category: 'applaunchpad',
+            pathSegment: 'applaunchpad',
+            label: 'applaunchpad',
             viewUrl: '/microfrontend.html'
           }
         ];
@@ -567,8 +567,8 @@ describe('Navigation-helpers', () => {
         nodes[1].category.id = '1';
         nodes[1].category.collapsible = true;
         const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
-        assert.deepEqual(Object.keys(result), ['luigi', 'test']);
-        assert.deepEqual(result.luigi['metaInfo'], { label: 'luigi', order: 1 });
+        assert.deepEqual(Object.keys(result), ['applaunchpad', 'test']);
+        assert.deepEqual(result.applaunchpad['metaInfo'], { label: 'applaunchpad', order: 1 });
         assert.deepEqual(result.test['metaInfo'], {
           label: 'test',
           order: 0,
@@ -580,7 +580,7 @@ describe('Navigation-helpers', () => {
       it('group nodes by category label', () => {
         nodes[1].category.collapsible = true;
         const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
-        assert.deepEqual(Object.keys(result), ['1', 'test', 'luigi']);
+        assert.deepEqual(Object.keys(result), ['1', 'test', 'applaunchpad']);
         assert.deepEqual(result.test['metaInfo'], { categoryUid: 'test', label: 'test', collapsible: true, order: 1 });
       });
       it('first category object counts', () => {
@@ -588,7 +588,7 @@ describe('Navigation-helpers', () => {
           pathSegment: 'someNode',
           label: 'someNode',
           category: {
-            label: 'luigi',
+            label: 'applaunchpad',
             collapsible: true,
             icon: 'someIcon'
           },
@@ -596,7 +596,7 @@ describe('Navigation-helpers', () => {
         };
         nodes.push(node);
         const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
-        assert.deepEqual(result.luigi.metaInfo, { label: 'luigi', order: 2 });
+        assert.deepEqual(result.applaunchpad.metaInfo, { label: 'applaunchpad', order: 2 });
       });
       it('first category object counts - part 2', () => {
         const node = {
@@ -620,7 +620,7 @@ describe('Navigation-helpers', () => {
           icon: 'someIcon',
           categoryUid: '1'
         });
-        assert.equal(result.One[0].label, 'luigi');
+        assert.equal(result.One[0].label, 'applaunchpad');
         assert.equal(result.One[1].label, 'someNode');
       });
     });
@@ -629,27 +629,27 @@ describe('Navigation-helpers', () => {
     let node;
     beforeEach(() => {
       node = {
-        label: 'LuigiNode'
+        label: 'AppLaunchpadNode'
       };
-      sinon.stub(LuigiConfig, 'getConfigValue');
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue');
     });
     afterEach(() => {
       sinon.restore();
     });
     it('tooltip text on node', () => {
       node.tooltipText = 'MarioNode';
-      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), 'MarioNode');
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'AppLaunchpadNode'), 'MarioNode');
     });
     it('tooltip turned off', () => {
       node.tooltipText = false;
-      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), '');
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'AppLaunchpadNode'), '');
     });
     it('tooltip not defined', () => {
-      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), 'LuigiNode');
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'AppLaunchpadNode'), 'AppLaunchpadNode');
     });
     it('tooltip turned off used defaults', () => {
-      LuigiConfig.getConfigValue.returns(false);
-      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), '');
+      AppLaunchpadConfig.getConfigValue.returns(false);
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'AppLaunchpadNode'), '');
     });
   });
   describe('check visible for feature toggles', () => {
@@ -658,22 +658,22 @@ describe('Navigation-helpers', () => {
       nodeToCheckPermission = {
         visibleForFeatureToggles: ['testFt']
       };
-      sinon.stub(LuigiFeatureToggles, 'getActiveFeatureToggleList');
+      sinon.stub(AppLaunchpadFeatureToggles, 'getActiveFeatureToggleList');
     });
     afterEach(() => {
       sinon.restore();
     });
     it('Node is visible with Ft "testFT"', async () => {
-      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['testFt']);
+      AppLaunchpadFeatureToggles.getActiveFeatureToggleList.returns(['testFt']);
       assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), true);
     });
     it('Node is NOT visible with Ft "testFT2"', async () => {
       nodeToCheckPermission.visibleForFeatureToggles = ['!testFt2'];
-      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['testFt', 'testFt2']);
+      AppLaunchpadFeatureToggles.getActiveFeatureToggleList.returns(['testFt', 'testFt2']);
       assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), false);
     });
     it('Node is NOT visible with Ft "testFT"', async () => {
-      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['test']);
+      AppLaunchpadFeatureToggles.getActiveFeatureToggleList.returns(['test']);
       assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), false);
     });
   });
@@ -686,17 +686,17 @@ describe('Navigation-helpers', () => {
             {
               pathSegment: 'overview',
               label: 'overview',
-              viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+              viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html'
             },
             {
               pathSegment: 'projects',
               label: 'Projects',
-              viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+              viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html',
               children: [
                 {
                   pathSegment: 'settings',
                   label: 'Settings',
-                  viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+                  viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html'
                 }
               ]
             },
@@ -704,12 +704,12 @@ describe('Navigation-helpers', () => {
               pathSegment: 'user_management',
               label: 'User Management',
               category: { label: 'test' },
-              viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+              viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html',
               children: [
                 {
                   pathSegment: 'developers',
                   label: 'Developers',
-                  viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+                  viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html'
                 }
               ]
             }
@@ -718,7 +718,7 @@ describe('Navigation-helpers', () => {
         {
           pathSegment: 'overview',
           label: 'overview',
-          viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+          viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html'
         }
       ];
     });
@@ -763,7 +763,7 @@ describe('Navigation-helpers', () => {
       const expandedList = NavigationHelpers.storeExpandedState('home:cat', true);
       sinon.assert.calledWithExactly(
         global.localStorage.setItem,
-        'luigi.preferences.navigation.expandedCategories',
+        'applaunchpad.preferences.navigation.expandedCategories',
         JSON.stringify(['home:cat'])
       );
       assert.deepEqual(expandedList, ['home:cat']);
@@ -773,7 +773,7 @@ describe('Navigation-helpers', () => {
       assert.deepEqual(NavigationHelpers.storeExpandedState('home:cat2', true), ['home:cat', 'home:cat2']);
       sinon.assert.calledWithExactly(
         global.localStorage.setItem,
-        'luigi.preferences.navigation.expandedCategories',
+        'applaunchpad.preferences.navigation.expandedCategories',
         JSON.stringify(['home:cat', 'home:cat2'])
       );
     });
@@ -782,7 +782,7 @@ describe('Navigation-helpers', () => {
       assert.deepEqual(NavigationHelpers.storeExpandedState('home:cat2', false), ['home:cat']);
       sinon.assert.calledWithExactly(
         global.localStorage.setItem,
-        'luigi.preferences.navigation.expandedCategories',
+        'applaunchpad.preferences.navigation.expandedCategories',
         JSON.stringify(['home:cat'])
       );
     });

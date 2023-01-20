@@ -1,4 +1,4 @@
-describe('Luigi Client linkManager Modal', () => {
+describe('AppLaunchpad Client linkManager Modal', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
@@ -10,9 +10,9 @@ describe('Luigi Client linkManager Modal', () => {
         $iframeBody = result;
         cy.goToLinkManagerMethods($iframeBody);
         cy.window().then(win => {
-          const config = win.Luigi.getConfig();
+          const config = win.AppLaunchpad.getConfig();
           config.routing.showModalPathInUrl = true;
-          win.Luigi.configChanged('routing');
+          win.AppLaunchpad.configChanged('routing');
         });
       });
     });
@@ -127,7 +127,7 @@ describe('Luigi Client linkManager Modal', () => {
         // second modal - large
         cy.getIframeBody({}, 0, '[modal-container-index=1]').then(result => {
           $iframeBody = result;
-          cy.wrap($iframeBody).contains('LuigiClient linkManager methods');
+          cy.wrap($iframeBody).contains('AppLaunchpadClient linkManager methods');
 
           cy.wrap($iframeBody)
             .find('[data-testid=open-modal-to-settings-medium]')
@@ -145,7 +145,7 @@ describe('Luigi Client linkManager Modal', () => {
             // fourth modal - small
             cy.getIframeBody({}, 0, '[modal-container-index=3]').then(result => {
               $iframeBody = result;
-              cy.wrap($iframeBody).contains('LuigiClient linkManager methods');
+              cy.wrap($iframeBody).contains('AppLaunchpadClient linkManager methods');
             });
           });
         });
@@ -154,9 +154,9 @@ describe('Luigi Client linkManager Modal', () => {
 
     it('multiple modals modalpath params enabled', () => {
       cy.window().then(win => {
-        const config = win.Luigi.getConfig();
+        const config = win.AppLaunchpad.getConfig();
         config.routing.showModalPathInUrl = true;
-        win.Luigi.configChanged('routing');
+        win.AppLaunchpad.configChanged('routing');
 
         cy.expectPathToBe('/projects/pr2');
 
@@ -184,7 +184,7 @@ describe('Luigi Client linkManager Modal', () => {
           // second modal - large
           cy.getIframeBody({}, 0, '[modal-container-index=1]').then(result => {
             $iframeBody = result;
-            cy.wrap($iframeBody).contains('LuigiClient linkManager methods');
+            cy.wrap($iframeBody).contains('AppLaunchpadClient linkManager methods');
 
             cy.wrap($iframeBody)
               .find('[data-testid=open-modal-to-settings-medium]')
@@ -210,7 +210,7 @@ describe('Luigi Client linkManager Modal', () => {
               // fourth modal - small
               cy.getIframeBody({}, 0, '[modal-container-index=3]').then(result => {
                 $iframeBody = result;
-                cy.wrap($iframeBody).contains('LuigiClient linkManager methods');
+                cy.wrap($iframeBody).contains('AppLaunchpadClient linkManager methods');
               });
             });
           });

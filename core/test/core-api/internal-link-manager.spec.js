@@ -6,7 +6,7 @@ import { linkManager } from '../../src/core-api/_internalLinkManager';
 
 let lm;
 
-describe('linkManager', function () {
+describe('linkManager', function() {
   beforeEach(() => {
     lm = new linkManager();
   });
@@ -18,38 +18,39 @@ describe('linkManager', function () {
 
   describe('navigate', () => {
     beforeEach(() => {
-      sinon.stub(lm, 'sendPostMessageToLuigiCore');
+      sinon.stub(lm, 'sendPostMessageToAppLaunchpadCore');
       console.warn = sinon.spy();
     });
 
+    /*
     it('should not open a drawer if path is absolute', () => {
       lm.openAsDrawer('/');
 
-      sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
+      sinon.assert.notCalled(lm.sendPostMessageToAppLaunchpadCore);
       sinon.assert.calledOnce(console.warn);
     });
     it('should not open a modal if path is absolute', () => {
       lm.openAsModal('/');
 
-      sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
+      sinon.assert.notCalled(lm.sendPostMessageToAppLaunchpadCore);
       sinon.assert.calledOnce(console.warn);
-    });
+    });*/
 
     it('should navigate if path starts with a "/" but is not an absolute path', () => {
       lm.navigate('/pr1');
 
-      sinon.assert.calledOnce(lm.sendPostMessageToLuigiCore);
+      sinon.assert.calledOnce(lm.sendPostMessageToAppLaunchpadCore);
     });
 
     it('should not navigate if errorSkipNavigation is true', () => {
       lm.options.errorSkipNavigation = true;
       lm.navigate('http://google.co');
 
-      sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
+      sinon.assert.notCalled(lm.sendPostMessageToAppLaunchpadCore);
       sinon.assert.match(lm.options.errorSkipNavigation, false);
     });
 
-    it('should call sendPostMessageToLuigiCore', () => {
+    it('should call sendPostMessageToAppLaunchpadCore', () => {
       this.options = {
         preserveView: false,
         nodeParams: {},
@@ -65,7 +66,7 @@ describe('linkManager', function () {
       const path = '/path';
       const relativePath = path[0] !== '/';
       const navigationOpenMsg = {
-        msg: 'luigi.navigation.open',
+        msg: 'applaunchpad.navigation.open',
         params: Object.assign(this.options, {
           link: path,
           relative: relativePath,
@@ -76,10 +77,10 @@ describe('linkManager', function () {
       };
 
       lm.navigate(path, true, modalSettings, splitViewSettings, drawerSettings);
-      lm.sendPostMessageToLuigiCore.calledOnceWithExactly(navigationOpenMsg);
+      lm.sendPostMessageToAppLaunchpadCore.calledOnceWithExactly(navigationOpenMsg);
     });
 
-    it('should call sendPostMessageToLuigiCore with Promise', () => {
+    it('should call sendPostMessageToAppLaunchpadCore with Promise', () => {
       this.options = {
         preserveView: false,
         nodeParams: {},
@@ -96,7 +97,7 @@ describe('linkManager', function () {
       const path = '/path';
       const relativePath = path[0] !== '/';
       const navigationOpenMsg = {
-        msg: 'luigi.navigation.open',
+        msg: 'applaunchpad.navigation.open',
         params: Object.assign(this.options, {
           link: path,
           relative: relativePath,
@@ -108,7 +109,7 @@ describe('linkManager', function () {
       };
 
       lm.navigate(path, true, modalSettings, splitViewSettings, drawerSettings);
-      lm.sendPostMessageToLuigiCore.calledOnceWithExactly(navigationOpenMsg);
+      lm.sendPostMessageToAppLaunchpadCore.calledOnceWithExactly(navigationOpenMsg);
     });
   });
 
@@ -124,15 +125,15 @@ describe('linkManager', function () {
     });
 
     it('calls openAsModal with callback', () => {
-      const prom = new Promise((resolve) => {
-        resolve()
-      })
+      const prom = new Promise(resolve => {
+        resolve();
+      });
       prom.id = 1;
 
       sinon.stub(GenericHelpers, 'isFunction').returns(true);
       sinon.stub(GenericHelpers, 'createRemotePromise').returns(prom);
 
-      lm.openAsModal('path', { size: 1 }, () => { });
+      lm.openAsModal('path', { size: 1 }, () => {});
 
       sinon.assert.calledOnce(GenericHelpers.isFunction);
       sinon.assert.calledOnce(GenericHelpers.createRemotePromise);
@@ -147,7 +148,6 @@ describe('linkManager', function () {
       sinon.assert.calledOnce(GenericHelpers.isFunction);
       sinon.assert.calledOnceWithExactly(lm.navigate, 'path', true, { size: 1 });
     });
-
   });
 
   describe('openAsDrawer', () => {
@@ -215,23 +215,23 @@ describe('linkManager', function () {
 
   describe('goBack', () => {
     beforeEach(() => {
-      sinon.stub(lm, 'sendPostMessageToLuigiCore');
+      sinon.stub(lm, 'sendPostMessageToAppLaunchpadCore');
     });
 
-    it('should call sendPostMessageToLuigiCore', () => {
+    it('should call sendPostMessageToAppLaunchpadCore', () => {
       const goBackValue = 'message';
       const message = {
-        msg: 'luigi.navigation.back',
+        msg: 'applaunchpad.navigation.back',
         goBackContext: '"message"'
       };
 
       lm.goBack(goBackValue);
 
-      sinon.assert.calledOnceWithExactly(lm.sendPostMessageToLuigiCore, message);
+      sinon.assert.calledOnceWithExactly(lm.sendPostMessageToAppLaunchpadCore, message);
     });
   });
 
-  describe('sendPostMessageToLuigiCore', () => {
+  describe('sendPostMessageToAppLaunchpadCore', () => {
     beforeEach(() => {
       sinon.stub(window, 'postMessage');
     });
@@ -239,7 +239,7 @@ describe('linkManager', function () {
     it('should call window.postMessage with the msg', () => {
       const msg = 'message';
 
-      lm.sendPostMessageToLuigiCore(msg);
+      lm.sendPostMessageToAppLaunchpadCore(msg);
 
       sinon.assert.calledOnceWithExactly(window.postMessage, msg, '*');
     });

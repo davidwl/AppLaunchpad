@@ -1,8 +1,4 @@
-import {
-  UserManager,
-  WebStorageStateStore,
-  InMemoryWebStorage
-} from 'oidc-client';
+import { UserManager, WebStorageStateStore, InMemoryWebStorage } from 'oidc-client';
 import { Helpers } from '../helpers';
 import { thirdPartyCookiesStatus } from '../third-party-cookies-check';
 export default class openIdConnect {
@@ -17,8 +13,7 @@ export default class openIdConnect {
       accessTokenExpiringNotificationTime: 60,
       thirdPartyCookiesScriptLocation: '',
       logoutUrl: window.location.origin + '/logout.html',
-      silent_redirect_uri:
-        window.location.origin + '/assets/auth-oidc/silent-callback.html'
+      silent_redirect_uri: window.location.origin + '/assets/auth-oidc/silent-callback.html'
     };
 
     const mergedSettings = Helpers.deepMerge(defaultSettings, settings);
@@ -29,10 +24,8 @@ export default class openIdConnect {
     });
 
     // set storage type
-    const storageType = Luigi.getConfigValue('auth.storage');
-    const isValidStore = ['none', 'sessionStorage', 'localStorage'].includes(
-      storageType
-    );
+    const storageType = AppLaunchpad.getConfigValue('auth.storage');
+    const isValidStore = ['none', 'sessionStorage', 'localStorage'].includes(storageType);
     if (isValidStore && storageType == 'none') {
       mergedSettings.userStore = new WebStorageStateStore({
         store: new InMemoryWebStorage()
@@ -52,11 +45,8 @@ export default class openIdConnect {
 
     this.client.events.addUserLoaded(async payload => {
       let profile = payload.profile;
-      if (
-        payload.profile &&
-        Luigi.getConfigValue('auth.openIdConnect.profileStorageInterceptorFn')
-      ) {
-        profile = await Luigi.executeConfigFnAsync(
+      if (payload.profile && AppLaunchpad.getConfigValue('auth.openIdConnect.profileStorageInterceptorFn')) {
+        profile = await AppLaunchpad.executeConfigFnAsync(
           'auth.openIdConnect.profileStorageInterceptorFn',
           true,
           payload.profile
@@ -73,26 +63,19 @@ export default class openIdConnect {
 
       if (!data.accessToken && data.idToken) {
         try {
-          data.idTokenExpirationDate =
-            JSON.parse(atob(data.idToken.split('.')[1])).exp * 1000;
+          data.idTokenExpirationDate = JSON.parse(atob(data.idToken.split('.')[1])).exp * 1000;
           data.accessTokenExpirationDate = data.idTokenExpirationDate;
         } catch (e) {
           console.error(e);
         }
       }
 
-      Luigi.auth().store.setAuthData(data);
+      AppLaunchpad.auth().store.setAuthData(data);
 
-      window.postMessage(
-        { msg: 'luigi.auth.tokenIssued', authData: data },
-        window.location.origin
-      );
+      window.postMessage({ msg: 'applaunchpad.auth.tokenIssued', authData: data }, window.location.origin);
     });
 
-    return Promise.all([
-      this._processLoginResponse(),
-      this._processLogoutResponse()
-    ]).then(() => {
+    return Promise.all([this._processLoginResponse(), this._processLogoutResponse()]).then(() => {
       return this;
     });
   }
@@ -125,7 +108,7 @@ export default class openIdConnect {
   setTokenExpirationAction() {
     if (!this.settings.automaticSilentRenew) {
       this.client.events.addAccessTokenExpired(() => {
-        Luigi.auth().handleAuthEvent(
+        AppLaunchpad.auth().handleAuthEvent(
           'onAuthExpired',
           this.settings,
           undefined,
@@ -157,23 +140,15 @@ export default class openIdConnect {
           break;
         default:
           console.error('[OIDC] addSilentRenewError Error', e);
-          redirectUrl =
-            this.settings.logoutUrl +
-            '?error=tokenExpired&errorDescription=' +
-            e.message;
+          redirectUrl = this.settings.logoutUrl + '?error=tokenExpired&errorDescription=' + e.message;
       }
-      Luigi.auth().handleAuthEvent(
-        'onAuthError',
-        this.settings,
-        e,
-        redirectUrl
-      );
+      AppLaunchpad.auth().handleAuthEvent('onAuthError', this.settings, e, redirectUrl);
     });
   }
 
   setTokenExpireSoonAction() {
     this.client.events.addAccessTokenExpiring(() => {
-      Luigi.auth().handleAuthEvent('onAuthExpireSoon', this.settings);
+      AppLaunchpad.auth().handleAuthEvent('onAuthExpireSoon', this.settings);
     });
   }
 
@@ -184,7 +159,7 @@ export default class openIdConnect {
         this.client
           .processSignoutResponse()
           .then(response => {
-            Luigi.auth().store.removeAuthData();
+            AppLaunchpad.auth().store.removeAuthData();
             resolve(response);
           })
           .catch(function(err) {
@@ -210,8 +185,7 @@ export default class openIdConnect {
         }
       } else {
         // check id_token, else defaulting to access token
-        toCheck =
-          responseType.indexOf('id_token') > -1 ? 'id_token' : 'access_token';
+        toCheck = responseType.indexOf('id_token') > -1 ? 'id_token' : 'access_token';
         if (!responseMode) {
           fromWhere = 'hash';
         } else {
@@ -238,25 +212,17 @@ export default class openIdConnect {
           // else persistence might fail.
           setTimeout(() => {
             if (authenticatedUser.state) {
-              history.pushState(
-                '',
-                document.title,
-                decodeURIComponent(authenticatedUser.state)
-              );
+              history.pushState('', document.title, decodeURIComponent(authenticatedUser.state));
             } else {
-              history.pushState(
-                '',
-                document.title,
-                window.location.pathname + window.location.search
-              );
+              history.pushState('', document.title, window.location.pathname + window.location.search);
             }
             resolve(true);
           }, 50);
         })
         .catch(err => {
           console.error('[OIDC] tryToSignIn Error', err);
-          Luigi.auth().store.removeAuthData();
-          Luigi.auth().handleAuthEvent(
+          AppLaunchpad.auth().store.removeAuthData();
+          AppLaunchpad.auth().handleAuthEvent(
             'onAuthExpired',
             this.settings,
             err,
@@ -270,14 +236,9 @@ export default class openIdConnect {
     try {
       // If the user was just redirected here from the sign in page, sign them in.
       await this.client.signinRedirectCallback();
-      console.debug(
-        '[OIDC] User was redirected via the sign-in page. Now signed in.'
-      );
+      console.debug('[OIDC] User was redirected via the sign-in page. Now signed in.');
     } catch (error) {
-      console.debug(
-        "[OIDC] Error. Sign-in redirect callback doesn't work. Let's try a silent sign-in.",
-        error
-      );
+      console.debug("[OIDC] Error. Sign-in redirect callback doesn't work. Let's try a silent sign-in.", error);
       // Barring that, if the user chose to have the Identity Server remember their
       // credentials and permission decisions, we may be able to silently sign them
       // back in via a background iframe.

@@ -8,16 +8,16 @@ describe('Login Flow', () => {
   it('User name in profile dropdown', () => {
     cy.login('tets@email.com', 'tets');
 
-    cy.get('[data-testid="luigi-topnav-profile"]').click();
-    cy.get('[data-testid="luigi-topnav-profile-username"]').should('contain', 'Luigi User');
+    cy.get('[data-testid="applaunchpad-topnav-profile"]').click();
+    cy.get('[data-testid="applaunchpad-topnav-profile-username"]').should('contain', 'AppLaunchpad User');
   });
 
   it('Link in profile dropdown', () => {
     cy.login('tets@email.com', 'tets');
 
-    cy.get('[data-testid="luigi-topnav-profile"]').click();
-    cy.get('[data-testid="luigi-topnav-profile-item"]').contains('Project One');
-    cy.get('[data-testid="luigi-topnav-profile-item"]')
+    cy.get('[data-testid="applaunchpad-topnav-profile"]').click();
+    cy.get('[data-testid="applaunchpad-topnav-profile-item"]').contains('Project One');
+    cy.get('[data-testid="applaunchpad-topnav-profile-item"]')
       .eq(1)
       .click();
 
@@ -36,14 +36,14 @@ describe('Login Flow', () => {
     cy.selectContextSwitcherItem('Remove Project');
     cy.expectPathToBe('/projects');
 
-    cy.get('[data-testid="luigi-topnav-profile"]').click();
-    cy.get('[data-testid="luigi-topnav-profile-item"]').should('not.contain', 'Project 1');
+    cy.get('[data-testid="applaunchpad-topnav-profile"]').click();
+    cy.get('[data-testid="applaunchpad-topnav-profile-item"]').should('not.contain', 'Project 1');
 
     // add project
     cy.selectContextSwitcherItem('New Project');
     cy.expectPathToBe('/projects');
 
-    cy.get('[data-testid="luigi-topnav-profile-item"]').should('contain', 'Project 1');
+    cy.get('[data-testid="applaunchpad-topnav-profile-item"]').should('contain', 'Project 1');
   });
 
   it('Change title and logo', () => {
@@ -53,17 +53,17 @@ describe('Login Flow', () => {
     const testLogo =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM0WCn/HgAD8gHpXMQ+4AAAAABJRU5ErkJggg==';
 
-    cy.get('[data-testid="luigi-topnav-title"]').should('contain', 'Luigi Demo');
-    cy.get('[data-testid="luigi-topnav-title"]').should('not.have.attr', 'src', testLogo);
+    cy.get('[data-testid="applaunchpad-topnav-title"]').should('contain', 'AppLaunchpad Demo');
+    cy.get('[data-testid="applaunchpad-topnav-title"]').should('not.have.attr', 'src', testLogo);
 
     cy.window().then(win => {
-      const config = win.Luigi.getConfig();
+      const config = win.AppLaunchpad.getConfig();
       config.settings.header.title = testTitle;
       config.settings.header.logo = testLogo;
-      win.Luigi.configChanged('settings.header');
+      win.AppLaunchpad.configChanged('settings.header');
 
-      cy.get('[data-testid="luigi-topnav-title"]').should('contain', testTitle);
-      cy.get('[data-testid="luigi-topnav-logo"]').should('have.attr', 'src', testLogo);
+      cy.get('[data-testid="applaunchpad-topnav-title"]').should('contain', testTitle);
+      cy.get('[data-testid="applaunchpad-topnav-logo"]').should('have.attr', 'src', testLogo);
     });
   });
 
@@ -71,7 +71,7 @@ describe('Login Flow', () => {
     cy.login('tets@email.com', 'tets');
 
     //logout
-    cy.get('[data-testid="luigi-topnav-profile"]').click();
+    cy.get('[data-testid="applaunchpad-topnav-profile"]').click();
     cy.contains('Sign Out').click();
     cy.get('[data-testid="logout-headline"]').should('contain', 'You have successfully logged out');
     cy.get('[data-testid="logout-message"]').should('contain', 'Sign in again to continue working on awesome things!');
@@ -79,7 +79,7 @@ describe('Login Flow', () => {
 
     //login again
     cy.contains('Re-Login').click();
-    cy.get('body').should('contain', 'Login to Luigi sample app');
+    cy.get('body').should('contain', 'Login to AppLaunchpad sample app');
     cy.login('tets@email.com', 'tets');
   });
 });

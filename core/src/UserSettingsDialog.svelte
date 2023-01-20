@@ -17,8 +17,8 @@
   import { ViewUrlDecorator } from './services/viewurl-decorator';
   import UserSettingsEditor from './UserSettingsEditor.svelte';
   import { CSS_BREAKPOINTS } from './utilities/constants';
-  import { LuigiConfig } from './core-api';
-  import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
+  import { AppLaunchpadConfig } from './core-api';
+  import { TOP_NAV_DEFAULTS } from './utilities/applaunchpad-config-defaults';
   import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE, KEYCODE_HOME, KEYCODE_END } from './utilities/keycode.js';
   export let schemaObj;
   export let userSettingGroups;
@@ -47,12 +47,12 @@
   });
 
   onMount(() => {
-    const usLocalizationConfig = LuigiConfig.getConfigValue(
+    const usLocalizationConfig = AppLaunchpadConfig.getConfigValue(
       'userSettings.userSettingsDialog'
     );
     const usLocalization = usLocalizationConfig
       ? usLocalizationConfig
-      : LuigiConfig.getConfigValue('settings.userSettings.userSettingsDialog');
+      : AppLaunchpadConfig.getConfigValue('settings.userSettings.userSettingsDialog');
     if (usLocalization) {
       dialogHeader = usLocalization.dialogHeader
         ? usLocalization.dialogHeader
@@ -72,7 +72,7 @@
       iframe._ready = true;
 
       const message = MessagesListeners.convertCustomMessageInternalToUser(e.data);
-      const userSettingsCMKey = 'luigi.updateUserSettings';
+      const userSettingsCMKey = 'applaunchpad.updateUserSettings';
       if (message.id === userSettingsCMKey) {
         const iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
         if (iframe) {
@@ -82,7 +82,7 @@
       }
 
       if (
-        message.id === 'luigi.navBackMobile' &&
+        message.id === 'applaunchpad.navBackMobile' &&
         window.window.innerWidth !== 0 &&
         window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
       ) {
@@ -90,7 +90,7 @@
       }
     });
 
-    LuigiConfig.readUserSettings()
+    AppLaunchpadConfig.readUserSettings()
       .then(storedUserSettingsData => {
         previousUserSettings = JSON.parse(JSON.stringify(storedUserSettingsData));
         if (storedUserSettingsData === null) {
@@ -147,12 +147,12 @@
       if (property.type === 'enum') {
         if (!Array.isArray(property.options)) {
           console.error(
-            `There is no options array for '${key}' defined in the Luigi userSettings config.`
+            `There is no options array for '${key}' defined in the AppLaunchpad userSettings config.`
           );
         }
       } else if (property.type === undefined) {
         console.error(
-          `There is no data type defined for '${key}' in the Luigi userSettings config.`
+          `There is no data type defined for '${key}' in the AppLaunchpad userSettings config.`
         );
       }
     }
@@ -224,7 +224,7 @@
   };
 
   function storeUserSettings() {
-    LuigiConfig.storeUserSettings(storedUserSettings, previousUserSettings)
+    AppLaunchpadConfig.storeUserSettings(storedUserSettings, previousUserSettings)
       .then(() => {
         dispatch('close');
       })

@@ -5,10 +5,10 @@ let status = 'not_checked';
 EventListenerHelpers.addEventListener(
   'message',
   function(e) {
-    if (e.data === 'luigi.tpcDisabled') {
+    if (e.data === 'applaunchpad.tpcDisabled') {
       console.warn('Third party cookies are not supported! Silent token renewal might not work!');
       status = 'disabled';
-    } else if (e.data === 'luigi.tpcEnabled') {
+    } else if (e.data === 'applaunchpad.tpcEnabled') {
       status = 'enabled';
     }
   },

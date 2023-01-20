@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { linkManager, uxManager } from '@luigi-project/client';
+import { linkManager, uxManager } from '@applaunchpad-project/client';
 
 @Component({
   selector: 'app-drawer',

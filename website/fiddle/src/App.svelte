@@ -1,9 +1,9 @@
 <script>
-  import luigiCorePkgInfo from '../node_modules/@luigi-project/core/package.json';
+  import applaunchpadCorePkgInfo from '../node_modules/@applaunchpad-project/core/package.json';
   import defaultConfig from './defaultConfig.js';
   import { onMount } from 'svelte';
 
-  export let luigiVersion = luigiCorePkgInfo.version;
+  export let applaunchpadVersion = applaunchpadCorePkgInfo.version;
 
   let defaultConfigString = defaultConfig;
   let configString = defaultConfigString;
@@ -230,7 +230,7 @@
       <header class="fd-dialog__header fd-bar fd-bar--header">
         <div class="fd-bar__left">
           <div class="fd-bar__element">
-            <h3 class="fd-dialog__title">Luigi Config</h3>
+            <h3 class="fd-dialog__title">AppLaunchpad Config</h3>
           </div>
         </div>
       </header>
@@ -262,8 +262,8 @@
   <div class="fd-action-bar">
     <div class="fd-action-bar__header">
       <div class="title-wrapper">
-        <img alt="Luigi" src="./img/luigi.png" />
-        <span class="lui-mobile-hide">powered by Luigi v{luigiVersion}</span>
+        <img alt="AppLaunchpad" src="./img/applaunchpad.png" />
+        <span class="lui-mobile-hide">powered by AppLaunchpad v{applaunchpadVersion}</span>
         <span>
           <a
             class="fd-link"

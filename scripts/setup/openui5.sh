@@ -1,12 +1,12 @@
 #!/bin/bash
 echo ""
-echo "Installing Luigi with static files and basic configuration"
+echo "Installing AppLaunchpad with static files and basic configuration"
 echo ""
 if [[ "$1" = "" ]]; then
-  read -p "Luigi project folder name: " folder
+  read -p "AppLaunchpad project folder name: " folder
 else
   folder=$1
-  echo "Luigi project folder name: $folder"
+  echo "AppLaunchpad project folder name: $folder"
 fi
 # steps to execute line by line
 echo ""
@@ -15,7 +15,7 @@ mkdir $folder && cd $folder
 echo "Creating folders and downloading example assets"
 mkdir -p ./webapp/home ./webapp/libs ./webapp/sample1 ./webapp/sample2 ./webapp/i18n
 
-export UI5EX_REPO_URL="https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-openui5"
+export UI5EX_REPO_URL="https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-openui5"
 
 curl --silent $UI5EX_REPO_URL/webapp/sample2/Sample2.view.xml > ./webapp/sample2/Sample2.view.xml
 curl --silent $UI5EX_REPO_URL/webapp/sample2/sample2.html > ./webapp/sample2/sample2.html
@@ -25,7 +25,7 @@ curl --silent $UI5EX_REPO_URL/webapp/home/Home.view.xml > ./webapp/home/Home.vie
 curl --silent $UI5EX_REPO_URL/webapp/home/Home.controller.js > ./webapp/home/Home.controller.js
 curl --silent $UI5EX_REPO_URL/webapp/favicon.ico > ./webapp/favicon.ico
 curl --silent $UI5EX_REPO_URL/webapp/index.html > ./webapp/index.html
-curl --silent $UI5EX_REPO_URL/webapp/luigi-config.js > ./webapp/luigi-config.js
+curl --silent $UI5EX_REPO_URL/webapp/applaunchpad-config.js > ./webapp/applaunchpad-config.js
 curl --silent $UI5EX_REPO_URL/webapp/openui5.html > ./webapp/openui5.html
 curl --silent $UI5EX_REPO_URL/webapp/libs/.gitignore > ./webapp/libs/.gitignore
 curl --silent $UI5EX_REPO_URL/webapp/Component.js > ./webapp/Component.js

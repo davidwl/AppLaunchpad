@@ -1,12 +1,12 @@
-describe('Luigi client linkManager', () => {
+describe('AppLaunchpad client linkManager', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
 
   describe('Goes back and pass data ', () => {
     let $iframeBody;
-    const $inputTypeNormal = 'Buongiorno Luigi';
-    const $inputTypeModal = 'Buona notte Luigi';
+    const $inputTypeNormal = 'Buongiorno AppLaunchpad';
+    const $inputTypeModal = 'Buona notte AppLaunchpad';
     beforeEach(() => {
       cy.visitLoggedIn('/projects/pr2');
       cy.getIframeBody().then(result => {

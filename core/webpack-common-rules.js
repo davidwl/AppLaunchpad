@@ -10,7 +10,7 @@ module.exports = {
         loader: 'svelte-loader',
         options: {
           emitCss: true,
-          name: 'Luigi',
+          name: 'AppLaunchpad',
           preprocess: {
             style: ({ content, attributes }) => {
               if (attributes.type !== 'text/scss') return;

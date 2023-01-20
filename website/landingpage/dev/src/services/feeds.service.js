@@ -9,24 +9,24 @@ class BlogFeedsService {
 
   generate(blogEntries) {
     this.feed = new Feed({
-      title: 'Luigi Blog',
+      title: 'AppLaunchpad Blog',
       description: 'The Enterprise-Ready Micro Frontend Framework',
-      id: 'https://luigi-project.io/blog',
-      link: 'https://luigi-project.io/blog/overview',
+      id: 'https://applaunchpad-project.io/blog',
+      link: 'https://applaunchpad-project.io/blog/overview',
       language: 'en', // optional, used only in RSS 2.0, possible values: http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
-      image: 'https://luigi-project.io/assets/img/luigi_diagramm.png',
-      favicon: 'https://luigi-project.io/assets/img/favicon.png',
-      copyright: 'Copyright 2021. The Luigi project authors',
+      image: 'https://applaunchpad-project.io/assets/img/applaunchpad_diagramm.png',
+      favicon: 'https://applaunchpad-project.io/assets/img/favicon.png',
+      copyright: 'Copyright 2021. The AppLaunchpad project authors',
       updated: new Date(), // optional, default = today
-      generator: 'Luigi Project', // optional, default = 'Feed for Node.js'
+      generator: 'AppLaunchpad Project', // optional, default = 'Feed for Node.js'
       feedLinks: {
-        json: 'https://luigi-project.io/blog/feeds/json',
-        atom: 'https://luigi-project.io/blog/feeds/atom'
+        json: 'https://applaunchpad-project.io/blog/feeds/json',
+        atom: 'https://applaunchpad-project.io/blog/feeds/atom'
       },
       author: {
-        name: 'Luigi project authors',
-        email: 'luigi-project@sap.com',
-        link: 'https://luigi-project.io'
+        name: 'AppLaunchpad project authors',
+        email: 'applaunchpad-project@sap.com',
+        link: 'https://applaunchpad-project.io'
       }
     });
 
@@ -36,8 +36,8 @@ class BlogFeedsService {
       const blog = post;
       this.feed.addItem({
         title: post.title,
-        id: `https://luigi-project.io/blog/${post.slug}`,
-        link: `https://luigi-project.io/blog/${post.slug}`,
+        id: `https://applaunchpad-project.io/blog/${post.slug}`,
+        link: `https://applaunchpad-project.io/blog/${post.slug}`,
         description: post.seoMetaDescription,
         content: post.htmlContent, // or htmlExcerpt?
         author: post.author.map(name => ({ name })),

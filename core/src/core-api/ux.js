@@ -4,10 +4,10 @@ import { get, writable } from 'svelte/store';
 import { linkManager } from './_internalLinkManager';
 import { SemiCollapsibleNavigation } from './../navigation/services/semi-collapsed-navigation';
 /**
- * Functions to use Luigi Core UX features.
+ * Functions to use AppLaunchpad Core UX features.
  * @namespace UX
  */
-class LuigiUX {
+class AppLaunchpadUX {
   constructor() {
     this.documentTitle = writable();
   }
@@ -37,7 +37,7 @@ class LuigiUX {
    * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
    * @param {string} settings.links.LINK_KEY.url URL to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
    * @param {string} settings.links.LINK_KEY.dismissKey dismissKey which represents the key of the link.
-   * @param {number} settings.closeAfter (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
+   * @param {number} settings.closeAfter (optional) time in milliseconds that tells AppLaunchpad when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
    * @returns {promise} which is resolved when the alert is dismissed
    * @since 0.6.4
    * @example
@@ -52,7 +52,7 @@ class LuigiUX {
    *  },
    *  closeAfter: 3000
    * }
-   * Luigi
+   * AppLaunchpad
    *  .ux()
    *  .showAlert(settings)
    *  .then(() => {
@@ -61,11 +61,11 @@ class LuigiUX {
    */
 
   showAlert(settings) {
-    if (GenericHelpers.isFunction(Luigi.showAlert)) {
-      return Luigi.showAlert(settings);
+    if (GenericHelpers.isFunction(AppLaunchpad.showAlert)) {
+      return AppLaunchpad.showAlert(settings);
     } else {
       console.error(
-        'Luigi.ux().showAlert() is only available inside your configuration, after the configuration was initialized with Luigi.setConfig().'
+        'AppLaunchpad.ux().showAlert() is only available inside your configuration, after the configuration was initialized with AppLaunchpad.setConfig().'
       );
     }
   }
@@ -88,7 +88,7 @@ class LuigiUX {
    *  buttonConfirm: "Yes",
    *  buttonDismiss: "No"
    * }
-   * Luigi
+   * AppLaunchpad
    *  .ux()
    *  .showConfirmationModal(settings)
    *  .then(() => {
@@ -97,11 +97,11 @@ class LuigiUX {
    */
 
   showConfirmationModal(settings) {
-    if (GenericHelpers.isFunction(Luigi.showConfirmationModal)) {
-      return Luigi.showConfirmationModal(settings);
+    if (GenericHelpers.isFunction(AppLaunchpad.showConfirmationModal)) {
+      return AppLaunchpad.showConfirmationModal(settings);
     } else {
       console.error(
-        'Luigi.ux().showConfirmationModal() is only available inside your configuration, after the configuration was initialized with Luigi.setConfig().'
+        'AppLaunchpad.ux().showConfirmationModal() is only available inside your configuration, after the configuration was initialized with AppLaunchpad.setConfig().'
       );
     }
   }
@@ -111,11 +111,11 @@ class LuigiUX {
    * @memberof UX
    * @param {string} documentTitle
    * @since 1.4.0
-   * @example Luigi.ux().setDocumentTitle('Luigi');
+   * @example AppLaunchpad.ux().setDocumentTitle('AppLaunchpad');
    */
   setDocumentTitle(documentTitle) {
     this.documentTitle.set(documentTitle);
-    Luigi.configChanged('settings.header');
+    AppLaunchpad.configChanged('settings.header');
   }
 
   /**
@@ -123,7 +123,7 @@ class LuigiUX {
    * @memberof UX
    * @since 1.4.0
    * @returns {string} a string, which is displayed in the tab.
-   * @example Luigi.ux().getDocumentTitle();
+   * @example AppLaunchpad.ux().getDocumentTitle();
    */
   getDocumentTitle() {
     return get(this.documentTitle);
@@ -146,7 +146,7 @@ class LuigiUX {
    * @since 1.7.1
    */
   openUserSettings() /* istanbul ignore next */ {
-    Luigi.openUserSettings();
+    AppLaunchpad.openUserSettings();
   }
 
   /**
@@ -155,7 +155,7 @@ class LuigiUX {
    * @since 1.7.1
    */
   closeUserSettings() /* istanbul ignore next */ {
-    Luigi.closeUserSettings();
+    AppLaunchpad.closeUserSettings();
   }
 
   /**
@@ -164,8 +164,8 @@ class LuigiUX {
    * @private
    */
   removeBackdrop() {
-    new linkManager().sendPostMessageToLuigiCore({ msg: 'luigi.remove-backdrop' });
+    new linkManager().sendPostMessageToAppLaunchpadCore({ msg: 'applaunchpad.remove-backdrop' });
   }
 }
 
-export const ux = new LuigiUX();
+export const ux = new AppLaunchpadUX();

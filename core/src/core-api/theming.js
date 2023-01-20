@@ -1,11 +1,11 @@
-import { LuigiConfig } from '.';
+import { AppLaunchpadConfig } from '.';
 import { GenericHelpers, StateHelpers } from '../utilities/helpers';
 import { ViewUrlDecorator } from '../services';
 /**
- * Functions to use Luigi Core Theming features.
+ * Functions to use AppLaunchpad Core Theming features.
  * @namespace Theming
  */
-class LuigiTheming {
+class AppLaunchpadTheming {
   constructor() {
     this.currentTheme;
   }
@@ -16,7 +16,7 @@ class LuigiTheming {
    * @returns {promise} resolves an array of theming objects
    * @since 1.4.0
    * @example
-   * Luigi
+   * AppLaunchpad
    *  .theming()
    *  .getAvailableThemes()
    *  .then((themes) => {
@@ -24,7 +24,7 @@ class LuigiTheming {
    *  });
    */
   async getAvailableThemes() {
-    return await LuigiConfig.getConfigValueAsync('settings.theming.themes');
+    return await AppLaunchpadConfig.getConfigValueAsync('settings.theming.themes');
   }
 
   /**
@@ -33,7 +33,7 @@ class LuigiTheming {
    * @param {string} id of a theme object
    * @since 1.4.0
    * @example
-   * Luigi.theming().setCurrentTheme('light')
+   * AppLaunchpad.theming().setCurrentTheme('light')
    */
   setCurrentTheme(id) {
     this.currentTheme = id;
@@ -46,7 +46,7 @@ class LuigiTheming {
    * @returns {promise} resolves a theme object
    * @since 1.4.0
    * @example
-   * Luigi
+   * AppLaunchpad
    *  .theming()
    *  .getThemeObject('light')
    *  .then((id => {
@@ -63,7 +63,7 @@ class LuigiTheming {
    * @returns {string} theme id
    * @since 1.4.0
    * @example
-   * Luigi.theming().getCurrentTheme()
+   * AppLaunchpad.theming().getCurrentTheme()
    */
   getCurrentTheme() {
     if (!this.isThemingAvailable()) {
@@ -72,7 +72,7 @@ class LuigiTheming {
     if (this.currentTheme) {
       return this.currentTheme;
     }
-    const theming = LuigiConfig.getConfigValue('settings.theming');
+    const theming = AppLaunchpadConfig.getConfigValue('settings.theming');
     if (!theming.defaultTheme) {
       console.error(
         '[Theming] getCurrentTheme() error. No theme set and no defaultTheme found in configuration',
@@ -87,10 +87,10 @@ class LuigiTheming {
    * @returns {boolean} `true` if **settings.theming** configuration object is defined
    * @since 1.4.0
    * @example
-   * Luigi.theming().isThemingAvailable()
+   * AppLaunchpad.theming().isThemingAvailable()
    */
   isThemingAvailable() /* istanbul ignore next */ {
-    return !!LuigiConfig.getConfigValue('settings.theming');
+    return !!AppLaunchpadConfig.getConfigValue('settings.theming');
   }
 
   /**
@@ -105,7 +105,7 @@ class LuigiTheming {
        * @memberof Theming
        * @private
        */
-      const theming = LuigiConfig.getConfigValue('settings.theming');
+      const theming = AppLaunchpadConfig.getConfigValue('settings.theming');
       if (theming && theming.nodeViewURLDecorator && theming.nodeViewURLDecorator.queryStringParameter) {
         ViewUrlDecorator.add({
           type: 'queryString',
@@ -121,7 +121,7 @@ class LuigiTheming {
     };
 
     StateHelpers.doOnStoreChange(
-      window.Luigi._store,
+      window.AppLaunchpad._store,
       () => {
         setupViewUrlDecorator();
       },
@@ -130,4 +130,4 @@ class LuigiTheming {
   }
 }
 
-export const theming = new LuigiTheming();
+export const theming = new AppLaunchpadTheming();

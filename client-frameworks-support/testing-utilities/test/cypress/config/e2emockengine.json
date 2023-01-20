@@ -1,5 +1,5 @@
 {
-  "integrationFolder": "e2e/0-luigimockengine",
+  "integrationFolder": "e2e/0-applaunchpadmockengine",
   "experimentalSourceRewriting": true,
   "pluginsFile": false,
   "chromeWebSecurity": false,

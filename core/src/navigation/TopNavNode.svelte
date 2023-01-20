@@ -1,7 +1,7 @@
 <script>
   import { NavigationHelpers } from '../utilities/helpers';
   import StatusBadge from './StatusBadge.svelte';
-  import { LuigiI18N } from '../core-api';
+  import { AppLaunchpadI18N } from '../core-api';
 
   export let node;
 
@@ -14,7 +14,7 @@
   }
 
   function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label);
+    return AppLaunchpadI18N.getTranslation(node.label);
   }
 </script>
 

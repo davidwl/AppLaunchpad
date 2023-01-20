@@ -9,7 +9,7 @@ import { i18nProvider } from './i18n-provider';
 import { userSettings } from './userSettings';
 
 i18nProvider.init().then(trans => {
-  Luigi.setConfig({
+  AppLaunchpad.setConfig({
     auth,
     navigation,
     routing,

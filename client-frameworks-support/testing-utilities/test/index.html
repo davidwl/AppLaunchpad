@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Luigi Mock Engine Testing MFE</title>
+    <title>AppLaunchpad Mock Engine Testing MFE</title>
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"
     />
-    <script src="/node_modules/@luigi-project/client/luigi-client.js"></script>
+    <script src="/node_modules/@applaunchpad-project/client/applaunchpad-client.js"></script>
     <link
       rel="stylesheet"
       href="/node_modules/fundamental-styles/dist/layout-panel.css"
@@ -65,9 +65,11 @@
   </body>
 </html>
 <script type="module">
-  import { LuigiMockEngine } from './node_modules/@luigi-project/testing-utilities/dist/index.js';
+  import { AppLaunchpadMockEngine } from './node_modules/@applaunchpad-project/testing-utilities/dist/index.js';
 
-  let initPostMessageMthd = await Promise.resolve(LuigiMockEngine.initPostMessageHook());
+  let initPostMessageMthd = await Promise.resolve(
+    AppLaunchpadMockEngine.initPostMessageHook()
+  );
   let buttonArray = [
     'button1',
     'button2',
@@ -83,18 +85,18 @@
   initPostMessageMthd();
   const callMockModule = () => {
     let msgType = event.target.getAttribute('data-arg1');
-    let LuigiClient = window.LuigiClient;
+    let AppLaunchpadClient = window.AppLaunchpadClient;
     switch (msgType) {
       //Client Linkmanager features
       case 'modal':
-        LuigiClient.linkManager().openAsModal('projects/pr1/users', {
+        AppLaunchpadClient.linkManager().openAsModal('projects/pr1/users', {
           title: 'Users',
           size: 'm'
         });
         break;
 
       case 'split':
-        LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {
+        AppLaunchpadClient.linkManager().openAsSplitView('projects/pr1/logs', {
           title: 'Logs',
           size: 40,
           collapsed: true
@@ -102,7 +104,7 @@
         break;
 
       case 'drawer':
-        LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {
+        AppLaunchpadClient.linkManager().openAsDrawer('projects/pr1/drawer', {
           header: true,
           backdrop: true,
           size: 's'
@@ -110,7 +112,7 @@
         break;
 
       case 'pathExists':
-        LuigiClient.linkManager().pathExists('/');
+        AppLaunchpadClient.linkManager().pathExists('/');
         break;
 
       //Client UX Manager features
@@ -119,7 +121,7 @@
           text: 'This is just a test alert for external micro frontend.',
           type: 'success'
         };
-        LuigiClient.uxManager().showAlert(settings);
+        AppLaunchpadClient.uxManager().showAlert(settings);
         break;
 
       case 'confirmModal':
@@ -130,18 +132,18 @@
           buttonConfirm: 'Yes',
           buttonDismiss: 'No'
         };
-        LuigiClient.uxManager()
+        AppLaunchpadClient.uxManager()
           .showConfirmationModal(modalSettings)
           .then(() => {})
           .catch(e => {});
         break;
 
       case 'loadIndicator':
-        LuigiClient.uxManager().showLoadingIndicator();
+        AppLaunchpadClient.uxManager().showLoadingIndicator();
         break;
 
       case 'setCurrentLocale':
-        LuigiClient.uxManager().setCurrentLocale('/');
+        AppLaunchpadClient.uxManager().setCurrentLocale('/');
         break;
 
       default:

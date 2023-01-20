@@ -15,10 +15,10 @@
 
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script src="node_modules/@luigi-project/client/luigi-client.js"></script>
+    <script src="node_modules/@applaunchpad-project/client/applaunchpad-client.js"></script>
     <script>
       let myUserSettings = {};
-      window.LuigiClient.addInitListener((context, origin) => {
+      window.AppLaunchpadClient.addInitListener((context, origin) => {
         renderData(context);
       });
 
@@ -36,8 +36,8 @@
         });
         document.querySelector('.' + theme).classList.add('active');
         myUserSettings.theme = theme;
-        window.LuigiClient.sendCustomMessage({
-          id: 'luigi.updateUserSettings',
+        window.AppLaunchpadClient.sendCustomMessage({
+          id: 'applaunchpad.updateUserSettings',
           data: myUserSettings
         });
       }

@@ -55,8 +55,8 @@ cd ..
 echo ""
 echo "Bootstrap packages"
 echo ""
-lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope luigi-mock-module-test-mf
-lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope @luigi-project/testing-utilities
+lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope applaunchpad-mock-module-test-mf
+lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope @applaunchpad-project/testing-utilities
 
 
 cd $BASE_DIR/../client-frameworks-support/testing-utilities/test

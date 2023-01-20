@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Checks if there are changed core-api or luigi-client js files
+# Checks if there are changed core-api or applaunchpad-client js files
 # and generates docu if necessary
-# Run this script only from Luigi root folder, else git adding won't work.
+# Run this script only from AppLaunchpad root folder, else git adding won't work.
 # ./scripts/hooks/generate-docu.sh
 
 function check_and_generate_docu() {

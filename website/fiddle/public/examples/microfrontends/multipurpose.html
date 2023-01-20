@@ -8,7 +8,7 @@
       rel="stylesheet"
     />
     <link href="../../styles/styles.css" rel="stylesheet" />
-    <script src="/vendor/luigi-client/luigi-client.js"></script>
+    <script src="/vendor/applaunchpad-client/applaunchpad-client.js"></script>
     <style>
       html,
       body {
@@ -88,8 +88,8 @@
         }
         document.getElementById('textCnt').classList.add('visible');
       }
-      LuigiClient.addInitListener(updateFn);
-      LuigiClient.addContextUpdateListener(updateFn);
+      AppLaunchpadClient.addInitListener(updateFn);
+      AppLaunchpadClient.addContextUpdateListener(updateFn);
 
       // fallback visibility if no initlistener called for 3 seconds
       setTimeout(function() {

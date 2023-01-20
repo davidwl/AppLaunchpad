@@ -43,7 +43,7 @@
     <div class="fd-layout-panel__body">
       <app-code-snippet
         data="{
-          LuigiClient.linkManager().fromContext('project').getCurrentRoute().then(...)
+          AppLaunchpadClient.linkManager().fromContext('project').getCurrentRoute().then(...)
         }"
       ></app-code-snippet>
       <button data-testid="curr-button" (click)="getCurrentRoute()">
@@ -54,7 +54,7 @@
     <div class="fd-layout-panel__body">
       <app-code-snippet
         data="{
-          LuigiClient.linkManager().fromParent().getCurrentRoute().then(...)
+          AppLaunchpadClient.linkManager().fromParent().getCurrentRoute().then(...)
         }"
       ></app-code-snippet>
       <button data-testid="curr-link-from-parent" (click)="getCurrentRouteFromParent()">
@@ -65,7 +65,7 @@
     <div class="fd-layout-panel__body">
       <app-code-snippet
         data="{
-          LuigiClient.linkManager().fromClosestContext().getCurrentRoute().then(...)
+          AppLaunchpadClient.linkManager().fromClosestContext().getCurrentRoute().then(...)
         }"
       ></app-code-snippet>
       <button

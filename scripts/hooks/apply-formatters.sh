@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Prettier does formatting for all files except .html in luigi core, which are svelte components
+# Prettier does formatting for all files except .html in applaunchpad core, which are svelte components
 
 function format_with_prettier() {
     staged=$(git diff --cached --name-only --diff-filter=ACM "*.js" "*.ts" "*.json" "*.scss" "*.css" "*.html" ":(exclude)core/src/*.html")
@@ -16,7 +16,7 @@ function format_with_prettier() {
     echo "$files_to_format" | xargs git add
 }
 
-# Prettyhtml does formatting for .html files in luigi core only and applies Prettier for embedded content
+# Prettyhtml does formatting for .html files in applaunchpad core only and applies Prettier for embedded content
 
 function format_with_prettyhtml() {
     svelte_html_staged=$(git diff --cached --name-only --diff-filter=ACM "core/src/*.html")

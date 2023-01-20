@@ -1,4 +1,4 @@
-import defaultLuigiConfig from '../configs/default';
+import defaultAppLaunchpadConfig from '../configs/default';
 
 const setAcceptedCookies = win => {
   win.localStorage.setItem('cookiesAccepted', 'true');
@@ -6,39 +6,39 @@ const setAcceptedCookies = win => {
 
 const setLoggedIn = win => {
   const newTime = Date.now() + 6e4;
-  const newLuigiAuth = {
+  const newAppLaunchpadAuth = {
     accessToken: 'thisisanaccesstokenthatisnotreallyneeded',
     accessTokenExpirationDate: newTime,
     idToken:
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQyMDAiLCJzdWIiOiJtYXNrb3BhdG9sIiwiZXhwIjoxNjQzNzY0OTIwLCJhenAiOiJtYXNrb3BhdG9sIiwibm9uY2UiOiJidE5rWVZzc1FldVlWNmEyR1RVZm1wWVFFelBRN3c1ZENCbU54SG54IiwiZW1haWwiOiJsdWlnaXVzZXJAa3ltYS5jeCIsIm5hbWUiOiJMdWlnaSBVc2VyIn0.YUBE3tufmmNIJHwzKRXlImteuh_qDeuwGjkzN3Z0erg'
   };
-  const key = 'luigi.auth';
-  win.localStorage.setItem(key, JSON.stringify(newLuigiAuth));
+  const key = 'applaunchpad.auth';
+  win.localStorage.setItem(key, JSON.stringify(newAppLaunchpadAuth));
 };
 
-Cypress.Commands.add('vistTestAppPathRouting', (path = '', config = defaultLuigiConfig) => {
+Cypress.Commands.add('vistTestAppPathRouting', (path = '', config = defaultAppLaunchpadConfig) => {
   cy.visit(`http://localhost:4500${path}`, {
     onLoad: win => {
       if (config.auth) {
         config.auth.myOAuth2.idpProvider = win[config.auth.myOAuth2.idpProvider];
       }
-      win.Luigi.setConfig(config);
+      win.AppLaunchpad.setConfig(config);
     }
   });
 });
 
-Cypress.Commands.add('visitTestApp', (path = '/', config = defaultLuigiConfig) => {
+Cypress.Commands.add('visitTestApp', (path = '/', config = defaultAppLaunchpadConfig) => {
   cy.visit(`http://localhost:4500/#${path}`, {
     onLoad: win => {
       if (config.auth) {
         config.auth.myOAuth2.idpProvider = win[config.auth.myOAuth2.idpProvider];
       }
-      win.Luigi.setConfig(config);
+      win.AppLaunchpad.setConfig(config);
     }
   });
 });
 
-Cypress.Commands.add('visitTestAppLoggedIn', (path = '/', config = defaultLuigiConfig) => {
+Cypress.Commands.add('visitTestAppLoggedIn', (path = '/', config = defaultAppLaunchpadConfig) => {
   cy.visit(`http://localhost:4500/#${path}`, {
     onBeforeLoad: win => {
       setLoggedIn(win);
@@ -47,7 +47,7 @@ Cypress.Commands.add('visitTestAppLoggedIn', (path = '/', config = defaultLuigiC
       if (config.auth) {
         config.auth.myOAuth2.idpProvider = win[config.auth.myOAuth2.idpProvider];
       }
-      win.Luigi.setConfig(config);
+      win.AppLaunchpad.setConfig(config);
     }
   });
 });
@@ -80,7 +80,7 @@ Cypress.Commands.add('login', (email, password, skipReturnPathCheck = false, con
 
   if (config) {
     cy.window().then(win => {
-      win.Luigi.setConfig(config);
+      win.AppLaunchpad.setConfig(config);
     });
   }
 
@@ -97,7 +97,7 @@ Cypress.Commands.add('goToUxManagerMethods', iframe => {
 
   cy.expectPathToBe('/projects/pr1');
 
-  cy.wrap(iframe).should('contain', 'LuigiClient uxManager methods');
+  cy.wrap(iframe).should('contain', 'AppLaunchpadClient uxManager methods');
 });
 
 Cypress.Commands.add('goToLinkManagerMethods', iframe => {
@@ -106,7 +106,7 @@ Cypress.Commands.add('goToLinkManagerMethods', iframe => {
     .click();
 
   cy.expectPathToBe('/projects/pr2');
-  cy.wrap(iframe).should('contain', 'LuigiClient linkManager methods');
+  cy.wrap(iframe).should('contain', 'AppLaunchpadClient linkManager methods');
 });
 
 Cypress.Commands.add('goToOverviewPage', () => {
@@ -123,12 +123,12 @@ Cypress.Commands.add('goToProjectsPage', () => {
 
 Cypress.Commands.add('selectContextSwitcherItem', (item, currentLabel) => {
   // default label
-  cy.get('[data-testid="luigi-contextswitcher-button"]')
+  cy.get('[data-testid="applaunchpad-contextswitcher-button"]')
     .contains(currentLabel || 'Select Environment ...')
     .click();
 
   // click an action
-  cy.get('[data-testid="luigi-contextswitcher-popover"]')
+  cy.get('[data-testid="applaunchpad-contextswitcher-popover"]')
     .contains(item)
     .click();
 });
@@ -200,7 +200,9 @@ Cypress.Commands.add('getIframeBodyWithRetries', () => {
 const isHashRoutingOn = () => {
   const appWindow = cy.state('window');
   const { useHashRouting } =
-    appWindow && appWindow.Luigi && appWindow.Luigi.config ? appWindow.Luigi.config.routing : false;
+    appWindow && appWindow.AppLaunchpad && appWindow.AppLaunchpad.config
+      ? appWindow.AppLaunchpad.config.routing
+      : false;
   return useHashRouting;
 };
 
@@ -289,7 +291,7 @@ Cypress.Commands.add('iframe', { prevSubject: 'element' }, $iframe => {
   *
     usage: 
     cy.get('iframe').iframeWindow().then(modal => {
-        win.LuigiClient....
+        win.AppLaunchpadClient....
     });
  */
 Cypress.Commands.add('iframeWindow', { prevSubject: 'element' }, $iframe => {

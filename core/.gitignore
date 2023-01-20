@@ -24,8 +24,8 @@ yarn-debug.log*
 yarn-error.log*
 
 .vscode/
-/public*/luigi*.css
-/public*/luigi*.js
+/public*/applaunchpad*.css
+/public*/applaunchpad*.js
 /public*/*.woff
 /public*/*.woff2
 /public*/*.ttf

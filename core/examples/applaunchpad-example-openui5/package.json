@@ -1,0 +1,20 @@
+{
+  "name": "applaunchpad-example-openui5",
+  "private": true,
+  "version": "0.2.0",
+  "author": "SAP SE",
+  "description": "AppLaunchpad with OpenUI5 Demo App",
+  "scripts": {
+    "build": "ui5 build --all",
+    "start": "ui5 serve --open index.html",
+    "serve": "ws --compress -d dist"
+  },
+  "dependencies": {
+    "@applaunchpad-project/client": "^1.22.0",
+    "@applaunchpad-project/core": "^1.22.0"
+  },
+  "devDependencies": {
+    "@ui5/cli": "^2.14.9",
+    "local-web-server": "^4.2.1"
+  }
+}

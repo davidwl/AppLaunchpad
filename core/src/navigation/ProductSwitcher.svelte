@@ -1,7 +1,7 @@
 <script>
   import MobileTopNav from './MobileTopNavDropDown.svelte';
   import { createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiConfig, LuigiI18N } from '../core-api';
+  import { AppLaunchpadConfig, AppLaunchpadI18N } from '../core-api';
   import { Routing } from '../services/routing';
   import { StateHelpers, NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
 
@@ -23,7 +23,7 @@
       async () => {
         config = NavigationHelpers.getProductSwitcherConfig();
         if (config) {
-          productSwitcherItems = await LuigiConfig.getConfigValueAsync(
+          productSwitcherItems = await AppLaunchpadConfig.getConfigValueAsync(
             'navigation.productSwitcher.items'
           );
           setColumnsClass();
@@ -67,11 +67,11 @@
   }
 
   function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label);
+    return AppLaunchpadI18N.getTranslation(node.label);
   }
 
   function getNodeSubtitle(node) {
-    return LuigiI18N.getTranslation(node.subTitle);
+    return AppLaunchpadI18N.getTranslation(node.subTitle);
   }
 
   function setColumnsClass() {

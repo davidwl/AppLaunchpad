@@ -24,21 +24,21 @@ export default class extends HTMLElement {
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('button');
     this.$button.addEventListener('click', () => {
-      if (this.LuigiClient) {
-        this.LuigiClient.uxManager().showAlert({
-          text: 'Hello from uxManager in Web Component, Language:' + this.LuigiClient.getCurrentLocale(),
+      if (this.AppLaunchpadClient) {
+        this.AppLaunchpadClient.uxManager().showAlert({
+          text: 'Hello from uxManager in Web Component, Language:' + this.AppLaunchpadClient.getCurrentLocale(),
           type: 'info'
         });
 
-        window.Luigi.featureToggles().setFeatureToggle('ft1');
+        window.AppLaunchpad.featureToggles().setFeatureToggle('ft1');
 
-        this.LuigiClient.uxManager().showAlert({
-          text: 'Active feature toggles list: ' + this.LuigiClient.getActiveFeatureToggleList(),
+        this.AppLaunchpadClient.uxManager().showAlert({
+          text: 'Active feature toggles list: ' + this.AppLaunchpadClient.getActiveFeatureToggleList(),
           type: 'info'
         });
 
-        this.LuigiClient.uxManager().showAlert({
-          text: 'Active feature toggles: ' + this.LuigiClient.getActiveFeatureToggles(),
+        this.AppLaunchpadClient.uxManager().showAlert({
+          text: 'Active feature toggles: ' + this.AppLaunchpadClient.getActiveFeatureToggles(),
           type: 'info'
         });
       }

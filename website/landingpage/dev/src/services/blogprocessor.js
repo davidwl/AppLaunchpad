@@ -5,8 +5,8 @@ import { marked } from 'marked';
 import slugify from 'slugify';
 import { BlogFeeds } from './feeds.service';
 
-const luigiRootFolder = __dirname + '/../../../../../';
-const blogMdPath = path.join(luigiRootFolder, 'blog');
+const applaunchpadRootFolder = __dirname + '/../../../../../';
+const blogMdPath = path.join(applaunchpadRootFolder, 'blog');
 const blogHtmlPath = path.join(__dirname, '..', 'pages', 'blog');
 
 const hasValidDate = dateStr => {
@@ -47,7 +47,9 @@ const generateBlogEntry = (blog, content, showButton = false) => {
     <div class="title-2">
       ${blog.title}
     </div>
-    <div class="sub-title"><span class="text">${getAuthors(blog.author)} @Luigi on ${formatDate(blog.date)}</span></div>
+    <div class="sub-title"><span class="text">${getAuthors(blog.author)} @AppLaunchpad on ${formatDate(
+    blog.date
+  )}</span></div>
     ${content}
     ${button}
   </div>

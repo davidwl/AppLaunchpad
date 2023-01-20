@@ -32,7 +32,7 @@ template.innerHTML = `
                <div class="fd-row">
                 <div class="fd-col">
                   <div class="docs-layout-grid-bg docs-layout-grid-bg--color-1">
-                    <h3>Example of web component using Luigi Client</h3>
+                    <h3>Example of web component using AppLaunchpad Client</h3>
                   </div>
                 </div>
               </div>
@@ -152,7 +152,7 @@ template.innerHTML = `
 
 import EcEvent from './wcEvent.js';
 
-export default class luigiExampleWC extends HTMLElement {
+export default class applaunchpadExampleWC extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -161,16 +161,16 @@ export default class luigiExampleWC extends HTMLElement {
     this.addConfirmationModal();
 
     this.addClickNavButton('#bOpenDialog', 'dialogUrl', url => {
-      this.LuigiClient.linkManager().openAsModal(url, { title: 'Example Dialog', size: 'l' });
+      this.AppLaunchpadClient.linkManager().openAsModal(url, { title: 'Example Dialog', size: 'l' });
     });
     this.addClickNavButton('#bSplitDialog', 'splitUrl', url => {
-      this.LuigiClient.linkManager().openAsSplitView(url, { title: 'Example Dialog', size: '40' });
+      this.AppLaunchpadClient.linkManager().openAsSplitView(url, { title: 'Example Dialog', size: '40' });
     });
     this.addClickNavButton('#bNavigation', 'navigationUrl', url => {
-      Luigi.navigation().navigate(url);
+      AppLaunchpad.navigation().navigate(url);
     });
     this.addClickNavButton('#bDrawer', 'drawerUrl', url => {
-      this.LuigiClient.linkManager().openAsDrawer(url, { header: true, backdrop: true, size: 's' });
+      this.AppLaunchpadClient.linkManager().openAsDrawer(url, { header: true, backdrop: true, size: 's' });
     });
 
     EcEvent.removeAllListeners();
@@ -184,7 +184,7 @@ export default class luigiExampleWC extends HTMLElement {
   addConfirmationModal() {
     const button = this.shadowRoot.querySelector('#bConModal');
     button.addEventListener('click', event => {
-      this.LuigiClient.uxManager().showConfirmationModal({
+      this.AppLaunchpadClient.uxManager().showConfirmationModal({
         header: 'Confirmation',
         body: 'Are you sure you want to do this?',
         buttonConfirm: 'Yes',
@@ -200,7 +200,7 @@ export default class luigiExampleWC extends HTMLElement {
       'click',
       event => {
         if (!this[valueToCheck] || this[valueToCheck].length === 0) {
-          this.LuigiClient.uxManager().showAlert({
+          this.AppLaunchpadClient.uxManager().showAlert({
             text: 'Please insert an ulr in the input element',
             type: 'error'
           });
@@ -238,8 +238,8 @@ export default class luigiExampleWC extends HTMLElement {
 
   showAlert(event) {
     let alertType = event.detail;
-    if (this.LuigiClient) {
-      this.LuigiClient.uxManager().showAlert({
+    if (this.AppLaunchpadClient) {
+      this.AppLaunchpadClient.uxManager().showAlert({
         text: 'Hello from uxManager in Web Component',
         type: alertType
       });

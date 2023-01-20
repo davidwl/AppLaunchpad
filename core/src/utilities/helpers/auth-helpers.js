@@ -1,5 +1,5 @@
 import { AuthStoreSvc } from '../../services';
-import { LuigiAuth } from '../../core-api';
+import { AppLaunchpadAuth } from '../../core-api';
 import { GenericHelpers } from './';
 
 class AuthHelpersClass {
@@ -35,7 +35,7 @@ class AuthHelpersClass {
    */
   async handleUrlAuthErrors(providerInstanceSettings, error, errorDescription) {
     if (error) {
-      return await LuigiAuth.handleAuthEvent(
+      return await AppLaunchpadAuth.handleAuthEvent(
         'onAuthError',
         providerInstanceSettings,
         { error, errorDescription },

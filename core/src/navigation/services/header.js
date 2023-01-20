@@ -1,11 +1,11 @@
 import { StateHelpers, GenericHelpers } from '../../utilities/helpers';
-import { LuigiConfig, LuigiI18N, LuigiUX } from './../../core-api';
+import { AppLaunchpadConfig, AppLaunchpadI18N, AppLaunchpadUX } from './../../core-api';
 
 export const processHeaderSettings = component => {
   StateHelpers.doOnStoreChange(
     component.store,
     () => {
-      const appSwitcher = LuigiConfig.getConfigValue('navigation.appSwitcher');
+      const appSwitcher = AppLaunchpadConfig.getConfigValue('navigation.appSwitcher');
       if (appSwitcher) {
         component.set({ appSwitcherItems: appSwitcher.items });
         component.set({ showMainAppEntry: appSwitcher.showMainAppEntry });
@@ -16,7 +16,7 @@ export const processHeaderSettings = component => {
           component.get().showMainAppEntry ||
           (component.get().appSwitcherItems && component.get().appSwitcherItems.length > 0)
       });
-      return LuigiConfig.getConfigValueAsync('settings.header').then(header => {
+      return AppLaunchpadConfig.getConfigValueAsync('settings.header').then(header => {
         if (header) {
           component.set({ defaultTitle: header.title || '' });
           component.set({ defaultSubTitle: header.subTitle || '' });
@@ -108,9 +108,9 @@ export const updateTitle = component => {
   }
   component.set({ selectedItem });
   const title = selectedItem && selectedItem.title ? selectedItem.title : component.get().defaultTitle;
-  const documentTitle = LuigiUX.getDocumentTitle() || title;
+  const documentTitle = AppLaunchpadUX.getDocumentTitle() || title;
   component.set({ title });
-  document.title = LuigiI18N.getTranslation(documentTitle);
+  document.title = AppLaunchpadI18N.getTranslation(documentTitle);
   const subTitle = selectedItem ? selectedItem.subTitle || '' : component.get().defaultSubTitle;
   component.set({ subTitle });
 };

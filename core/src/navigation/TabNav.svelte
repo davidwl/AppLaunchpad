@@ -2,7 +2,7 @@
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { Navigation } from './services/navigation';
   import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
-  import { LuigiConfig } from '../core-api';
+  import { AppLaunchpadConfig } from '../core-api';
 
   export let children;
   export let pathData;
@@ -68,9 +68,9 @@
 
   const calcTabsContainer = () => {
     clearTapNav();
-    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
-    let morebtn = document.getElementsByClassName('luigi-tabsMoreButton')[0];
-    let moreLink = document.getElementsByClassName('luigi__more')[0];
+    let tabsContainer = document.getElementsByClassName('applaunchpad-tabsContainer')[0];
+    let morebtn = document.getElementsByClassName('applaunchpad-tabsMoreButton')[0];
+    let moreLink = document.getElementsByClassName('applaunchpad__more')[0];
     let tabsContainerOffsetWidth;
     let totalTabsSize = 0;
     let hasMoreBtnElements = false;
@@ -106,7 +106,7 @@
   };
 
   const clearTapNav = () => {
-    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
+    let tabsContainer = document.getElementsByClassName('applaunchpad-tabsContainer')[0];
     if (tabsContainer !== undefined) {
       const tabs = [...tabsContainer.children];
       tabs.forEach(element => {
@@ -116,7 +116,7 @@
   };
 
   onMount(() => {
-    hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+    hideNavComponent = AppLaunchpadConfig.getConfigBooleanValue('settings.hideNavigation');
   });
 
   // [svelte-upgrade warning]
@@ -198,7 +198,7 @@
     on:toggleDropdownState={event => toggleDropdownState(event.name)}
   >
     <div class="tabsContainerWrapper">
-      <div class="tabsContainer luigi-tabsContainer">
+      <div class="tabsContainer applaunchpad-tabsContainer">
         {#each Object.entries(children) as [key, nodes], index}
           {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
             {#each nodes as node, index2}
@@ -245,7 +245,7 @@
                     <span class="label fd-tabs__tag"
                       >{$getTranslation(key)}</span
                     >
-                    <span class="sap-icon--dropdown luigi-icon--dropdown" />
+                    <span class="sap-icon--dropdown applaunchpad-icon--dropdown" />
                   </a>
                 </div>
                 <div
@@ -283,17 +283,17 @@
       </div>
     </div>
 
-    <div class="luigi-tabsMoreButton">
+    <div class="applaunchpad-tabsMoreButton">
       <span class="fd-tabs__item" on:click={event => event.stopPropagation()}>
         <div class="fd-popover fd-popover--right">
           <a
-            class="fd-tabs__link fd-popover__control has-child luigi__more"
+            class="fd-tabs__link fd-popover__control has-child applaunchpad__more"
             aria-expanded="false"
             role="tab"
             on:click|preventDefault={toggleMoreBtn}
           >
             <span class="label fd-tabs__tag">More</span>
-            <span class="sap-icon--dropdown luigi-icon--dropdown" />
+            <span class="sap-icon--dropdown applaunchpad-icon--dropdown" />
           </a>
           <div
             class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
@@ -404,7 +404,7 @@
     flex-shrink: 1;
   }
 
-  .luigi-tabsMoreButton {
+  .applaunchpad-tabsMoreButton {
     .fd-popover__body {
       > .fd-nested-list {
         max-height: calc(100vh - 110px);
@@ -432,7 +432,7 @@
       padding-right: 0;
 
       &.has-child {
-        .luigi-icon--dropdown {
+        .applaunchpad-icon--dropdown {
           right: 0;
         }
       }
@@ -446,7 +446,7 @@
     border: none;
     position: absolute;
     right: 0;
-    left: var(--luigi__left-sidenav--width);
+    left: var(--applaunchpad__left-sidenav--width);
 
     @media (max-width: 599px) {
       left: 0;
@@ -466,7 +466,7 @@
         .label {
           padding-right: 17px;
         }
-        .luigi-icon--dropdown {
+        .applaunchpad-icon--dropdown {
           position: absolute;
           top: 0.4em;
           right: 14px;

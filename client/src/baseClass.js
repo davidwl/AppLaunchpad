@@ -2,7 +2,7 @@
  * @private
  * @abstract
  */
-export class LuigiClientBase {
+export class AppLaunchpadClientBase {
   /**
    * @private
    */
@@ -10,14 +10,14 @@ export class LuigiClientBase {
     this.promises = {};
   }
   /**
-   * Returns the promises object
+   * Sets the promises object
    * @private
    */
   setPromise(name, value) {
     this.promises[name] = value;
   }
   /**
-   * Sets the promises object
+   * Returns the promises object
    * @private
    */
   getPromise(name) {

@@ -16,7 +16,7 @@ meta -->
 
 # Advanced navigation
 
-This document shows you how to configure the following Luigi features:
+This document shows you how to configure the following AppLaunchpad features:
 
 * [View groups](#view-groups)
 * [Dynamically changeable paths](#dynamically-changeable-paths)
@@ -30,24 +30,24 @@ This document shows you how to configure the following Luigi features:
 
 ## View groups
 
-View groups are a way to reuse micro frontends (views) in Luigi.
+View groups are a way to reuse micro frontends (views) in AppLaunchpad.
 
 Imagine your application hosts two micro frontend views: `http://example.com/a#e` and  `http://example.com/b#f`. Due to hash routing and a different path up to `#`, they are, by default, rendered in different iframes. However, as they both have the **same origin**, such as `example.com`, you want to render them in the same iframe. To achieve that, define the **viewGroup** parameter for any navigation node. Children of that node will automatically be considered part of the same view group.
 
 Nodes belonging to the same view group are always rendered in their own view group iframe. Nodes not belonging to any view group follow the same-origin iframe rendering policy.
 
 <!-- add-attribute:class:warning -->
->**NOTE**: To make sure view groups work properly, you need to include **Luigi Client** in your micro frontend. See [this document](luigi-client-setup.md) for instructions, or for a simpler implementation include this line in your application:
-`<script src="https://unpkg.com/@luigi-project/client/luigi-client.js"></script>`
+>**NOTE**: To make sure view groups work properly, you need to include **AppLaunchpad Client** in your micro frontend. See [this document](applaunchpad-client-setup.md) for instructions, or for a simpler implementation include this line in your application:
+`<script src="https://unpkg.com/@applaunchpad-project/client/applaunchpad-client.js"></script>`
 
-You can paste this view group example in [Luigi Fiddle](https://fiddle.luigi-project.io/):
+You can paste this view group example in [AppLaunchpad Fiddle](https://fiddle.applaunchpad-project.io/):
 
 <!-- accordion:start -->
 
 ### Code example
 
 ```javascript
-Luigi.setConfig({
+AppLaunchpad.setConfig({
             navigation: {
                 preloadViewGroups: true,
                 viewGroupSettings: {
@@ -104,7 +104,7 @@ Luigi.setConfig({
 
 The view groups feature also offers out-of-the-box caching. Each time you navigate to another view group, either a new iframe is created or it is reused if already exists. In both cases, the iframe you are navigating from becomes hidden and is available for you to use again. If you navigate back to the first iframe and it should be updated with new data, such when a new entry was added in the second iframe and you want to display it in a table in the first iframe, you must define a **preloadUrl** parameter for the view group under **navigation.viewGroupSettings**.
 
-You can also preload view groups. You just need to define which URL you want to preload, and Luigi will preload the view after some user interactions when the browser is most likely to be idle. This option is active by default, but you can deactivate it with the [**preloadViewGroups**](navigation-parameters-reference.md#preloadviewgroups) configuration flag.
+You can also preload view groups. You just need to define which URL you want to preload, and AppLaunchpad will preload the view after some user interactions when the browser is most likely to be idle. This option is active by default, but you can deactivate it with the [**preloadViewGroups**](navigation-parameters-reference.md#preloadviewgroups) configuration flag.
 
 For more information on setting caching with view refreshing and preloading for view groups, read [this document](navigation-parameters-reference.md#node-parameters).
 
@@ -114,7 +114,7 @@ Further options related to view groups can be configured using the parameters li
 - **type**: object
 - **description**: contains key-object pairs, where the key is the view group name as specified in the node properties, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
 - **attributes**:
-  - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It may not be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** property is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
+  - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It may not be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports AppLaunchpad Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** property is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
   - **loadOnStartup**(boolean): when set to `true`, it loads the respective view group with the respective **preloadUrl** in the background as soon as the app first starts. 
 ### preloadViewGroups
 - **type**: boolean
@@ -126,10 +126,10 @@ Further options related to view groups can be configured using the parameters li
 
 ## Dynamically changeable paths
 
-In Luigi, you can make a navigation path dynamically changeable according to your needs. This is accomplished by defining dynamic parameters within the **pathSegement** or **viewUrl** navigation paths.
+In AppLaunchpad, you can make a navigation path dynamically changeable according to your needs. This is accomplished by defining dynamic parameters within the **pathSegement** or **viewUrl** navigation paths.
 
 ### Dynamic path parameters
-Instead of a static value for your **pathSegment**, you can add a colon to this value to make it act as a parameter. This tells Luigi to accept any value for this **pathSegment**.
+Instead of a static value for your **pathSegment**, you can add a colon to this value to make it act as a parameter. This tells AppLaunchpad to accept any value for this **pathSegment**.
 
 In this example, a sample path parameter called `:userId` is defined:
 
@@ -166,8 +166,8 @@ navigation: {
 
 You have the following options to add a parameter to **viewUrl**:
 - Place the parameter anywhere in the **viewUrl** value. For example, if the main application URL is `https://[YOUR.WEBSITE]/home/users/JohnSmith`, then the **viewUrl** of the micro frontend in the content area can be `https://example.com/users/details.html#id=JohnSmith`.
-- Use the [Luigi Client API](luigi-client-api.md) to access the node parameter values from the micro frontend. Use the `LuigiClient.getPathParams()` function.
-For example, to get the value of the **userId** parameter, use `LuigiClient.getPathParams().userId`.
+- Use the [AppLaunchpad Client API](applaunchpad-client-api.md) to access the node parameter values from the micro frontend. Use the `AppLaunchpadClient.getPathParams()` function.
+For example, to get the value of the **userId** parameter, use `AppLaunchpadClient.getPathParams().userId`.
 - Add a parameter to the context part of your configuration:
 
 ```javascript
@@ -181,7 +181,7 @@ For example, to get the value of the **userId** parameter, use `LuigiClient.getP
 }
   ...
 ```
-If you are using [localization](https://docs.luigi-project.io/docs/i18n) and translating your page into different languages, you can also add a **{i18n.currentLocale}** parameter to the viewUrl part of your configuration:
+If you are using [localization](https://docs.applaunchpad-project.io/docs/i18n) and translating your page into different languages, you can also add a **{i18n.currentLocale}** parameter to the viewUrl part of your configuration:
 
 ```javascript
 {
@@ -192,7 +192,7 @@ If you are using [localization](https://docs.luigi-project.io/docs/i18n) and tra
   ...
 ```
 
- The **{i18n.currentLocale}** parameter will be replaced by the value of `LuigiI18N.getCurrentLocale()`, for example `https://example.com/en/microfrontend.html`
+ The **{i18n.currentLocale}** parameter will be replaced by the value of `AppLaunchpadI18N.getCurrentLocale()`, for example `https://example.com/en/microfrontend.html`
 
 In all these cases, the parameter is automatically replaced by the real value.
 
@@ -253,7 +253,7 @@ When loading, the **viewUrl** uses the following dynamic URL parameters:
 - `sort = asc`
 
 ```javascript
-Luigi.setConfig({
+AppLaunchpad.setConfig({
   routing: {
     nodeParamPrefix: '~',
     showModalPathInUrl: true,
@@ -269,7 +269,7 @@ Luigi.setConfig({
           navigationContext: 'project',
           pathSegment: ':projectId',
           viewUrl: 'https://example.com/project/:projectId',
-          // Optionally, you can always call LuigiClient.getPathParams() to get the parameters
+          // Optionally, you can always call AppLaunchpadClient.getPathParams() to get the parameters
           // context: {
           //  currentProject: ':projectId'
           // },
@@ -293,7 +293,7 @@ The purpose of contexts is to send objects to the micro frontend. You can do thi
 
 ### context
 - **type**: object
-- **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of Luigi Client. This is an alternative to using the dynamic value in the **viewUrl**.
+- **description**: sends the specified object as context to the view. Use this property in combination with the dynamic **pathSegment** to receive the context through the context listeners of AppLaunchpad Client. This is an alternative to using the dynamic value in the **viewUrl**.
 
 <!-- add-attribute:class:warning -->
 > **NOTE**: Context should not be used to create the path or URL as this can lead to errors. Please use one of the methods described in the [dynamically changeable paths](#dynamically-changeable-paths) section instead.
@@ -303,7 +303,7 @@ The purpose of contexts is to send objects to the micro frontend. You can do thi
 
 ![Profile](assets/profile.jpg)
 
-The profile is a drop-down list in the top navigation that allows you to override the logout item content if authorization is already configured. You can also add links to Luigi navigation nodes.
+The profile is a drop-down list in the top navigation that allows you to override the logout item content if authorization is already configured. You can also add links to AppLaunchpad navigation nodes.
 
 You can configure the profile element in the top navigation by adding the **profile** property to the navigation object in the configuration file. Find all the parameters which you can use to configure a profile [here](navigation-parameters-reference.md#profile).
 
@@ -369,10 +369,10 @@ productSwitcher: {
   items: [
     {
       icon: '',
-      label: 'Luigi in Github',
+      label: 'AppLaunchpad in Github',
       testId: 'myTestId',
       externalLink: {
-        url: 'https://luigi-project.io/',
+        url: 'https://applaunchpad-project.io/',
         sameWindow: false
       }
     },
@@ -391,7 +391,7 @@ productSwitcher: {
 ![App switcher](assets/app-switcher.jpg)
 
 The app switcher is a dropdown at the top of the navigation which allows you to switch between applications. To use it, you need to:
-1. Define a [header object](general-settings.md#headerlogo) in the `settings:` section of your Luigi configuration.
+1. Define a [header object](general-settings.md#headerlogo) in the `settings:` section of your AppLaunchpad configuration.
 2. Add the **appSwitcher** parameter to the **navigation** object.
 
 You may also add any of the parameters listed [here](navigation-parameters-reference.md#app-switcher).
@@ -420,7 +420,7 @@ appSwitcher = {
 
 ![Tab navigation](assets/tabnav.jpg)
 
-Tab-style navigation in Luigi can be displayed directly above the micro frontend area, providing you with additional menu options. When you put tab navigation nodes into a [category](navigation-configuration.md#category), they will be rendered in a drop-down. Add this parameter to your configuration to create tab navigation nodes:
+Tab-style navigation in AppLaunchpad can be displayed directly above the micro frontend area, providing you with additional menu options. When you put tab navigation nodes into a [category](navigation-configuration.md#category), they will be rendered in a drop-down. Add this parameter to your configuration to create tab navigation nodes:
 
 ### tabNav
 - **type**: boolean
@@ -429,7 +429,7 @@ Tab-style navigation in Luigi can be displayed directly above the micro frontend
 
 ## Additional options
 
-For more options and parameters which you can use to configure navigation in Luigi, read the [full parameter reference](navigation-parameters-reference.md). Some of the topics you can find there include:
+For more options and parameters which you can use to configure navigation in AppLaunchpad, read the [full parameter reference](navigation-parameters-reference.md). Some of the topics you can find there include:
 
 * Defining the [routing](navigation-parameters-reference.md#routing-parameters) strategy of your application
 * Enabling and disabling the [loading indicator](navigation-parameters-reference.md#loadingindicatorenabled)

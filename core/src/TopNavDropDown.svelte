@@ -11,7 +11,7 @@
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
   import { RoutingHelpers } from './utilities/helpers';
-  import { LuigiI18N, LuigiConfig } from './core-api';
+  import { AppLaunchpadI18N, AppLaunchpadConfig } from './core-api';
 
   const dispatch = createEventDispatcher();
 
@@ -94,7 +94,7 @@
   }
 
   function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label);
+    return AppLaunchpadI18N.getTranslation(node.label);
   }
 
   function getTestId(node) {

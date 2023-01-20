@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher, onMount, onDestroy } from 'svelte';
-  import { LuigiI18N } from './core-api';
+  import { AppLaunchpadI18N } from './core-api';
   import { KEYCODE_ESC } from './utilities/keycode.js';
   import { EscapingHelpers, NavigationHelpers, IframeHelpers } from './utilities/helpers';
 
@@ -22,10 +22,10 @@
   onMount(() => {
     const defaultSettings = {
       icon: iconMapping[settings.type],
-      header: LuigiI18N.getTranslation('luigi.confirmationModal.header'),
-      body: LuigiI18N.getTranslation('luigi.confirmationModal.body'),
-      buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
-      buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm'),
+      header: AppLaunchpadI18N.getTranslation('applaunchpad.confirmationModal.header'),
+      body: AppLaunchpadI18N.getTranslation('applaunchpad.confirmationModal.body'),
+      buttonDismiss: AppLaunchpadI18N.getTranslation('applaunchpad.button.dismiss'),
+      buttonConfirm: AppLaunchpadI18N.getTranslation('applaunchpad.button.confirm'),
     };
     settings = {
       ...settings,
@@ -62,7 +62,7 @@
 <svelte:window on:keydown={handleKeydown} />
 <div
   class="fd-message-box-docs-static fd-message-box fd-message-box--{settings.type} fd-message-box--active"
-  data-testid="luigi-confirmation-modal"
+  data-testid="applaunchpad-confirmation-modal"
 >
   <section class="fd-message-box__content">
     <header class="fd-bar fd-bar--header fd-message-box__header">
@@ -82,7 +82,7 @@
           <div class="fd-bar__element">
             <button
               on:click={() => dispatch('modalConfirm')}
-              data-testid="luigi-modal-confirm"
+              data-testid="applaunchpad-modal-confirm"
               class="fd-button fd-button--emphasized fd-button--compact fd-message-box__decisive-button confirm-button"
             >
               {settings.buttonConfirm}
@@ -92,7 +92,7 @@
         <div class="fd-bar__element">
           <button
             on:click={() => dispatch('modalDismiss')}
-            data-testid="luigi-modal-dismiss"
+            data-testid="applaunchpad-modal-dismiss"
             class="fd-button {settings.buttonConfirm === false
               ? 'fd-button--emphasized'
               : 'fd-button--transparent'} fd-button--compact fd-message-box__decisive-button dismiss-button"

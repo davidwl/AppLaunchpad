@@ -1,17 +1,17 @@
 {
-  "name": "@luigi-project/client",
-  "description": "Javascript library supporting consumers of the Luigi framework",
+  "name": "@applaunchpad-project/client",
+  "description": "Javascript library supporting consumers of the AppLaunchpad framework",
   "license": "Apache-2.0",
-  "main": "luigi-client.js",
+  "main": "applaunchpad-client.js",
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/SAP/luigi.git"
+    "url": "ssh://github.com/davidwl/applaunchpad.git"
   },
   "publishConfig": {
-    "tag": "luigi-client"
+    "tag": "applaunchpad-client"
   },
   "keywords": [
-    "luigi",
+    "applaunchpad",
     "UI",
     "extensibility",
     "micro-frontends",

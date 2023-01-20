@@ -3,7 +3,7 @@
   "node": {
     "label": "Quick setup",
     "category": {
-      "label": "Luigi Core",
+      "label": "AppLaunchpad Core",
       "collapsible": true
     },
     "metaData": {
@@ -18,11 +18,11 @@ meta -->
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/kEzTZ2U9KMM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-This document shows you how to quickly set up a Luigi web application by installing some of our [examples](https://github.com/SAP/luigi/tree/master/core/examples). 
+This document shows you how to quickly set up a AppLaunchpad web application by installing some of our [examples](https://github.com/davidwl/applaunchpad/tree/master/core/examples). 
 
-Luigi can be added to any application using these steps:
-* Adding Luigi's `npm` packages to your project dependencies.
-* Giving Luigi exclusive control over your entry `index.html` file.
+AppLaunchpad can be added to any application using these steps:
+* Adding AppLaunchpad's `npm` packages to your project dependencies.
+* Giving AppLaunchpad exclusive control over your entry `index.html` file.
 * Starting the server to run your application.
 
 In this example, all these steps are achieved through a single **installer** script for any of the frameworks listed below. Keep in mind that if you have a single page application, you need to transfer it to a "two-page application". You should run your application to make sure the existing router doesn't interfere. 
@@ -38,10 +38,10 @@ In this example, all these steps are achieved through a single **installer** scr
 <!-- add-attribute:class:warning -->
 > **NOTE:** You need a development server capable of hosting Single Page Applications. The recommended server is Live Server.
 
-1. Use the following installer to create a directory for your application, install Luigi, make assets available, and start your local server:
+1. Use the following installer to create a directory for your application, install AppLaunchpad, make assets available, and start your local server:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh)
+bash <(curl -s https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/no-framework.sh)
 ```
 or execute these commands manually to get the same result:
 <!-- accordion:start -->
@@ -53,22 +53,22 @@ npm init -y > /dev/null
 
 # add "start" command to the package.json file. This command is split into 2 lines on purpose!
 sed 's/"scripts": {/"scripts": {\
-\   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/public\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+\   "buildConfig":"webpack --entry .\/src\/applaunchpad-config\/applaunchpad-config.es6.js --output-path .\/public\/assets --output-filename applaunchpad-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 sed 's/"scripts": {/"scripts": {\
 \   "start":"live-server --entry-file=index.html public",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 
-npm i -save @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content live-server webpack webpack-cli @babel/core @babel/preset-env babel-loader 
+npm i -save @applaunchpad-project/core @applaunchpad-project/client fundamental-styles @sap-theming/theming-base-content live-server webpack webpack-cli @babel/core @babel/preset-env babel-loader 
 mkdir -p public/assets
-mkdir -p src/luigi-config
+mkdir -p src/applaunchpad-config
 
 # download assets
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/index.html > public/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/basicMicroFrontend.html > public/assets/basicMicroFrontend.html
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/assets/index.html > public/index.html
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/assets/applaunchpad-config.es6.js > src/applaunchpad-config/applaunchpad-config.es6.js
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/assets/basicMicroFrontend.html > public/assets/basicMicroFrontend.html
 
 
-cp -r node_modules/\@luigi-project/core public/luigi-core
-cp -r node_modules/\@luigi-project/client public/luigi-client
+cp -r node_modules/\@applaunchpad-project/core public/applaunchpad-core
+cp -r node_modules/\@applaunchpad-project/client public/applaunchpad-client
 cp -r node_modules/fundamental-styles/dist public/fundamental-styles
 cp -r node_modules/@sap-theming/theming-base-content public/theming-base-content
 
@@ -81,7 +81,7 @@ npm run start
 ```
 <!-- accordion:end -->
 
-2. Open the directory where Luigi is installed. Search for the `luigi-config.js` file which you can use to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.
+2. Open the directory where AppLaunchpad is installed. Search for the `applaunchpad-config.js` file which you can use to configure AppLaunchpad [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.
 
 ## Application setup for Angular
 
@@ -90,10 +90,10 @@ npm run start
 
 1. If you do not have the Angular CLI installed, download and install it from [here](https://cli.angular.io/).
 
-2. Use the installer to create your application, install Luigi, make assets available, and serve your application:
+2. Use the installer to create your application, install AppLaunchpad, make assets available, and serve your application:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh)
+bash <(curl -s https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/angular.sh)
 ```
 or execute these commands manually to get the same result:
 <!-- accordion:start -->
@@ -101,18 +101,18 @@ or execute these commands manually to get the same result:
 ```bash
 ng new my-angular-app --routing && cd my-angular-app
 
-npm i -P @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content webpack@5.74.0 webpack-cli@4.10.0 
+npm i -P @applaunchpad-project/core @applaunchpad-project/client fundamental-styles @sap-theming/theming-base-content webpack@5.74.0 webpack-cli@4.10.0 
 sed 's/"scripts": {/"scripts": {\
-\   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/src\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
-mkdir -p src/luigi-config
+\   "buildConfig":"webpack --entry .\/src\/applaunchpad-config\/applaunchpad-config.es6.js --output-path .\/src\/assets --output-filename applaunchpad-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+mkdir -p src/applaunchpad-config
 
  # the following steps can be copy and pasted to the terminal at once
 mv src/index.html src/angular.html
 
 # download assets
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/index.html > src/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/basicMicroFrontend.html > src/assets/basicMicroFrontend.html
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/assets/index.html > src/index.html
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/assets/applaunchpad-config.es6.js > src/applaunchpad-config/applaunchpad-config.es6.js
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/assets/basicMicroFrontend.html > src/assets/basicMicroFrontend.html
 
 # string replacements in some files
 sed 's#"src/index.html"#"src/angular.html"#g' angular.json > tmp.json && mv tmp.json angular.json
@@ -124,22 +124,22 @@ sed 's#"src/assets"#"src/assets",\
               "src/logout.html",\
               {"glob": "fundamental-styles.css","input": "node_modules/fundamental-styles/dist","output": "/fundamental-styles"},\
               {"glob": "*","input": "node_modules/@sap-theming/theming-base-content","output": "/fonts"},\
-              {"glob": "**","input": "node_modules/@luigi-project/core","output": "/luigi-core"},\
-              {"glob": "luigi-client.js","input": "node_modules/@luigi-project/client","output": "/luigi-client"}#g' angular.json > tmp.json && mv tmp.json angular.json
+              {"glob": "**","input": "node_modules/@applaunchpad-project/core","output": "/applaunchpad-core"},\
+              {"glob": "applaunchpad-client.js","input": "node_modules/@applaunchpad-project/client","output": "/applaunchpad-client"}#g' angular.json > tmp.json && mv tmp.json angular.json
 
 npm run buildConfig
 npm run start
 ```
 <!-- accordion:end -->
 
-3. Open the directory where Luigi is installed. Search for the `luigi-config.js` file which you can use to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.
+3. Open the directory where AppLaunchpad is installed. Search for the `applaunchpad-config.js` file which you can use to configure AppLaunchpad [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.
 
 ## Application setup for SAPUI5/OpenUI5
 
-1. Use the installer to create a directory for your application, install Luigi, make assets available, and start your local server:
+1. Use the installer to create a directory for your application, install AppLaunchpad, make assets available, and start your local server:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh)
+bash <(curl -s https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/openui5.sh)
 ```
 or execute these commands manually to get the same result:
 
@@ -150,7 +150,7 @@ mkdir my-ui5-app && cd my-ui5-app
 echo "Creating folders and downloading example assets"
 mkdir -p ./webapp/home ./webapp/libs ./webapp/sample1 ./webapp/sample2 ./webapp/i18n
 
-export UI5EX_REPO_URL="https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-openui5"
+export UI5EX_REPO_URL="https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-openui5"
 
 curl --silent $UI5EX_REPO_URL/webapp/sample2/Sample2.view.xml > ./webapp/sample2/Sample2.view.xml
 curl --silent $UI5EX_REPO_URL/webapp/sample2/sample2.html > ./webapp/sample2/sample2.html
@@ -160,7 +160,7 @@ curl --silent $UI5EX_REPO_URL/webapp/home/Home.view.xml > ./webapp/home/Home.vie
 curl --silent $UI5EX_REPO_URL/webapp/home/Home.controller.js > ./webapp/home/Home.controller.js
 curl --silent $UI5EX_REPO_URL/webapp/favicon.ico > ./webapp/favicon.ico
 curl --silent $UI5EX_REPO_URL/webapp/index.html > ./webapp/index.html
-curl --silent $UI5EX_REPO_URL/webapp/luigi-config.js > ./webapp/luigi-config.js
+curl --silent $UI5EX_REPO_URL/webapp/applaunchpad-config.js > ./webapp/applaunchpad-config.js
 curl --silent $UI5EX_REPO_URL/webapp/openui5.html > ./webapp/openui5.html
 curl --silent $UI5EX_REPO_URL/webapp/libs/.gitignore > ./webapp/libs/.gitignore
 curl --silent $UI5EX_REPO_URL/webapp/Component.js > ./webapp/Component.js
@@ -184,7 +184,7 @@ npm run start
 ```
 <!-- accordion:end -->
 
-2. Open the directory where Luigi is installed. Open the `webapp/luigi-config.js` file which you can use to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.
+2. Open the directory where AppLaunchpad is installed. Open the `webapp/applaunchpad-config.js` file which you can use to configure AppLaunchpad [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.
 
 
 ## Application setup for VUE.JS
@@ -198,9 +198,9 @@ npm run start
 npm install -g @vue/cli
 ```
 
-2. Use the installer to create your application, install Luigi, make assets available, and serve your application:
+2. Use the installer to create your application, install AppLaunchpad, make assets available, and serve your application:
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh)
+bash <(curl -s https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/vue.sh)
 ```
 or execute these commands manually to get the same result:
 
@@ -211,12 +211,12 @@ or execute these commands manually to get the same result:
 vue create -d my-vue-app && cd my-vue-app
 
 # install dependencies
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/package.json > package.json
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-vue/package.json > package.json
 npm i
 # as soon as new package.json under vue example released this line can be removed
 npm i webpack-cli@4.2.0 node-sass@4.14.1
 
-mkdir -p src/luigi-config src/assets/scss src/views public/assets
+mkdir -p src/applaunchpad-config src/assets/scss src/views public/assets
 
 # cleanup default installation
 # remove default index, will be replaced with example assets
@@ -256,8 +256,8 @@ module.exports = {
       new CopyWebpackPlugin(
         [
           {context:'public',to:'index.html',from:'index.html'},
-          {context:'node_modules/@luigi-project/core',to:'./luigi-core',from:{glob:'**',dot:true}},
-          {context:'node_modules/@luigi-project/client',to:'./luigi-client',from:{glob:'**',dot:true}},
+          {context:'node_modules/@applaunchpad-project/core',to:'./applaunchpad-core',from:{glob:'**',dot:true}},
+          {context:'node_modules/@applaunchpad-project/client',to:'./applaunchpad-client',from:{glob:'**',dot:true}},
           {
             from: 'node_modules/fundamental-styles/dist',
             to: './fundamental-styles'
@@ -274,9 +274,9 @@ module.exports = {
 
 echo "const path = require('path');
 module.exports = {
-    entry: './src/luigi-config/luigi-config.es6.js',
+    entry: './src/applaunchpad-config/applaunchpad-config.es6.js',
     output: {
-        filename: 'luigi-config.js',
+        filename: 'applaunchpad-config.js',
         path: path.resolve(__dirname, 'public'),
     },
 };" > webpack.config.js
@@ -286,25 +286,25 @@ sed 's/"scripts": {/"scripts": {\
 
 echo '{
     "globals": {
-        "Luigi": "readonly"
+        "AppLaunchpad": "readonly"
     }
 }' > .eslintrc.json
 
-mkdir -p src/luigi-config
+mkdir -p src/applaunchpad-config
 
 # fetch assets from vue example
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/index.html > public/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/sampleapp.html > public/sampleapp.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/app.vue > src/app.vue
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/main.js > src/main.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/luigi-config.js > src/luigi-config/luigi-config.es6.js
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-vue/public/index.html > public/index.html
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-vue/public/sampleapp.html > public/sampleapp.html
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-vue/src/app.vue > src/app.vue
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-vue/src/main.js > src/main.js
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-vue/public/applaunchpad-config.js > src/applaunchpad-config/applaunchpad-config.es6.js
 
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/router.js > src/router.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/store.js > src/store.js
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-vue/src/router.js > src/router.js
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-vue/src/store.js > src/store.js
 
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/home.vue > src/views/home.vue
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/sample1.vue > src/views/sample1.vue
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/sample2.vue > src/views/sample2.vue
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-vue/src/views/home.vue > src/views/home.vue
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-vue/src/views/sample1.vue > src/views/sample1.vue
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-vue/src/views/sample2.vue > src/views/sample2.vue
 
 # generic assets
 
@@ -313,13 +313,13 @@ npm run serve
 ```
 <!-- accordion:end -->
 
-3. Open the directory where Luigi is installed. Search for the `luigi-config.js` file you can use to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.
+3. Open the directory where AppLaunchpad is installed. Search for the `applaunchpad-config.js` file you can use to configure AppLaunchpad [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.
 
 ## Application setup for React
 
-1. Use the installer to create your application, install Luigi, make assets available, and serve your application:
+1. Use the installer to create your application, install AppLaunchpad, make assets available, and serve your application:
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh)
+bash <(curl -s https://raw.githubusercontent.com/davidwl/applaunchpad/master/scripts/setup/react.sh)
 ```
 or execute these commands manually to get the same result:
 
@@ -333,14 +333,14 @@ echo yes | npm run eject
 
 
 # install dependencies
-npm i -P @luigi-project/core @luigi-project/client fundamental-styles@0.11.0 @sap-theming/theming-base-content react-router-dom@5.1.2
+npm i -P @applaunchpad-project/core @applaunchpad-project/client fundamental-styles@0.11.0 @sap-theming/theming-base-content react-router-dom@5.1.2
 npm i copy-webpack-plugin@5 webpack webpack-cli @babel/core @babel/preset-env babel-loader --save-dev
 
 # replace strings in some places
 sed "s/const HtmlWebpackPlugin = require('html-webpack-plugin');/const HtmlWebpackPlugin = require('html-webpack-plugin');const CopyWebpackPlugin = require('copy-webpack-plugin');/g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
 sed "s/new HtmlWebpackPlugin(/new CopyWebpackPlugin([\
   {context: 'public', to: 'index.html', from: 'index.html'  },\
-  {context: 'node_modules\/@luigi-project\/core',to: '.\/luigi-core',from: {glob: '**',dot: true}}],\
+  {context: 'node_modules\/@applaunchpad-project\/core',to: '.\/applaunchpad-core',from: {glob: '**',dot: true}}],\
   {ignore: ['.gitkeep', '**\/.DS_Store', '**\/Thumbs.db'],debug: 'warning'\
   }),\
   new HtmlWebpackPlugin(/g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
@@ -354,9 +354,9 @@ sed "s/!isWsl/true/g" config/webpack.config.js > config/webpack.config.tmp.js &&
 echo "const path = require('path');
 
 module.exports = {
-    entry: './src/luigi-config/luigi-config.es6.js',
+    entry: './src/applaunchpad-config/applaunchpad-config.es6.js',
     output: {
-        filename: 'luigi-config.js',
+        filename: 'applaunchpad-config.js',
         path: path.resolve(__dirname, 'public'),
     },
 };">webpack.config.js
@@ -366,26 +366,26 @@ sed 's/"scripts": {/"scripts": {\
 
 echo '{
     "globals": {
-        "Luigi": "readonly"
+        "AppLaunchpad": "readonly"
     }
 }'>.eslintrc.json
 
 # downloads
-mkdir -p src/luigi-config
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/index.html > public/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/sampleapp.html > public/sampleapp.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/luigi-config.js > src/luigi-config/luigi-config.es6.js
+mkdir -p src/applaunchpad-config
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-react/public/index.html > public/index.html
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-react/public/sampleapp.html > public/sampleapp.html
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-react/public/applaunchpad-config.js > src/applaunchpad-config/applaunchpad-config.es6.js
 
 
 # add index.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/index.js > src/index.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/index.css > src/index.css
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-react/src/index.js > src/index.js
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-react/src/index.css > src/index.css
 
 # add views
 mkdir src/views
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/home.js > src/views/home.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/sample1.js > src/views/sample1.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/sample2.js > src/views/sample2.js
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-react/src/views/home.js > src/views/home.js
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-react/src/views/sample1.js > src/views/sample1.js
+curl https://raw.githubusercontent.com/davidwl/applaunchpad/master/core/examples/applaunchpad-example-react/src/views/sample2.js > src/views/sample2.js
 
 npm i
 npm run buildConfig
@@ -393,4 +393,4 @@ npm start
 ```
 <!-- accordion:end -->
 
-2. Open the directory where Luigi is installed. Search for the `luigi-config.js` file which you can use to configure Luigi [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.
+2. Open the directory where AppLaunchpad is installed. Search for the `applaunchpad-config.js` file which you can use to configure AppLaunchpad [navigation](navigation-configuration.md), [authorization](authorization-configuration.md), [general settings](general-settings.md) and more.

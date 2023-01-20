@@ -1,22 +1,23 @@
-import LuigiClient from '@luigi-project/client';
-
+import AppLaunchpadClient from '@applaunchpad-project/client';
 
 export class ScrollAnchorsHandler {
   init() {
     // scroll if navigate param found
-    LuigiClient.addInitListener((ctx) => {
-      if (this.initDone) { return; }
+    AppLaunchpadClient.addInitListener(ctx => {
+      if (this.initDone) {
+        return;
+      }
       this.initDone = true;
-      if (LuigiClient.getNodeParams().section) {
-        this.scrollAnchor(null, LuigiClient.getNodeParams().section);
+      if (AppLaunchpadClient.getNodeParams().section) {
+        this.scrollAnchor(null, AppLaunchpadClient.getNodeParams().section);
       }
       window.scrollAnchor = this.scrollAnchor;
     });
 
-    LuigiClient.addContextUpdateListener((ctx) => {
-      if (LuigiClient.getNodeParams().section) {
+    AppLaunchpadClient.addContextUpdateListener(ctx => {
+      if (AppLaunchpadClient.getNodeParams().section) {
         setTimeout(() => {
-          this.scrollAnchor(null, LuigiClient.getNodeParams().section);
+          this.scrollAnchor(null, AppLaunchpadClient.getNodeParams().section);
         });
       }
     });
@@ -29,7 +30,7 @@ export class ScrollAnchorsHandler {
     let targetID;
     if (e) {
       e.preventDefault();
-      targetID = (respond) ? respond.getAttribute('href') : this.getAttribute('href');
+      targetID = respond ? respond.getAttribute('href') : this.getAttribute('href');
       targetID = `#${targetID.split('#').pop()}`;
     } else {
       targetID = '#' + respond;

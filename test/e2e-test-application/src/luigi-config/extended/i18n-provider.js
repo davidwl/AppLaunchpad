@@ -33,16 +33,16 @@ class I18nProvider {
   }
 
   afterInit() {
-    this.currentLanguage = Luigi.i18n().getCurrentLocale();
-    Luigi.i18n().addCurrentLocaleChangeListener(locale => {
+    this.currentLanguage = AppLaunchpad.i18n().getCurrentLocale();
+    AppLaunchpad.i18n().addCurrentLocaleChangeListener(locale => {
       this.currentLanguage = locale;
     });
   }
 
-  // This function will be used by Luigi Core for translation
+  // This function will be used by AppLaunchpad Core for translation
   getTranslation(key, interpolations = undefined, locale = undefined) {
     if (!key) return '';
-    this.currentLanguage = locale || this.currentLanguage || Luigi.i18n().getCurrentLocale();
+    this.currentLanguage = locale || this.currentLanguage || AppLaunchpad.i18n().getCurrentLocale();
     const result = this.findTranslation(key, this.translationTable[this.currentLanguage], interpolations);
     return result ? result : key;
   }

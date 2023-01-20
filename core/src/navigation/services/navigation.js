@@ -9,7 +9,7 @@ import {
   RoutingHelpers
 } from '../../utilities/helpers';
 
-import { LuigiConfig } from '../../core-api';
+import { AppLaunchpadConfig } from '../../core-api';
 import { NodeDataManagementStorage } from '../../services/node-data-management';
 
 class NavigationClass {
@@ -287,7 +287,7 @@ class NavigationClass {
   }
 
   onNodeChange(prevNode, nextNode) {
-    const invokedFunction = LuigiConfig.getConfigValue('navigation.nodeChangeHook');
+    const invokedFunction = AppLaunchpadConfig.getConfigValue('navigation.nodeChangeHook');
     if (typeof invokedFunction === 'function') {
       invokedFunction(prevNode, nextNode);
     } else if (invokedFunction !== undefined) {
@@ -425,7 +425,7 @@ class NavigationClass {
   }
 
   async extractDataFromPath(path) {
-    const pathData = await this.getNavigationPath(LuigiConfig.getConfigValueAsync('navigation.nodes'), path);
+    const pathData = await this.getNavigationPath(AppLaunchpadConfig.getConfigValueAsync('navigation.nodes'), path);
     const nodeObject = RoutingHelpers.getLastNodeObject(pathData);
     return { nodeObject, pathData };
   }

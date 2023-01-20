@@ -1,4 +1,4 @@
-import defaultLuigiConfig from '../../configs/default';
+import defaultAppLaunchpadConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
 describe('JS-TEST-APP 2', () => {
@@ -11,7 +11,7 @@ describe('JS-TEST-APP 2', () => {
   describe('Theming', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       newConfig.settings.theming = {
         themes: () => [
           { id: 'light', name: 'Fiori3 Light' },
@@ -34,7 +34,7 @@ describe('JS-TEST-APP 2', () => {
         viewUrl: '/examples/microfrontends/multipurpose.html#',
         context: {
           title: 'Welcome <h2 id="themeText"></h2>',
-          content: `<img src="empty.gif" onerror='document.getElementById("themeText").innerHTML = LuigiClient.uxManager().getCurrentTheme();' />`
+          content: `<img src="empty.gif" onerror='document.getElementById("themeText").innerHTML = AppLaunchpadClient.uxManager().getCurrentTheme();' />`
         }
       });
     });
@@ -87,10 +87,10 @@ describe('JS-TEST-APP 2', () => {
     let newConfig;
 
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       newConfig.settings.responsiveNavigation = 'semiCollapsible';
       // cy.window().then(win => {
-      //   win.Luigi.configChanged('settings');
+      //   win.AppLaunchpad.configChanged('settings');
       // });
     });
     it('should check if the btn hide/show left side nav visible', () => {
@@ -105,14 +105,14 @@ describe('JS-TEST-APP 2', () => {
 
       cy.reload().wait(1000);
       cy.window().then(win => {
-        win.Luigi.setConfig(newConfig);
+        win.AppLaunchpad.setConfig(newConfig);
       });
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
     });
 
     it('should execute Core API function collapseLeftSideNav() and open the nav', () => {
       cy.window().then(win => {
-        win.Luigi.ux().collapseLeftSideNav(false);
+        win.AppLaunchpad.ux().collapseLeftSideNav(false);
       });
       cy.reload().wait(1000);
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('not.have.class', 'fd-side-nav--condensed');
@@ -123,10 +123,10 @@ describe('JS-TEST-APP 2', () => {
     let newConfig;
 
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       newConfig.settings.responsiveNavigation = 'Fiori3';
       cy.window().then(win => {
-        win.Luigi.configChanged('settings');
+        win.AppLaunchpad.configChanged('settings');
       });
     });
 
@@ -142,7 +142,7 @@ describe('JS-TEST-APP 2', () => {
 
       cy.reload().wait(1000);
       cy.window().then(win => {
-        win.Luigi.setConfig(newConfig);
+        win.AppLaunchpad.setConfig(newConfig);
       });
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
     });
@@ -150,11 +150,11 @@ describe('JS-TEST-APP 2', () => {
     it('should execute Core API function collapseLeftSideNav() and open the nav in Fiori3 settings', () => {
       cy.visitTestApp('/', newConfig);
       cy.window().then(win => {
-        win.Luigi.ux().collapseLeftSideNav(false);
+        win.AppLaunchpad.ux().collapseLeftSideNav(false);
       });
       cy.reload().wait(1000);
       cy.window().then(win => {
-        win.Luigi.setConfig(newConfig);
+        win.AppLaunchpad.setConfig(newConfig);
       });
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('not.have.class', 'fd-side-nav--condensed');
     });
@@ -162,7 +162,7 @@ describe('JS-TEST-APP 2', () => {
   describe('User settings dialog', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       newConfig.tag = 'user-settings-dialog';
       newConfig.userSettings = {
         userSettingGroups: {
@@ -225,7 +225,7 @@ describe('JS-TEST-APP 2', () => {
       cy.visitTestApp('/', newConfig);
       cy.get('#app[configversion="user-settings-dialog"]');
       cy.window().then(win => {
-        win.Luigi.ux().openUserSettings();
+        win.AppLaunchpad.ux().openUserSettings();
       });
       cy.get('.lui-usersettings-dialog').should('be.visible');
 
@@ -267,7 +267,7 @@ describe('JS-TEST-APP 2', () => {
       cy.visitTestApp('/', newConfig);
       cy.get('#app[configversion="user-settings-dialog"]');
       cy.window().then(win => {
-        win.Luigi.ux().openUserSettings();
+        win.AppLaunchpad.ux().openUserSettings();
       });
 
       cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
@@ -286,7 +286,7 @@ describe('JS-TEST-APP 2', () => {
   describe('Bookmarkable micro frontends', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
     });
 
     it('Hash routing with showModalPathInUrl enabled and custom modalPathParam and node params', () => {
@@ -298,16 +298,16 @@ describe('JS-TEST-APP 2', () => {
       cy.visitTestApp('/home', newConfig);
       cy.get('#app[configversion="bookmarkable-mf-1"]');
       cy.window().then(win => {
-        win.Luigi.navigation()
+        win.AppLaunchpad.navigation()
           .withParams({ mp: 'one' })
           .openAsModal('/home/one');
       });
 
       // cy.wait(150); // it takes some time for the nodeParams be available
 
-      // TODO - Accessing LuigiCLient directly results in flaky behavoir, skip for now
+      // TODO - Accessing AppLaunchpadCLient directly results in flaky behavoir, skip for now
       // cy.getModalWindow().then(win => {
-      //   assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
+      //   assert.deepEqual(win.AppLaunchpadClient.getNodeParams(), { mp: 'one' });
       // });
 
       cy.expectPathToBe('/home?mymodal=' + encodeURIComponent('/home/one?~mp=one'));
@@ -322,15 +322,15 @@ describe('JS-TEST-APP 2', () => {
       cy.visitTestApp('/home', newConfig);
       cy.get('#app[configversion="bookmarkable-mf-2"]');
       cy.window().then(win => {
-        win.Luigi.navigation()
+        win.AppLaunchpad.navigation()
           .withParams({ mp: 'one' })
           .openAsModal('/home/one');
       });
 
       // cy.wait(150); // it takes some time for the nodeParams be available
-      // TODO - Accessing LuigiCLient directly results in flaky behavoir, skip for now
+      // TODO - Accessing AppLaunchpadCLient directly results in flaky behavoir, skip for now
       // cy.getModalWindow().then(win => {
-      //   assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
+      //   assert.deepEqual(win.AppLaunchpadClient.getNodeParams(), { mp: 'one' });
       // });
 
       cy.expectPathToBe('/home');
@@ -343,7 +343,7 @@ describe('JS-TEST-APP 2', () => {
   describe('GlobalSearchCentered', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       newConfig.globalSearch = {
         searchFieldCentered: true,
         searchProvider: {}
@@ -412,7 +412,7 @@ describe('JS-TEST-APP 2', () => {
     };
 
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       newConfig.settings = {
         experimental: {
           navHeader: true,
@@ -443,22 +443,22 @@ describe('JS-TEST-APP 2', () => {
                       {
                         label: '1',
                         pathSegment: '1',
-                        viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+                        viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html'
                       },
                       {
                         label: '2',
                         pathSegment: '2',
-                        viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+                        viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html'
                       },
                       {
                         label: '3',
                         pathSegment: '3',
-                        viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+                        viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html'
                       },
                       {
                         label: '4',
                         pathSegment: '4',
-                        viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+                        viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html'
                       }
                     ]
                   }
@@ -468,12 +468,12 @@ describe('JS-TEST-APP 2', () => {
                 label: 'static',
                 pathSegment: 'static',
                 label: 'static',
-                viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+                viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html'
               },
               {
                 pathSegment: 'virtual-tree',
                 label: 'VirtualTree',
-                viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+                viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html',
                 virtualTree: true
               }
             ]
@@ -530,7 +530,7 @@ describe('JS-TEST-APP 2', () => {
   describe('Encoded ViewURL Search Params with Decorators', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       newConfig.tag = 'encodeViewURL';
       newConfig.settings.theming = {
         defaultTheme: 'light',

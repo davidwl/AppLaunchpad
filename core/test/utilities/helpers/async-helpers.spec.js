@@ -8,7 +8,7 @@ describe('Async-helpers', () => {
   let clock;
   let obj;
   beforeEach(() => {
-    // sinon.stub(LuigiConfig, 'getConfigValue');
+    // sinon.stub(AppLaunchpadConfig, 'getConfigValue');
     obj = {
       client: 'here'
     };
@@ -42,10 +42,7 @@ describe('Async-helpers', () => {
       AsyncHelpers.waitForKeyExistency(obj, 'client2')
         .then(result => {})
         .catch(e => {
-          assert.equal(
-            e,
-            'client2 did not appear in object within 20 seconds.'
-          );
+          assert.equal(e, 'client2 did not appear in object within 20 seconds.');
           done();
         });
       clock.tick(21000);
@@ -69,11 +66,7 @@ describe('Async-helpers', () => {
         return three;
       };
       const thirdParam = 'hello';
-      const prom = AsyncHelpers.applyFunctionPromisified(plainFunc, [
-        undefined,
-        undefined,
-        thirdParam
-      ]);
+      const prom = AsyncHelpers.applyFunctionPromisified(plainFunc, [undefined, undefined, thirdParam]);
 
       assert.isTrue(GenericHelpers.isPromise(prom), 'is a promise');
       assert.equal(await prom, thirdParam, 'value is equal');
@@ -86,11 +79,7 @@ describe('Async-helpers', () => {
         });
       };
       const thirdParam = 'hello';
-      const prom = AsyncHelpers.applyFunctionPromisified(promiseFunc, [
-        undefined,
-        undefined,
-        thirdParam
-      ]);
+      const prom = AsyncHelpers.applyFunctionPromisified(promiseFunc, [undefined, undefined, thirdParam]);
 
       assert.isTrue(GenericHelpers.isPromise(prom), 'is a promise');
       assert.equal(await prom, thirdParam, 'value is equal');

@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'debug') {
   };
 }
 
-export default function luigiLinkParser(options) {
+export default function applaunchpadLinkParser(options) {
   var settings = options || {};
 
   return function transformer(tree) {
@@ -23,7 +23,7 @@ export default function luigiLinkParser(options) {
   };
 
   function modify(node, prop) {
-    const githubMaster = 'https://github.com/SAP/luigi/blob/master/';
+    const githubMaster = 'https://github.com/davidwl/applaunchpad/blob/master/';
     if (has(node, prop)) {
       var parsed = url.parse(node.properties[prop]);
       if (

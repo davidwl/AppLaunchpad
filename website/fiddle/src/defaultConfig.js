@@ -1,6 +1,6 @@
 let defaultConfig = `
 
-Luigi.setConfig({
+AppLaunchpad.setConfig({
     navigation: { 
             validWebcomponentUrls:['.*?'],
             nodes: [{ 
@@ -13,8 +13,8 @@ Luigi.setConfig({
                     icon: 'home',
                     viewUrl: '/examples/microfrontends/multipurpose.html',
                     context: {
-                        title: 'Welcome to Luigi Fiddle!',
-                        content: 'Click on "Modify Config" at the bottom right and play around with your Luigi configuration'
+                        title: 'Welcome to AppLaunchpad Fiddle!',
+                        content: 'Click on "Modify Config" at the bottom right and play around with your AppLaunchpad configuration'
                     }
                 },{ 
                     pathSegment: 'empty', 
@@ -76,12 +76,12 @@ Luigi.setConfig({
                     openNodeInModal: false
                 },{ 
                     pathSegment: 'wc2', 
-                    label: 'WC Luigi Client', 
+                    label: 'WC AppLaunchpad Client', 
                     category:  'Web Component',
                     loadingIndicator: {
                         enabled: false
                     },
-                    viewUrl: '/wc/luigiExampleWC.js',
+                    viewUrl: '/wc/applaunchpadExampleWC.js',
                     webcomponent: true,
                     openNodeInModal: false
                
@@ -123,9 +123,9 @@ Luigi.setConfig({
                     link: '/',
                     icon: 'nav-back'
                 },{
-                    label: 'Luigi Github Page',
+                    label: 'AppLaunchpad Github Page',
                     externalLink : { 
-                        url: 'https://github.com/SAP/luigi'
+                        url: 'https://github.com/davidwl/applaunchpad'
                     }
                 },{
                     label: 'Fundamental Library',
@@ -141,7 +141,7 @@ Luigi.setConfig({
             }],
             productSwitcher: {
                 items: [{
-                    icon: 'https://raw.githubusercontent.com/SAP/luigi/master/website/landingpage/public/assets/img/logos/sap.svg',
+                    icon: 'https://raw.githubusercontent.com/davidwl/applaunchpad/master/website/landingpage/public/assets/img/logos/sap.svg',
                     label: 'SAP homepage',
                     externalLink: {
                       url: 'https://www.sap.com',
@@ -162,12 +162,12 @@ Luigi.setConfig({
         /**
         auth: {
             // We have registered the following provider at the window object:
-            // OAuth2 Implicit Grant: window.LuigiAuthOAuth2 - Docs: https://docs.luigi-project.io/docs/authorization-configuration?section=oauth2-implicit-grant-configuration
-            // OIDC Implicit Grant: window.LuigiAuthOIDC - Docs: https://docs.luigi-project.io/docs/authorization-configuration/?section=openid-connect-configuration
+            // OAuth2 Implicit Grant: window.AppLaunchpadAuthOAuth2 - Docs: https://docs.applaunchpad-project.io/docs/authorization-configuration?section=oauth2-implicit-grant-configuration
+            // OIDC Implicit Grant: window.AppLaunchpadAuthOIDC - Docs: https://docs.applaunchpad-project.io/docs/authorization-configuration/?section=openid-connect-configuration
  
             use: 'myOAuth2',
             myOAuth2: {
-                idpProvider: window.LuigiAuthOAuth2,
+                idpProvider: window.AppLaunchpadAuthOAuth2,
                 authorizeUrl: '/auth/idpmock/implicit.html',
                 logoutUrl: '/auth/idpmock/logout.html',
                 post_logout_redirect_uri: '/auth/logout.html',
@@ -185,8 +185,8 @@ Luigi.setConfig({
         settings: { 
             responsiveNavigation: 'semiCollapsible',
             header: { 
-                logo: 'img/luigi.png', 
-                title: 'Luigi Fiddle'
+                logo: 'img/applaunchpad.png', 
+                title: 'AppLaunchpad Fiddle'
             },
             burgerTooltip: {
                 navExpanded: 'Collapse navigation',

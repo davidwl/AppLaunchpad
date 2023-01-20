@@ -1,22 +1,22 @@
 import { config } from './config';
 import { GenericHelpers, StateHelpers, EscapingHelpers } from '../utilities/helpers';
-import { defaultLuigiTranslationTable } from '../utilities/defaultLuigiTranslationTable';
+import { defaultAppLaunchpadTranslationTable } from '../utilities/defaultAppLaunchpadTranslationTable';
 
 /**
  * Localization-related functions.
- * @name LuigiI18N
+ * @name AppLaunchpadI18N
  */
-class LuigiI18NManager {
+class AppLaunchpadI18NManager {
   constructor() {
-    this.currentLocaleStorageKey = 'luigi.currentLocale';
+    this.currentLocaleStorageKey = 'applaunchpad.currentLocale';
     this.defaultLocale = 'en';
-    this.translationTable = defaultLuigiTranslationTable;
+    this.translationTable = defaultAppLaunchpadTranslationTable;
     this.listeners = {};
   }
 
   _init() {
     StateHelpers.doOnStoreChange(
-      window.Luigi._store,
+      window.AppLaunchpad._store,
       () => {
         this._initCustomImplementation();
       },
@@ -28,7 +28,7 @@ class LuigiI18NManager {
    * Gets the current locale.
    * @returns {string} current locale
    * @since 0.5.3
-   * @memberof LuigiI18N
+   * @memberof AppLaunchpadI18N
    */
   getCurrentLocale() {
     return sessionStorage.getItem(this.currentLocaleStorageKey) || this.defaultLocale;
@@ -38,7 +38,7 @@ class LuigiI18NManager {
    * Sets current locale to the specified one.
    * @param {string} locale locale to be set as the current locale
    * @since 0.5.3
-   * @memberof LuigiI18N
+   * @memberof AppLaunchpadI18N
    */
   setCurrentLocale(locale) {
     if (locale) {
@@ -52,7 +52,7 @@ class LuigiI18NManager {
    * @param {Function} listener function called on every locale change with the new locale as argument
    * @returns {number} listener ID associated with the given listener; use it when removing the listener
    * @since 0.5.3
-   * @memberof LuigiI18N
+   * @memberof AppLaunchpadI18N
    */
   addCurrentLocaleChangeListener(listener) {
     if (GenericHelpers.isFunction(listener)) {
@@ -68,7 +68,7 @@ class LuigiI18NManager {
    * Unregisters a listener for locale changes.
    * @param {number} listenerId listener ID associated with the listener to be removed, returned by addCurrentLocaleChangeListener
    * @since 0.5.3
-   * @memberof LuigiI18N
+   * @memberof AppLaunchpadI18N
    */
   removeCurrentLocaleChangeListener(listenerId) {
     if (listenerId && this.listeners[listenerId]) {
@@ -80,7 +80,7 @@ class LuigiI18NManager {
 
   /**
    * @private
-   * @memberof LuigiI18N
+   * @memberof AppLaunchpadI18N
    */
   _notifyLocaleChange(locale) {
     Object.getOwnPropertyNames(this.listeners).forEach(listenerId => {
@@ -91,7 +91,7 @@ class LuigiI18NManager {
 
   /**
    * @private
-   * @memberof LuigiI18N
+   * @memberof AppLaunchpadI18N
    */
   _initCustomImplementation() {
     this.translationImpl = config.getConfigValue('settings.customTranslationImplementation');
@@ -112,7 +112,7 @@ class LuigiI18NManager {
    * @param {Object} interpolations objects with properties that will be used for token replacements in the localization key
    * @param {locale} locale optional locale to get the translation for; default is the current locale
    * @since 0.5.3
-   * @memberof LuigiI18N
+   * @memberof AppLaunchpadI18N
    */
   getTranslation(key, interpolations = undefined, locale = undefined) {
     if (!key) return '';
@@ -131,7 +131,7 @@ class LuigiI18NManager {
    * Finds the translated value based on given key.
    * @param {string} key key to be translated
    * @param {*} obj translation table
-   * @memberof LuigiI18N
+   * @memberof AppLaunchpadI18N
    */
   findTranslation(key, obj, interpolations) {
     let splitted = key.split('.');
@@ -151,7 +151,7 @@ class LuigiI18NManager {
    * Replaces values that are defiend in translation strings
    * @param {string} value string to be translated
    * @param {*} interpolations translation table
-   * @memberof LuigiI18N
+   * @memberof AppLaunchpadI18N
    * @example
    * findInterpolations('Environment {num}', {num: 1})
    */
@@ -166,4 +166,4 @@ class LuigiI18NManager {
   }
 }
 
-export const i18n = new LuigiI18NManager();
+export const i18n = new AppLaunchpadI18NManager();

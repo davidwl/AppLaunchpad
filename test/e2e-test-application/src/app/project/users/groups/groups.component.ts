@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { linkManager } from '@luigi-project/client';
+import { linkManager } from '@applaunchpad-project/client';
 
 @Component({
   selector: 'app-groups',

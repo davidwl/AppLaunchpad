@@ -38,7 +38,7 @@
 
 <section class="fd-section content page-{post.shortName}">
   <!-- <div class="fd-section__header">
-    <h1 class="fd-section__title">LuigiClient uxManager methods</h1>
+    <h1 class="fd-section__title">AppLaunchpadClient uxManager methods</h1>
   </div> -->
   {@html post.contents}
 </section>

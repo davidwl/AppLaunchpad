@@ -9,7 +9,7 @@ export default function oldVersion() {
         const wrapper = h('div.custom-select');
         const oldVerDropdown = h('select.oldverdrop');
         oldVerDropdown.properties.onchange =
-          "window.open('https://github.com/SAP/luigi/blob/' + event.target.value + '/docs/README.md', '_blank'); event.target.value=0;";
+          "window.open('https://github.com/davidwl/applaunchpad/blob/' + event.target.value + '/docs/README.md', '_blank'); event.target.value=0;";
         wrapper.children.push(oldVerDropdown);
         parent.children.splice(index + 1, 0, wrapper);
         const tagLinks = [];

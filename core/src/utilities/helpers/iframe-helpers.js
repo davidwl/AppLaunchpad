@@ -1,7 +1,7 @@
 // Helper methods for 'iframe.js' file. They don't require any method from 'iframe.js` but are required by them.
 import { GenericHelpers } from './';
 import { MICROFRONTEND_TYPES } from './../constants';
-import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiTheming } from '../../core-api';
+import { AppLaunchpadConfig, AppLaunchpadFeatureToggles, AppLaunchpadI18N, AppLaunchpadTheming } from '../../core-api';
 import { ViewUrlDecorator } from '../../services';
 
 class IframeHelpersClass {
@@ -130,7 +130,7 @@ class IframeHelpersClass {
   getMicrofrontendsInDom() {
     return MICROFRONTEND_TYPES.map(({ type, selector }) => {
       return Array.from(document.querySelectorAll(selector)).map(container => ({
-        id: container.luigi.id,
+        id: container.applaunchpad.id,
         container,
         active: GenericHelpers.isElementVisible(container),
         type
@@ -174,10 +174,10 @@ class IframeHelpersClass {
   }
 
   sendMessageToIframe(iframe, message) {
-    if (!(iframe.luigi && iframe.luigi.viewUrl && iframe._ready)) {
+    if (!(iframe.applaunchpad && iframe.applaunchpad.viewUrl && iframe._ready)) {
       return;
     }
-    const trustedIframeDomain = this.getLocation(iframe.luigi.viewUrl);
+    const trustedIframeDomain = this.getLocation(iframe.applaunchpad.viewUrl);
     if (trustedIframeDomain !== '' && iframe.contentWindow) {
       iframe.contentWindow.postMessage(message, trustedIframeDomain);
     }
@@ -192,7 +192,7 @@ class IframeHelpersClass {
   }
 
   createIframe(viewUrl, viewGroup, currentNode, microFrontendType, componentData) {
-    const luigiDefaultSandboxRules = [
+    const applaunchpadDefaultSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
       // 'allow-orientation-lock', // Lets the resource lock the screen orientation.
@@ -207,11 +207,11 @@ class IframeHelpersClass {
       // 'allow-top-navigation-by-user-activation', // Lets the resource navigate the top-level browsing context, but only if initiated by a user gesture.
       // 'allow-downloads-without-user-activation' // Allows for downloads to occur without a gesture from the user.
     ];
-    const customSandboxRules = LuigiConfig.getConfigValue('settings.customSandboxRules');
-    const allowRules = LuigiConfig.getConfigValue('settings.allowRules');
+    const customSandboxRules = AppLaunchpadConfig.getConfigValue('settings.customSandboxRules');
+    const allowRules = AppLaunchpadConfig.getConfigValue('settings.allowRules');
     const activeSandboxRules = customSandboxRules
-      ? [...new Set([...luigiDefaultSandboxRules, ...customSandboxRules])]
-      : luigiDefaultSandboxRules;
+      ? [...new Set([...applaunchpadDefaultSandboxRules, ...customSandboxRules])]
+      : applaunchpadDefaultSandboxRules;
 
     const iframe = document.createElement('iframe');
     iframe.src = ViewUrlDecorator.hasDecorators()
@@ -224,7 +224,7 @@ class IframeHelpersClass {
       iframe.allow = allowRules.join(' ');
     }
     iframe.sandbox = activeSandboxRules.join(' ');
-    iframe.luigi = {
+    iframe.applaunchpad = {
       viewUrl,
       currentNode,
       createdAt: new Date().getTime(),
@@ -235,9 +235,9 @@ class IframeHelpersClass {
       iframe.vg = viewGroup;
     }
     if (currentNode && currentNode.clientPermissions) {
-      iframe.luigi.clientPermissions = currentNode.clientPermissions;
+      iframe.applaunchpad.clientPermissions = currentNode.clientPermissions;
     }
-    const iframeInterceptor = LuigiConfig.getConfigValue('settings.iframeCreationInterceptor');
+    const iframeInterceptor = AppLaunchpadConfig.getConfigValue('settings.iframeCreationInterceptor');
     if (GenericHelpers.isFunction(iframeInterceptor)) {
       try {
         iframeInterceptor(iframe, viewGroup, currentNode, microFrontendType);
@@ -255,20 +255,20 @@ class IframeHelpersClass {
   getValidMessageSource(e) {
     const allMessagesSources = [
       ...IframeHelpers.getMicrofrontendIframes(),
-      { contentWindow: window, luigi: { viewUrl: window.location.href } }
+      { contentWindow: window, applaunchpad: { viewUrl: window.location.href } }
     ];
     const iframe = allMessagesSources.find(iframe => this.isMessageSource(e, iframe));
 
-    if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
+    if (!iframe || !iframe.applaunchpad || !iframe.applaunchpad.viewUrl) {
       return undefined;
     }
 
-    const navigateOkMsg = 'luigi.navigate.ok' === e.data.msg;
-    if (navigateOkMsg && !iframe.luigi.nextViewUrl) {
+    const navigateOkMsg = 'applaunchpad.navigate.ok' === e.data.msg;
+    if (navigateOkMsg && !iframe.applaunchpad.nextViewUrl) {
       return undefined;
     }
 
-    const viewUrl = navigateOkMsg ? iframe.luigi.nextViewUrl : iframe.luigi.viewUrl;
+    const viewUrl = navigateOkMsg ? iframe.applaunchpad.nextViewUrl : iframe.applaunchpad.viewUrl;
     if (!this.iframeIsSameDomain(viewUrl, e.origin)) {
       return undefined;
     }
@@ -347,9 +347,9 @@ class IframeHelpersClass {
   applyCoreStateData(data) {
     return {
       ...data,
-      activeFeatureToggleList: LuigiFeatureToggles.getActiveFeatureToggleList(),
-      currentLocale: LuigiI18N.getCurrentLocale(),
-      currentTheme: LuigiTheming.getCurrentTheme()
+      activeFeatureToggleList: AppLaunchpadFeatureToggles.getActiveFeatureToggleList(),
+      currentLocale: AppLaunchpadI18N.getCurrentLocale(),
+      currentTheme: AppLaunchpadTheming.getCurrentTheme()
     };
   }
 }

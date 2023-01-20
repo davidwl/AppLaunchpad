@@ -76,10 +76,7 @@ describe('NodeDataManagementStorage', function() {
 
   describe('set, get and has rootNode', () => {
     let rootNode = {
-      children: [
-        { pathSegment: 'Overview' },
-        { pathSegment: 'projects', children: [{ pathSegment: 'pr1' }] }
-      ]
+      children: [{ pathSegment: 'Overview' }, { pathSegment: 'projects', children: [{ pathSegment: 'pr1' }] }]
     };
     afterEach(() => {
       NodeDataManagementStorage.deleteCache();
@@ -88,9 +85,7 @@ describe('NodeDataManagementStorage', function() {
       expect(NodeDataManagementStorage.dataManagement.size).to.equal(0);
       NodeDataManagementStorage.setRootNode(rootNode);
       expect(NodeDataManagementStorage.dataManagement.size).to.equal(1);
-      let rootNodeFromCache = NodeDataManagementStorage.dataManagement.get(
-        '_luigiRootNode'
-      ).node;
+      let rootNodeFromCache = NodeDataManagementStorage.dataManagement.get('_applaunchpadRootNode').node;
       expect(rootNodeFromCache).to.deep.equal(rootNode);
     });
     it('get stored rootNode from cache using getRootNode', () => {

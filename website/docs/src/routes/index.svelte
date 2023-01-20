@@ -15,11 +15,11 @@
 </style>
 
 <svelte:head>
-	<title>Luigi Documentation</title>
+	<title>AppLaunchpad Documentation</title>
 </svelte:head>
 
 <figure>
-	<img alt='Luigi' src='https://raw.githubusercontent.com/sap/luigi/master/logo.png'>
+	<img alt='AppLaunchpad' src='https://raw.githubusercontent.com/sap/applaunchpad/master/logo.png'>
 </figure>
 
 <p><strong><a href="docs">Show documentation subpages</a></strong></p>

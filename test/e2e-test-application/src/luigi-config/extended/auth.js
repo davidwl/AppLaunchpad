@@ -1,5 +1,5 @@
-import oAuth2ImplicitGrant from '@luigi-project/plugin-auth-oauth2';
-import openIdConnect from '@luigi-project/plugin-auth-oidc';
+import oAuth2ImplicitGrant from '@applaunchpad-project/plugin-auth-oauth2';
+import openIdConnect from '@applaunchpad-project/plugin-auth-oidc';
 class Auth {
   use = 'mockAuth';
 
@@ -21,11 +21,11 @@ class Auth {
     userInfoFn: () => {
       return new Promise(resolve => {
         resolve({
-          name: 'Luigi User',
+          name: 'AppLaunchpad User',
           initials: 'LU',
-          email: 'luigi.user@example.com',
+          email: 'applaunchpad.user@example.com',
           picture: '/assets/favicon-sap.ico',
-          description: 'Luigi Expert'
+          description: 'AppLaunchpad Expert'
           //icon: true
         });
       });
@@ -35,7 +35,7 @@ class Auth {
   openIdConnect = {
     idpProvider: openIdConnect,
     // To run OIDC Mock Server, go to scripts/oidc-mockserver
-    // and run docker-compose up. Default user: Luigi , password: pwd
+    // and run docker-compose up. Default user: AppLaunchpad , password: pwd
     authority: 'http://localhost:4011',
     logoutUrl: 'http://localhost:4011/connect/endsession',
     scope: 'openid profile email',
@@ -67,12 +67,12 @@ class Auth {
     authorizeMethod: 'GET',
     oAuthData: {
       client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp',
-      redirect_uri: '/luigi-core/auth/oauth2/callback.html',
+      redirect_uri: '/applaunchpad-core/auth/oauth2/callback.html',
       scope: 'openid profile email groups'
 
       // optional: redirect_uri and response_type are provided by default
       // scope: '',
-      // redirect_uri: '/luigi-core/auth/oauth2/callback.html'
+      // redirect_uri: '/applaunchpad-core/auth/oauth2/callback.html'
       // response_type: 'id_token token',
 
       // all specified values inside oAuthData will be added to the oauth call, i.e display="popup",
@@ -138,14 +138,14 @@ class Auth {
     },
     onAuthExpireSoon: settings => {
       console.info('onAuthExpireSoon ', settings);
-      Luigi.showAlert({
+      AppLaunchpad.showAlert({
         text: 'Token expires soon',
         type: 'warning'
       });
     },
     onAuthConfigError: err => {
       console.error(`IDP Provider ${err.idpProviderName} does not exist`);
-      Luigi.showAlert({
+      AppLaunchpad.showAlert({
         text: `IDP Provider ${err.idpProviderName} does not exist`,
         type: 'error'
       });

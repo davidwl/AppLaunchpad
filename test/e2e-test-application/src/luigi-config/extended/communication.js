@@ -1,7 +1,7 @@
 class Communication {
   customMessagesListeners = {
     'my-custom-message.update-top-nav': () => {
-      Luigi.navigation().updateTopNavigation();
+      AppLaunchpad.navigation().updateTopNavigation();
     },
     'my-custom-message.test-example': (customMessage, mfObject, mfNodeObj) => {
       console.info(
@@ -10,7 +10,7 @@ class Communication {
         )}. Node information: ${JSON.stringify(mfNodeObj)}`
       );
 
-      Luigi.showAlert({
+      AppLaunchpad.showAlert({
         text: `Custom message received: ${JSON.stringify(customMessage)}`,
         type: 'success',
         closeAfter: 3000
@@ -18,17 +18,17 @@ class Communication {
 
       setTimeout(() => {
         const newCustomMessage = {
-          id: 'luigi.my-custom-message-for-client',
+          id: 'applaunchpad.my-custom-message-for-client',
           description: 'here goes the message description'
         };
-        Luigi.customMessages().send(mfObject.id, newCustomMessage);
+        AppLaunchpad.customMessages().send(mfObject.id, newCustomMessage);
       }, 2000);
     },
     'my-micro-frontend-is-ready': () => {
-      Luigi.ux().hideAppLoadingIndicator();
+      AppLaunchpad.ux().hideAppLoadingIndicator();
     },
     'my-custom-message.update-user-settings': (customMessage, mfObject, mfNodeObj) => {
-      Luigi.storeUserSettings({ custom2: { theme: customMessage.theme } });
+      AppLaunchpad.storeUserSettings({ custom2: { theme: customMessage.theme } });
     }
   };
 }

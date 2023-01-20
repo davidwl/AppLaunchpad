@@ -36,17 +36,17 @@ class NodeDataManagementStorageClass {
   /**
    *
    * @param {any} node
-   * Stores root node as object with key '_luigiRootNode'.
+   * Stores root node as object with key '_applaunchpadRootNode'.
    */
   setRootNode(node) {
-    this.dataManagement.set('_luigiRootNode', { node });
+    this.dataManagement.set('_applaunchpadRootNode', { node });
   }
 
   /**
    * Returns the root node
    */
   getRootNode() {
-    return this.dataManagement.get('_luigiRootNode');
+    return this.dataManagement.get('_applaunchpadRootNode');
   }
 
   hasRootNode() {

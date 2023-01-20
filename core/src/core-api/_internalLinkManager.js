@@ -1,7 +1,7 @@
 import { GenericHelpers } from '../utilities/helpers';
-import { LuigiCoreAPIBase } from './baseClass';
+import { AppLaunchpadCoreAPIBase } from './baseClass';
 
-export class linkManager extends LuigiCoreAPIBase {
+export class linkManager extends AppLaunchpadCoreAPIBase {
   /**
    * @private
    */
@@ -38,7 +38,7 @@ export class linkManager extends LuigiCoreAPIBase {
     const remotePromise = GenericHelpers.createRemotePromise();
 
     const navigationOpenMsg = {
-      msg: 'luigi.navigation.open',
+      msg: 'applaunchpad.navigation.open',
       params: Object.assign(this.options, {
         link: path,
         relative: relativePath,
@@ -49,7 +49,7 @@ export class linkManager extends LuigiCoreAPIBase {
       remotePromiseId: remotePromise.id
     };
 
-    this.sendPostMessageToLuigiCore(navigationOpenMsg);
+    this.sendPostMessageToAppLaunchpadCore(navigationOpenMsg);
     return remotePromise;
   }
 
@@ -76,7 +76,7 @@ export class linkManager extends LuigiCoreAPIBase {
 
   openAsSplitView(path, splitViewSettings = {}) {
     this.navigate(path, true, undefined, splitViewSettings);
-    return Luigi.splitView.splitViewHandle;
+    return AppLaunchpad.splitView.splitViewHandle;
   }
 
   fromContext(navigationContext) {
@@ -105,27 +105,27 @@ export class linkManager extends LuigiCoreAPIBase {
   }
 
   pathExists(path) {
-    if (GenericHelpers.isFunction(Luigi.pathExists)) {
-      return Luigi.pathExists(path);
+    if (GenericHelpers.isFunction(AppLaunchpad.pathExists)) {
+      return AppLaunchpad.pathExists(path);
     } else {
       console.error(
-        'Luigi.navigation().pathExists(path) is only available inside your configuration, after the configuration was initialized with Luigi.setConfig().'
+        'AppLaunchpad.navigation().pathExists(path) is only available inside your configuration, after the configuration was initialized with AppLaunchpad.setConfig().'
       );
     }
   }
 
   hasBack() {
-    return Luigi.hasBack();
+    return AppLaunchpad.hasBack();
   }
 
   goBack(goBackValue) {
-    this.sendPostMessageToLuigiCore({
-      msg: 'luigi.navigation.back',
+    this.sendPostMessageToAppLaunchpadCore({
+      msg: 'applaunchpad.navigation.back',
       goBackContext: goBackValue && JSON.stringify(goBackValue)
     });
   }
 
-  sendPostMessageToLuigiCore(msg) {
+  sendPostMessageToAppLaunchpadCore(msg) {
     window.postMessage(msg, '*');
   }
 }

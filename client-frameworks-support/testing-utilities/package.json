@@ -1,6 +1,6 @@
 {
-  "name": "@luigi-project/testing-utilities",
-  "description": "Luigi testing utilities for standalone testing of microfrontends",
+  "name": "@applaunchpad-project/testing-utilities",
+  "description": "AppLaunchpad testing utilities for standalone testing of microfrontends",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "scripts": {
@@ -21,10 +21,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/SAP/luigi.git"
+    "url": "ssh://github.com/davidwl/applaunchpad.git"
   },
   "keywords": [
-    "luigi",
+    "applaunchpad",
     "UI",
     "extensibility",
     "micro-frontends",

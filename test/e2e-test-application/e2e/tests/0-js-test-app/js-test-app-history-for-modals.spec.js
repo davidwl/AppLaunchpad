@@ -1,4 +1,4 @@
-import defaultLuigiConfig from '../../configs/default';
+import defaultAppLaunchpadConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
 describe('JS-TEST-APP', () => {
@@ -82,7 +82,7 @@ describe('JS-TEST-APP', () => {
     describe('Path routing, history handling for a single modal', () => {
       let newConfig;
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = cloneDeep(defaultAppLaunchpadConfig);
         newConfig.routing.showModalPathInUrl = true;
         newConfig.routing.useHashRouting = false;
         newConfig.tag = 'js-test-app-history-handling-modals-1';
@@ -102,7 +102,7 @@ describe('JS-TEST-APP', () => {
         expectedPathAfterForward('/home');
         expectedPathAfterBack('/home');
       });
-      it('Path routing, visit luigi with modal data', () => {
+      it('Path routing, visit applaunchpad with modal data', () => {
         cy.vistTestAppPathRouting('?modal=' + encodeURIComponent('/home/modalMf'), newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         closeModal();
@@ -184,7 +184,7 @@ describe('JS-TEST-APP', () => {
     describe('Hash routing, history handling for a single modal', () => {
       let newConfig;
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = cloneDeep(defaultAppLaunchpadConfig);
         newConfig.routing.showModalPathInUrl = true;
         newConfig.routing.useHashRouting = true;
         newConfig.tag = 'js-test-app-history-handling-modals-2';
@@ -203,14 +203,14 @@ describe('JS-TEST-APP', () => {
         expectedPathAfterForward('/home');
         expectedPathAfterBack('/home');
       });
-      it('Hash routing, visit luigi with modal data', () => {
+      it('Hash routing, visit applaunchpad with modal data', () => {
         cy.visitTestApp('/home?modal=' + encodeURIComponent('/home/modalMf'), newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
         closeModal();
         expectedPathAfterForward('/home');
         expectedPathAfterBack('/home');
       });
-      it('Hash routing, visit luigi with modal data and search params', () => {
+      it('Hash routing, visit applaunchpad with modal data and search params', () => {
         cy.visitTestApp('/home?~test=tets&modal=' + encodeURIComponent('/home/modalMf'), newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
         closeModal();

@@ -1,6 +1,6 @@
 // Methods related to view group preloading.
 import { Iframe } from './iframe';
-import { LuigiConfig } from '../core-api';
+import { AppLaunchpadConfig } from '../core-api';
 import { IframeHelpers } from '../utilities/helpers';
 
 class ViewGroupPreloadingClass {
@@ -10,7 +10,7 @@ class ViewGroupPreloadingClass {
   }
 
   preloadViewGroups(batchSize = 3, backgroundMfeOnly) {
-    const preloadViewGroupsSetting = LuigiConfig.getConfigValue('navigation.preloadViewGroups');
+    const preloadViewGroupsSetting = AppLaunchpadConfig.getConfigValue('navigation.preloadViewGroups');
     if (preloadViewGroupsSetting === false) {
       return;
     }
@@ -22,7 +22,7 @@ class ViewGroupPreloadingClass {
     const iframes = IframeHelpers.getMainIframes();
     const now = new Date().getTime();
     const preloadingIframes = iframes.filter(
-      iframe => iframe.luigi && iframe.luigi.preloading && now - iframe.luigi.createdAt < 30000
+      iframe => iframe.applaunchpad && iframe.applaunchpad.preloading && now - iframe.applaunchpad.createdAt < 30000
     );
     if (preloadingIframes.length > 0) {
       console.debug('skipping view group preloading (busy)');
@@ -59,7 +59,7 @@ class ViewGroupPreloadingClass {
   preloadIframeOnBackground(settings, name, iframeContainer) {
     const iframe = IframeHelpers.createIframe(settings.preloadUrl, name, null, 'main');
     iframe.style.display = 'none';
-    iframe.luigi.preloading = true;
+    iframe.applaunchpad.preloading = true;
     iframeContainer.appendChild(iframe);
   }
 
@@ -73,9 +73,9 @@ class ViewGroupPreloadingClass {
   }
 
   viewGroupLoaded(iframe) {
-    if (iframe.luigi.preloading) {
+    if (iframe.applaunchpad.preloading) {
       // adapt batch size
-      const preloadTime = new Date().getTime() - iframe.luigi.createdAt;
+      const preloadTime = new Date().getTime() - iframe.applaunchpad.createdAt;
       let batchSize = 1;
       if (preloadTime < 500) {
         batchSize = 3;
@@ -88,7 +88,7 @@ class ViewGroupPreloadingClass {
       // set iframe free after a delay
       setTimeout(
         () => {
-          iframe.luigi.preloading = false;
+          iframe.applaunchpad.preloading = false;
         },
         this.preloadBatchSize > 2 ? 500 : 1000
       );

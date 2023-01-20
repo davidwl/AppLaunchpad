@@ -1,6 +1,6 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiConfig, LuigiI18N } from '../core-api';
+  import { AppLaunchpadConfig, AppLaunchpadI18N } from '../core-api';
   import {
     NavigationHelpers,
     RoutingHelpers,
@@ -22,7 +22,7 @@
   export let showGlobalNav;
   export let hideNavComponent;
   export let responsiveNavSetting;
-  let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
+  let addNavHrefForAnchor = AppLaunchpadConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
@@ -37,12 +37,12 @@
     StateHelpers.doOnStoreChange(
       store,
       () => {
-        hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
-        responsiveNavSetting = LuigiConfig.getConfigValue(
+        hideNavComponent = AppLaunchpadConfig.getConfigBooleanValue('settings.hideNavigation');
+        responsiveNavSetting = AppLaunchpadConfig.getConfigValue(
           'settings.responsiveNavigation'
         );
         showGlobalNav =
-          LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
+          AppLaunchpadConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
         document.body.classList.toggle('lui-global-nav-visible', showGlobalNav);
       },
@@ -54,7 +54,7 @@
     if (!previousPathData || previousPathData != pathData) {
       setTopNavData();
     }
-    addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
+    addNavHrefForAnchor = AppLaunchpadConfig.getConfigBooleanValue('navigation.addNavHrefs');
   });
 
   function getSapIconStr(iconString) {
@@ -66,7 +66,7 @@
   }
 
   function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label);
+    return AppLaunchpadI18N.getTranslation(node.label);
   }
 
   function getTestId(node) {

@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
-import { uxManager } from '@luigi-project/client';
+import { uxManager } from '@applaunchpad-project/client';
 
 @Component({
   selector: 'app-modal',

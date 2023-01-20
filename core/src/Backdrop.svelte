@@ -1,6 +1,6 @@
 <script>
   import { beforeUpdate, onMount, createEventDispatcher } from 'svelte';
-  import { LuigiConfig } from './core-api';
+  import { AppLaunchpadConfig } from './core-api';
   import { IframeHelpers, EventListenerHelpers } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -29,7 +29,7 @@
     }
     const allMessagesSources = [
       ...IframeHelpers.getMicrofrontendsInDom(),
-      { contentWindow: window, luigi: { viewUrl: window.location.href } },
+      { contentWindow: window, applaunchpad: { viewUrl: window.location.href } },
     ];
     const microfrontend = allMessagesSources.find(
       (mf) => mf.container && mf.container.contentWindow === e.source
@@ -41,7 +41,7 @@
   };
 
   onMount(() => {
-    const backdropDisabled = LuigiConfig.getConfigValue(
+    const backdropDisabled = AppLaunchpadConfig.getConfigValue(
       'settings.backdropDisabled'
     );
     if (!backdropDisabled) {
@@ -50,13 +50,13 @@
         const srcIframe = IframeHelpers.getValidMessageSource(e);
         if (!srcIframe) return;
         if (disable !== true) {
-          if ('luigi.add-backdrop' === e.data.msg) {
+          if ('applaunchpad.add-backdrop' === e.data.msg) {
             backdropActive = isValidForArea(e);
             dispatch('stateChanged', { backdropActive: true });
             // disable backdrop background elements' accessbility
             IframeHelpers.disableA11yOfInactiveIframe(srcIframe);
           }
-          if ('luigi.remove-backdrop' === e.data.msg) {
+          if ('applaunchpad.remove-backdrop' === e.data.msg) {
             const previousBackdropState = backdropActive;
             backdropActive = false;
             dispatch('stateChanged', { backdropActive: false });

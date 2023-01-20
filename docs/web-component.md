@@ -3,7 +3,7 @@
   "node": {
     "label": "Web Component",
     "category": {
-      "label": "Luigi Core",
+      "label": "AppLaunchpad Core",
       "collapsible": true
     },
     "metaData": {
@@ -17,25 +17,25 @@ meta -->
 # Web Component
 
 <!-- add-attribute:class:success -->
->**TIP:** You can find some examples of Web Components in our test application [Luigi Fiddle](https://fiddle.luigi-project.io) in the last navigation entry on the left.
+>**TIP:** You can find some examples of Web Components in our test application [AppLaunchpad Fiddle](https://fiddle.applaunchpad-project.io) in the last navigation entry on the left.
 
 ### Overview
 
-Luigi offers the possibility to open a micro frontend as a Web Component. For more information, please have a look at the page: [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
+AppLaunchpad offers the possibility to open a micro frontend as a Web Component. For more information, please have a look at the page: [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
 
 Web Components can provide a fast-loading alternative for non-complex micro frontends. All micro frontends from trusted sources will be loaded in a single Javascript file.
 
 In this page you wil find:
--   [Navigation Configuration](#navigation-configuration) - how to configure web component in Luigi Core navigation
--   [Write a Web Component](#write-a-web-component) - quick description of how to write a Web Component compatible with Luigi Framework
--   [Luigi Client for web components](#luigi-client-for-web-components) - javascript object injected in a Web Component to leverage Luigi Core features
+-   [Navigation Configuration](#navigation-configuration) - how to configure web component in AppLaunchpad Core navigation
+-   [Write a Web Component](#write-a-web-component) - quick description of how to write a Web Component compatible with AppLaunchpad Framework
+-   [AppLaunchpad Client for web components](#applaunchpad-client-for-web-components) - javascript object injected in a Web Component to leverage AppLaunchpad Core features
 -   [Tip: how to inject HTML Template code in Web Component](#tip-how-to-inject-html-template-code-in-web-component) - recommendation for how to inject HTML in a Web Component
 
 ## Navigation Configuration
 
-If you want to declare a menu item to be open as Web Component, you need to specify this configuration in the Luigi configuration:
+If you want to declare a menu item to be open as Web Component, you need to specify this configuration in the AppLaunchpad configuration:
 ```javascript
-Luigi.setConfig({
+AppLaunchpad.setConfig({
     navigation: {
    		// To enable CORS Web Component Loading: you need to add external domains where the Web Components are hosted;
    		// in this example, we specify that we can load Web Components from everywhere
@@ -45,7 +45,7 @@ Luigi.setConfig({
 		{
 		    pathSegment: 'wc',
 		    ………
-		    viewUrl: '/wc/luigiExampleWC.js',
+		    viewUrl: '/wc/applaunchpadExampleWC.js',
 		    webcomponent: true,
 		    ………
 		}
@@ -55,13 +55,13 @@ Luigi.setConfig({
 })
 ```
 
-> **NOTE:** With Luigi version 1.21.0 we removed the experimental flag for web components. 
+> **NOTE:** With AppLaunchpad version 1.21.0 we removed the experimental flag for web components. 
 
 ### Write a Web Component
 
-There are a couple of differences between Luigi Web Components and standard ones:
+There are a couple of differences between AppLaunchpad Web Components and standard ones:
 - You don’t need to declare any special tag definition inside the Component such as `customElements.define(….., ….)`
-- Inside the Component, Luigi Core will inject an object in your class called `LuigiClient`
+- Inside the Component, AppLaunchpad Core will inject an object in your class called `AppLaunchpadClient`
 
 Below is a simple Hello World Web Component example:
 ```javascript
@@ -84,8 +84,8 @@ export default class ExampleWC extends HTMLElement {
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('button');
     this.$button.addEventListener('click', () => {
-      if (this.LuigiClient) {
-        this.LuigiClient.uxManager().showAlert({
+      if (this.AppLaunchpadClient) {
+        this.AppLaunchpadClient.uxManager().showAlert({
           text: 'Hello from uxManager in Web Component',
           type: 'info'
         });
@@ -99,24 +99,24 @@ export default class ExampleWC extends HTMLElement {
 }
 ```
 
-As shown in the example, you can use a LuigiClient instance inside your Web Component class.
-It is really important to note that this LuigiClient instance is different from the one than you can find in our [Client library](https://docs.luigi-project.io/docs/luigi-client-setup).
+As shown in the example, you can use a AppLaunchpadClient instance inside your Web Component class.
+It is really important to note that this AppLaunchpadClient instance is different from the one than you can find in our [Client library](https://docs.applaunchpad-project.io/docs/applaunchpad-client-setup).
 
-Normal micro frontends are embedded inside iframe: Luigi offers a library to allow the frontend to communicate with Luigi Core.
-In a Web Component the situation is quite different: they are not encapsulated into an iframe, they are just loaded inside a shadow element. When Luigi Core loads a Web Component, it injects a LuigiClient instance.
+Normal micro frontends are embedded inside iframe: AppLaunchpad offers a library to allow the frontend to communicate with AppLaunchpad Core.
+In a Web Component the situation is quite different: they are not encapsulated into an iframe, they are just loaded inside a shadow element. When AppLaunchpad Core loads a Web Component, it injects a AppLaunchpadClient instance.
 
-### Luigi Client for Web Components
+### AppLaunchpad Client for Web Components
 
 In this Javascript object, you can find two elements:
-- `this.LuigiClient.uxManager()` : you can use all methods described in [Luigi Core UX](https://docs.luigi-project.io/docs/luigi-core-api?section=ux)
-- `this.LuigiClient.linkManager()` : you can use all methods described in [Luigi Navigation](https://docs.luigi-project.io/docs/luigi-core-api?section=luiginavigation)
+- `this.AppLaunchpadClient.uxManager()` : you can use all methods described in [AppLaunchpad Core UX](https://docs.applaunchpad-project.io/docs/applaunchpad-core-api?section=ux)
+- `this.AppLaunchpadClient.linkManager()` : you can use all methods described in [AppLaunchpad Navigation](https://docs.applaunchpad-project.io/docs/applaunchpad-core-api?section=applaunchpadnavigation)
 
 Below you have a simple Hello World Web Component example which shows an alert:
 ```javascript
 export default class ExampleWC extends HTMLElement {
   constructor() {
     ........
-    this.LuigiClient.uxManager().showAlert({
+    this.AppLaunchpadClient.uxManager().showAlert({
       text: 'Hello from uxManager in Web Component',
       type: 'info'
     });
@@ -130,7 +130,7 @@ This example opens a drawer:
 export default class ExampleWC extends HTMLElement {
   constructor() {
     ........
-     this.LuigiClient.linkManager().openAsDrawer('Your Drawer Url', {header:true, backdrop:true, size:'s'});
+     this.AppLaunchpadClient.linkManager().openAsDrawer('Your Drawer Url', {header:true, backdrop:true, size:'s'});
     ........
   }
 }

@@ -1,4 +1,4 @@
-console.log('Patching luigi core js');
+console.log('Patching applaunchpad core js');
 
 const replace = require('replace-in-file');
 const fs = require('fs');

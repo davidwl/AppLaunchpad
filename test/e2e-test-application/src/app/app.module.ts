@@ -1,4 +1,4 @@
-import { LuigiAutoNavigationService } from './services/luigi-auto-navigation.service';
+import { AppLaunchpadAutoNavigationService } from './services/applaunchpad-auto-navigation.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -23,7 +23,7 @@ import { ChildNode1Component } from './project/default-child/dps1/child-node-1.c
 import { ChildNode2Component } from './project/default-child/dps2/child-node-2.component';
 import { OverviewComponent } from './overview/overview.component';
 import { RestrictedComponent } from './restricted/restricted.component';
-import { LuigiContextService } from './services/luigi-context.service';
+import { AppLaunchpadContextService } from './services/applaunchpad-context.service';
 import { GroupSettingsComponent } from './project/users/groups/group-details/group-settings/group-settings.component';
 import { DynamicComponent } from './project/dynamic/dynamic.component';
 import { HideSideNavComponent } from './project/hide-side-nav/hide-side-nav.component';
@@ -62,7 +62,7 @@ import { ViewGroupComponent } from './project/view-group/view-group.component';
     ViewGroupComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
-  providers: [LuigiContextService, LuigiAutoNavigationService],
+  providers: [AppLaunchpadContextService, AppLaunchpadAutoNavigationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

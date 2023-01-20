@@ -4,7 +4,7 @@ const sinon = require('sinon');
 
 import { AuthHelpers, GenericHelpers } from '../../../src/utilities/helpers';
 import { AuthStoreSvc } from '../../../src/services';
-import { LuigiAuth } from '../../../src/core-api';
+import { AppLaunchpadAuth } from '../../../src/core-api';
 
 describe('Auth-helpers', function() {
   this.retries(2);
@@ -107,42 +107,35 @@ describe('Auth-helpers', function() {
 
   describe('handleUrlAuthErrors', () => {
     beforeEach(() => {
-      sinon.spy(LuigiAuth, 'handleAuthEvent');
+      sinon.spy(AppLaunchpadAuth, 'handleAuthEvent');
     });
     afterEach(() => {
       sinon.restore();
     });
 
     const mockProviderInstanceSettings = {
-      logoutUrl: 'http://auth.luigi.domain/api/logout',
-      post_logout_redirect_uri: 'http://luigi.domain/logout.html'
+      logoutUrl: 'http://auth.applaunchpad.domain/api/logout',
+      post_logout_redirect_uri: 'http://applaunchpad.domain/logout.html'
     };
 
     it('without error', async () => {
       assert.isTrue(await AuthHelpers.handleUrlAuthErrors({}));
-      assert.isTrue(LuigiAuth.handleAuthEvent.notCalled);
+      assert.isTrue(AppLaunchpadAuth.handleAuthEvent.notCalled);
     });
 
     it('with error param', async () => {
-      await AuthHelpers.handleUrlAuthErrors(
-        mockProviderInstanceSettings,
-        'mockError'
-      );
-      assert.isTrue(LuigiAuth.handleAuthEvent.calledOnce);
+      await AuthHelpers.handleUrlAuthErrors(mockProviderInstanceSettings, 'mockError');
+      assert.isTrue(AppLaunchpadAuth.handleAuthEvent.calledOnce);
     });
 
     it('with error and error param', async () => {
       const error = 'mockError';
       const errorDescription = 'An error description';
 
-      await AuthHelpers.handleUrlAuthErrors(
-        mockProviderInstanceSettings,
-        error,
-        errorDescription
-      );
+      await AuthHelpers.handleUrlAuthErrors(mockProviderInstanceSettings, error, errorDescription);
 
-      assert.isTrue(LuigiAuth.handleAuthEvent.calledOnce, 'called once');
-      LuigiAuth.handleAuthEvent.calledWith(
+      assert.isTrue(AppLaunchpadAuth.handleAuthEvent.calledOnce, 'called once');
+      AppLaunchpadAuth.handleAuthEvent.calledWith(
         'onAuthError',
         mockProviderInstanceSettings,
         { error, errorDescription },

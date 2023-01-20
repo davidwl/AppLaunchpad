@@ -3,7 +3,7 @@
   "node": {
     "label": "Web Component",
     "category": {
-      "label": "Luigi Core"
+      "label": "AppLaunchpad Core"
     },
     "metaData": {
       "categoryPosition": 2,
@@ -16,22 +16,22 @@ meta -->
 # Web Component
 
 <!-- add-attribute:class:success -->
->**TIP:** You can find some examples how to write/include web components in our test application [Luigi Fiddle](https://fiddle.luigi-project.io).
+>**TIP:** You can find some examples how to write/include web components in our test application [AppLaunchpad Fiddle](https://fiddle.applaunchpad-project.io).
 
 ### Overview
 
-Luigi offers the possibility to open a micro frontend as a web component; if you want to have more information about web component, please have a look at the page: [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
+AppLaunchpad offers the possibility to open a micro frontend as a web component; if you want to have more information about web component, please have a look at the page: [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
 
 For no-complex micro frontend, it can be a good and fast alternative: all the frontend will be loaded in a single javascript file.
 
 In this page you wil find:
--   [Navigation Configuration](#navigation-configuration) - how to configure web component in Luigi Core navigation
--   [Write a Web Component](#write-a-web-component) - quick description how to write a Web Component compatible with Luigi Framework
--   [Luigi Client for web component](#luigi-client-for-web-component) js object injected in that Web Component, to leverage some Luigi core features
+-   [Navigation Configuration](#navigation-configuration) - how to configure web component in AppLaunchpad Core navigation
+-   [Write a Web Component](#write-a-web-component) - quick description how to write a Web Component compatible with AppLaunchpad Framework
+-   [AppLaunchpad Client for web component](#applaunchpad-client-for-web-component) js object injected in that Web Component, to leverage some AppLaunchpad core features
 -   [Tip: how to inject HTML Template code in web component](#tip-how-to-inject-html-template-code-in-web-component) - recommendation how to inject the html in a Web Component
--   [Tip: Loading a Web Component inside a Luigi WebComponent](#tip-loading-a-web-component-inside-a-luigi-webcomponent) - example how to include standard Web Components in your Luigi Web Component 
--   [Tip: Example of Luigi Web Component using other standard Web Component and how to communicate with them](#tip-example-of-luigi-web-component-using-other-standard-web-component-and-how-to-communicate-with-them)
-    -   [File luigiExampleWC.js: the Luigi Web Compone](#file-luigiexamplewcjs-the-luigi-web-component) 
+-   [Tip: Loading a Web Component inside a AppLaunchpad WebComponent](#tip-loading-a-web-component-inside-a-applaunchpad-webcomponent) - example how to include standard Web Components in your AppLaunchpad Web Component 
+-   [Tip: Example of AppLaunchpad Web Component using other standard Web Component and how to communicate with them](#tip-example-of-applaunchpad-web-component-using-other-standard-web-component-and-how-to-communicate-with-them)
+    -   [File applaunchpadExampleWC.js: the AppLaunchpad Web Compone](#file-applaunchpadexamplewcjs-the-applaunchpad-web-component) 
     -   [File f_selectbox.js](#file-f_selectboxjs)
     -   [File f_busy.js](#file-f_busyjs)
     -   [File f_input.js](#file-f_inputjs)
@@ -40,9 +40,9 @@ In this page you wil find:
             
 ## Navigation Configuration
 
-If you want to declare a menu item to be open as Web Component, you need to specify this configuration in Luigi config:
+If you want to declare a menu item to be open as Web Component, you need to specify this configuration in AppLaunchpad config:
 ```javascript
-Luigi.setConfig({
+AppLaunchpad.setConfig({
     navigation: { 
    		// To enable CORS Web component Loading: basically you need to add external domains where the Web Components are hosted;
    		// in this examle, we are sepcify that we can load Web Components from everyhere
@@ -52,7 +52,7 @@ Luigi.setConfig({
 		{ 
 		    pathSegment: 'wc', 
 		    ………    
-		    viewUrl: '/wc/luigiExampleWC.js',
+		    viewUrl: '/wc/applaunchpadExampleWC.js',
 		    webcomponent: true,
 		    ………    
 		}
@@ -64,9 +64,9 @@ Luigi.setConfig({
 ```
 
 ### Write a Web Component
-Luigi supports Web Component that are slightly different from standard:
+AppLaunchpad supports Web Component that are slightly different from standard:
 - You don’t need to declare any special tag definition inside the component like customElements.define(….., ….)
-- Inside the component, Luigi core will inject an object in your class called LuigiClient
+- Inside the component, AppLaunchpad core will inject an object in your class called AppLaunchpadClient
 
 Here below, a very easy Hello World web component example:
 ```javascript
@@ -89,8 +89,8 @@ export default class ExampleWC extends HTMLElement {
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('button');
     this.$button.addEventListener('click', () => {
-      if (this.LuigiClient) {
-        this.LuigiClient.uxManager().showAlert({
+      if (this.AppLaunchpadClient) {
+        this.AppLaunchpadClient.uxManager().showAlert({
           text: 'Hello from uxManager in Web Component',
           type: 'info'
         });
@@ -104,25 +104,25 @@ export default class ExampleWC extends HTMLElement {
 }
 ```
 
-As you could notice from previous example, you can use a LuigiClient instance inside your  web component class. 
-It is really important to notice, that this LuigiClient instance is different from the one than you can find in [client library](https://docs.luigi-project.io/docs/luigi-client-setup).
+As you could notice from previous example, you can use a AppLaunchpadClient instance inside your  web component class. 
+It is really important to notice, that this AppLaunchpadClient instance is different from the one than you can find in [client library](https://docs.applaunchpad-project.io/docs/applaunchpad-client-setup).
 
-Normal micro frontends are embedded inside iFrame: Luigi offers a library to allow the frontend to communicate with Luigi Core.
+Normal micro frontends are embedded inside iFrame: AppLaunchpad offers a library to allow the frontend to communicate with AppLaunchpad Core.
 In Web Component the situation is quite different: they are not encapsulated into an iframe, they are just loaded inside a shadow element; 
-when Luigi Core loads a Web Component, it injects a LuigiClient instance.
+when AppLaunchpad Core loads a Web Component, it injects a AppLaunchpadClient instance.
 
-### Luigi Client for web component
+### AppLaunchpad Client for web component
 
 In this javascript object, you can basically find two elements:
-- `this.LuigiClient.uxManager()` : you can use all methods described in [Luigi Core UX](https://docs.luigi-project.io/docs/luigi-core-api?section=ux)
-- `this.LuigiClient.linkManager()` : you can use all methods described in [Luigi Navigation](https://docs.luigi-project.io/docs/luigi-core-api?section=luiginavigation)
+- `this.AppLaunchpadClient.uxManager()` : you can use all methods described in [AppLaunchpad Core UX](https://docs.applaunchpad-project.io/docs/applaunchpad-core-api?section=ux)
+- `this.AppLaunchpadClient.linkManager()` : you can use all methods described in [AppLaunchpad Navigation](https://docs.applaunchpad-project.io/docs/applaunchpad-core-api?section=applaunchpadnavigation)
 
 Below you have a a very easy Hello World web component example which shows an alert:
 ```javascript
 export default class extends HTMLElement {
   constructor() {
     ........
-    this.LuigiClient.uxManager().showAlert({
+    this.AppLaunchpadClient.uxManager().showAlert({
       text: 'Hello from uxManager in Web Component',
       type: 'info'
     });
@@ -136,7 +136,7 @@ If you want to open a drawer:
 export default class extends HTMLElement {
   constructor() {
     ........
-     this.LuigiClient.linkManager().openAsDrawer('Your Drawer Url', {header:true, backdrop:true, size:'s'});
+     this.AppLaunchpadClient.linkManager().openAsDrawer('Your Drawer Url', {header:true, backdrop:true, size:'s'});
     ........ 
   }
 }
@@ -177,17 +177,17 @@ export default class extends HTMLElement {
 ```
               
 
-## Tip: Loading a Web Component inside a Luigi WebComponent
-In order to modularize/reuse some code, you would like to import other standard Web Component inside Luigi Web Component. 
+## Tip: Loading a Web Component inside a AppLaunchpad WebComponent
+In order to modularize/reuse some code, you would like to import other standard Web Component inside AppLaunchpad Web Component. 
 There could also be the case that you have already micro front end running in a standard Web Component and you would like to reuse it: 
-the easier way is to create a Luigi Proxy Web Component, here below and example:
+the easier way is to create a AppLaunchpad Proxy Web Component, here below and example:
 
 ```javascript
-//In Luigi Core Config you will have this new Item
+//In AppLaunchpad Core Config you will have this new Item
 { 
     pathSegment: 'your-web-componet-through-proxy', 
     ………    
-    viewUrl: '/wc/luigi_proxy_wc.js',
+    viewUrl: '/wc/applaunchpad_proxy_wc.js',
     webcomponent: true,
     ………    
 }
@@ -195,7 +195,7 @@ the easier way is to create a Luigi Proxy Web Component, here below and example:
 ```
 
 ```javascript
-//This would be the file luigi_proxy_wc.js
+//This would be the file applaunchpad_proxy_wc.js
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -234,9 +234,9 @@ export default class extends HTMLElement {
 ```
 
 
-## Tip: Example of Luigi Web Component using other standard Web Component and how to communicate with them.
+## Tip: Example of AppLaunchpad Web Component using other standard Web Component and how to communicate with them.
 
-You can have a look at our Luigi Fiddle example where we showcase a Luigi Web Component that is using other custom standard web components and Luigi Client object [here](https://fiddle.luigi-project.io/#/home/wc2)
+You can have a look at our AppLaunchpad Fiddle example where we showcase a AppLaunchpad Web Component that is using other custom standard web components and AppLaunchpad Client object [here](https://fiddle.applaunchpad-project.io/#/home/wc2)
 The following section gives a short description of all the files that are used.
 
 You can see how the different Web Components are injected through the diagrams below:
@@ -249,7 +249,7 @@ The Components cannot use (read, write) other Components elements. For this reas
 
 
 
-### File luigiExampleWC.js: the Luigi Web Component
+### File applaunchpadExampleWC.js: the AppLaunchpad Web Component
 ```javascript
 import "./f_selectbox.js";
 import "./f_busy.js";
@@ -293,7 +293,7 @@ template.innerHTML = `
                <div class="fd-row">
                 <div class="fd-col">
                   <div class="docs-layout-grid-bg docs-layout-grid-bg--color-1">
-                    <h3>Example WC Using Luigi Client, Other imported web Components and Sending/Receiving Data</h3>
+                    <h3>Example WC Using AppLaunchpad Client, Other imported web Components and Sending/Receiving Data</h3>
                   </div>
                 </div>
               </div>
@@ -430,16 +430,16 @@ export default class extends HTMLElement {
     this.addConfirmationModal();
 
     this.addClickNavButton('#bOpenDialog', 'dialogUrl', url =>{
-      this.LuigiClient.linkManager().openAsModal(url, {title:'Example Dialog', size:'l'});
+      this.AppLaunchpadClient.linkManager().openAsModal(url, {title:'Example Dialog', size:'l'});
     });
     this.addClickNavButton('#bSplitDialog', 'splitUrl', url =>{
-      this.LuigiClient.linkManager().openAsSplitView(url, {title:'Example Dialog', size:'40'});
+      this.AppLaunchpadClient.linkManager().openAsSplitView(url, {title:'Example Dialog', size:'40'});
     });
     this.addClickNavButton('#bNavigation', 'navigationUrl', url =>{
-      Luigi.navigation().navigate(url);
+      AppLaunchpad.navigation().navigate(url);
     });
     this.addClickNavButton('#bDrawer', 'drawerUrl', url =>{
-      this.LuigiClient.linkManager().openAsDrawer(url, {header:true, backdrop:true, size:'s'});
+      this.AppLaunchpadClient.linkManager().openAsDrawer(url, {header:true, backdrop:true, size:'s'});
     });
 
     EcEvent.removeAllListeners();
@@ -453,7 +453,7 @@ export default class extends HTMLElement {
   addConfirmationModal(){
     const button = this.shadowRoot.querySelector('#bConModal');
     button.addEventListener('click', (event) => {
-      this.LuigiClient.uxManager().showConfirmationModal({
+      this.AppLaunchpadClient.uxManager().showConfirmationModal({
         header: "Confirmation",
         body: "Are you sure you want to do this?",
         buttonConfirm: "Yes",
@@ -467,7 +467,7 @@ export default class extends HTMLElement {
     const button = this.shadowRoot.querySelector(selector);
     button.addEventListener('click', (event) => {
       if (!this[valueToCheck] || this[valueToCheck].length === 0){
-        this.LuigiClient.uxManager().showAlert({
+        this.AppLaunchpadClient.uxManager().showAlert({
           text: 'Please insert an ulr in the input element',
           type: 'error'
         });
@@ -495,8 +495,8 @@ export default class extends HTMLElement {
 
   showAlert(event){
     let alertType = event.detail;
-    if (this.LuigiClient) {
-      this.LuigiClient.uxManager().showAlert({
+    if (this.AppLaunchpadClient) {
+      this.AppLaunchpadClient.uxManager().showAlert({
         text: 'Hello from uxManager in Web Component',
         type: alertType
       });
@@ -648,19 +648,19 @@ This Web component is called using this html syntax:
 <fundamental-list-box id="alertBox" placeholder="Select Alert Type" default_option="" option1="info" option2="success" option3="warning" option4="error" />
 ```
 Web component will create a [Fundamental Combobox]:(https://sap.github.io/fundamental-styles/?path=/docs/patterns-combobox-input--cozy-and-compact).
-Every time there is a change, it will send an event to main Luigi Web Component (luigiExampleWC.js) using this API:
+Every time there is a change, it will send an event to main AppLaunchpad Web Component (applaunchpadExampleWC.js) using this API:
 ```javascript
 cEvent.fire(id, value);
 ```
 
-luigiExampleWC.js will receive the event and show an alert (the alert type is contained in the event):
+applaunchpadExampleWC.js will receive the event and show an alert (the alert type is contained in the event):
 ```javascript
 EcEvent.register("alertBox",  this.showAlert.bind(this));
 
 showAlert(event){
 let alertType = event.detail;
-if (this.LuigiClient) {
-  this.LuigiClient.uxManager().showAlert({
+if (this.AppLaunchpadClient) {
+  this.AppLaunchpadClient.uxManager().showAlert({
     text: 'Hello from uxManager in Web Component',
     type: alertType
   });
@@ -730,13 +730,13 @@ import EcEvent from "./wcEvent.js";
 ```
 
 
-From main Luigi Web Component we are using this html tag: 
+From main AppLaunchpad Web Component we are using this html tag: 
 
 ```javascript
 <fundamental-busy id="busyIndicatorExample" show="true"/></div>
 ```
 
-The most interesting point is that we will send a command from Luigi Web Component to hide/show the component in this way:
+The most interesting point is that we will send a command from AppLaunchpad Web Component to hide/show the component in this way:
 ```javascript
     EcEvent.fire(id, show);
 //Where id='busyIndicatorExample' and show=true|false
@@ -833,7 +833,7 @@ import EcEvent from "./wcEvent.js";
 })();
 ```
 
-From main Luigi Web Component we are using 4 times this web component using these html tags: 
+From main AppLaunchpad Web Component we are using 4 times this web component using these html tags: 
 
 ```javascript
 <fundamental-input id="dialogUrl" defaultValue="/home/table"     label="Insert url to be displayed" width="250px" labelWidth="160px"/>
@@ -850,7 +850,7 @@ inputElem.addEventListener('keyup', (event) => {
 }, false);
 ```
 
-Luigi Web Component will receive the event with the input text change and store it into a local variable.
+AppLaunchpad Web Component will receive the event with the input text change and store it into a local variable.
 ```javascript
 EcEvent.register("dialogUrl",  event => this.dialogUrl = event.detail);
 EcEvent.register("splitUrl",  event => this.splitUrl = event.detail);

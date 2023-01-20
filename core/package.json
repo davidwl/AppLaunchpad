@@ -1,7 +1,7 @@
 {
-  "name": "luigi-core-private",
+  "name": "applaunchpad-core-private",
   "private": true,
-  "description": "luigi-core development version, only the public folder is being published to npm as a package",
+  "description": "applaunchpad-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.2",
@@ -76,22 +76,22 @@
   },
   "bundlesize": [
     {
-      "path": "./public/luigi.js",
+      "path": "./public/applaunchpad.js",
       "maxSize": "650 kB",
       "compression": "none"
     },
     {
-      "path": "./public/luigi.css",
+      "path": "./public/applaunchpad.css",
       "maxSize": "650 kB",
       "compression": "none"
     },
     {
-      "path": "./public-ie11/luigi-ie11.js",
+      "path": "./public-ie11/applaunchpad-ie11.js",
       "maxSize": "860 kB",
       "compression": "none"
     },
     {
-      "path": "./public-ie11/luigi-ie11.css",
+      "path": "./public-ie11/applaunchpad-ie11.css",
       "maxSize": "650 kB",
       "compression": "none"
     }
@@ -140,6 +140,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/SAP/luigi.git"
+    "url": "ssh://github.com/davidwl/applaunchpad.git"
   }
 }

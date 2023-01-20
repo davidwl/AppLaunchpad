@@ -1,17 +1,17 @@
 {
-  "name": "@luigi-project/plugin-auth-oidc",
-  "description": "OpenID Connect provider plugin for @luigi-project/core",
+  "name": "@applaunchpad-project/plugin-auth-oidc",
+  "description": "OpenID Connect provider plugin for @applaunchpad-project/core",
   "license": "Apache-2.0",
   "main": "plugin.js",
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/SAP/luigi.git"
+    "url": "ssh://github.com/davidwl/applaunchpad.git"
   },
   "publishConfig": {
-    "tag": "luigi-plugin-auth-oidc"
+    "tag": "applaunchpad-plugin-auth-oidc"
   },
   "keywords": [
-    "luigi",
+    "applaunchpad",
     "core",
     "oidc",
     "openid connect",

@@ -52,12 +52,12 @@ describe('Navigation', () => {
     it('It should have a global side nav accordion mode', () => {
       cy.visit('/projects/pr2/collapsibles');
       cy.window().then(win => {
-        const config = win.Luigi.getConfig();
+        const config = win.AppLaunchpad.getConfig();
         config.navigation.defaults = {
           sideNavAccordionMode: true
         };
         config.tag = 'accordion';
-        win.Luigi.configChanged();
+        win.AppLaunchpad.configChanged();
         cy.get('#app[configversion="accordion"]');
         // All is closed
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
@@ -180,14 +180,14 @@ describe('Navigation', () => {
       cy.expectPathToBe('/projects/pr2');
       cy.getIframeBody().then(result => {
         // Link on Main page PR2 exists
-        cy.wrap(result).contains('LuigiClient - withOptions()');
+        cy.wrap(result).contains('AppLaunchpadClient - withOptions()');
         cy.wrap(result)
           .find('a[data-testid="navigate-withOptions-no-context"]')
           .click();
 
         // URL should be changed in the main window
         cy.expectPathToBe('/projects');
-        cy.wrap(result).contains('LuigiClient - withOptions()');
+        cy.wrap(result).contains('AppLaunchpadClient - withOptions()');
         cy.get('[data-testid="pr1_projectone"]').should('exist');
         cy.get('[data-testid="storage_storage"]').should('exist');
       });
@@ -197,7 +197,7 @@ describe('Navigation', () => {
       cy.expectPathToBe('/projects/pr2');
       cy.getIframeBody().then(result => {
         // Link on Main page PR2 exist
-        cy.wrap(result).contains('LuigiClient - withOptions()');
+        cy.wrap(result).contains('AppLaunchpadClient - withOptions()');
 
         cy.wrap(result)
           .find('a[data-testid="navigate-withOptions-no-history"]')
@@ -214,11 +214,11 @@ describe('Navigation', () => {
     context('Desktop', () => {
       it('not render Fiori3 profile in Shellbar when profileType is equal "simple"', () => {
         cy.window().then(win => {
-          const config = win.Luigi.getConfig();
+          const config = win.AppLaunchpad.getConfig();
           config.settings.profileType = 'simple';
-          win.Luigi.configChanged();
+          win.AppLaunchpad.configChanged();
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]')
+          cy.get('[data-testid="applaunchpad-topnav-profile-btn"]')
             .should('exist')
             .click();
           cy.get('.lui-user-menu-fiori').should('not.be.visible');
@@ -228,12 +228,12 @@ describe('Navigation', () => {
 
       it('not render Fiori3 profile in Shellbar when experimental is equal false', () => {
         cy.window().then(win => {
-          const config = win.Luigi.getConfig();
+          const config = win.AppLaunchpad.getConfig();
           config.settings.profileType = 'Fiori3';
           config.settings.experimental = { profileMenuFiori3: false };
-          win.Luigi.configChanged();
+          win.AppLaunchpad.configChanged();
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]')
+          cy.get('[data-testid="applaunchpad-topnav-profile-btn"]')
             .should('exist')
             .click();
           cy.get('.lui-user-menu-fiori').should('not.be.visible');
@@ -243,14 +243,14 @@ describe('Navigation', () => {
 
       it('should render Fiori3 profile in Shellbar when profileType is equal "Fiori3"', () => {
         cy.window().then(win => {
-          const config = win.Luigi.getConfig();
+          const config = win.AppLaunchpad.getConfig();
           config.settings.profileType = 'Fiori3';
           config.settings.experimental = { profileMenuFiori3: true };
-          win.Luigi.configChanged();
+          win.AppLaunchpad.configChanged();
           cy.wait(1000);
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]').should('exist');
-          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+          cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').should('exist');
+          cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
           cy.get('.lui-user-menu-fiori').should('be.visible');
           cy.get('.lui-profile-simple-menu').should('not.be.visible');
         });
@@ -258,18 +258,18 @@ describe('Navigation', () => {
 
       it('should have User Description and Avatar when Fiori3 Profile Menu is enabled', () => {
         cy.window().then(win => {
-          const config = win.Luigi.getConfig();
+          const config = win.AppLaunchpad.getConfig();
           config.settings.profileType = 'Fiori3';
           config.settings.experimental = { profileMenuFiori3: true };
-          win.Luigi.configChanged();
+          win.AppLaunchpad.configChanged();
 
           cy.wait(1000);
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]').should('exist');
-          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
-          cy.get('[data-testid="luigi-topnav-profile-avatar"]').should('exist');
-          cy.get('[data-testid="luigi-topnav-profile-initials"]').should('not.exist');
-          cy.get('[data-testid="luigi-topnav-profile-icon"]').should('not.exist');
+          cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').should('exist');
+          cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
+          cy.get('[data-testid="applaunchpad-topnav-profile-avatar"]').should('exist');
+          cy.get('[data-testid="applaunchpad-topnav-profile-initials"]').should('not.exist');
+          cy.get('[data-testid="applaunchpad-topnav-profile-icon"]').should('not.exist');
         });
       });
     });
@@ -283,8 +283,11 @@ describe('Navigation', () => {
     it('with context templating', () => {
       cy.expectPathToBe('/projects/pr2');
       cy.get('[data-testid="superusefulgithublinks"]').click();
-      cy.get('a[data-testid="contextvaluereplacement-externallink"]')
-        .should("have.attr", "href", "http://sap.com/en?foo=bar");
+      cy.get('a[data-testid="contextvaluereplacement-externallink"]').should(
+        'have.attr',
+        'href',
+        'http://sap.com/en?foo=bar'
+      );
     });
   });
 });

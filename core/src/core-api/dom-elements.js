@@ -5,47 +5,47 @@ import { IframeHelpers } from './../utilities/helpers';
  * Use these functions to get DOM elements.
  * @namespace Elements
  */
-class LuigiElements {
+class AppLaunchpadElements {
   /**
-   * Returns the container of the Luigi content.
-   * @returns {HTMLElement} the DOM element that wraps the Luigi content
+   * Returns the container of the AppLaunchpad content.
+   * @returns {HTMLElement} the DOM element that wraps the AppLaunchpad content
    * @memberof Elements
    * @since 0.6.0
    * @example
-   * Luigi.elements().getLuigiContainer();
+   * AppLaunchpad.elements().getAppLaunchpadContainer();
    */
-  getLuigiContainer() {
-    return this.getCustomLuigiContainer() || this.getDefaultLuigiContainer();
+  getAppLaunchpadContainer() {
+    return this.getCustomAppLaunchpadContainer() || this.getDefaultAppLaunchpadContainer();
   }
 
   /**
-   * Returns a boolean that indicates if Luigi is being rendered in a custom container or not.
-   * @returns {Boolean} _true_ if Luigi content is wrapped in a custom html tag, _false_ otherwise
+   * Returns a boolean that indicates if AppLaunchpad is being rendered in a custom container or not.
+   * @returns {Boolean} _true_ if AppLaunchpad content is wrapped in a custom html tag, _false_ otherwise
    * @memberof Elements
    * @private
    * @since 0.6.0
    * @example
-   * Luigi.elements().isCustomLuigiContainer();
+   * AppLaunchpad.elements().isCustomAppLaunchpadContainer();
    */
-  isCustomLuigiContainer() {
-    return Boolean(this.getLuigiContainer() === this.getCustomLuigiContainer());
+  isCustomAppLaunchpadContainer() {
+    return Boolean(this.getAppLaunchpadContainer() === this.getCustomAppLaunchpadContainer());
   }
 
   /**
-   * Returns the custom container for the Luigi content
+   * Returns the custom container for the AppLaunchpad content
    * @memberof Elements
    * @private
    */
-  getCustomLuigiContainer() {
+  getCustomAppLaunchpadContainer() {
     return document.querySelector(CUSTOM_LUIGI_CONTAINER.cssSelector);
   }
 
   /**
-   * Returns the default container for the Luigi content
+   * Returns the default container for the AppLaunchpad content
    * @memberof Elements
    * @private
    */
-  getDefaultLuigiContainer() {
+  getDefaultAppLaunchpadContainer() {
     return document.querySelector('body');
   }
 
@@ -55,7 +55,7 @@ class LuigiElements {
    * @memberof Elements
    * @since 0.4.12
    * @example
-   * Luigi.elements().getShellbar();
+   * AppLaunchpad.elements().getShellbar();
    */
   getShellbar() {
     return document.getElementsByClassName('lui-shellbar-wrapper')[0];
@@ -67,7 +67,7 @@ class LuigiElements {
    * @memberof Elements
    * @since 0.4.12
    * @example
-   * Luigi.elements().getShellbarActions();
+   * AppLaunchpad.elements().getShellbarActions();
    */
   getShellbarActions() {
     return document.getElementsByClassName('lui-shellbar_group--actions')[0];
@@ -77,7 +77,7 @@ class LuigiElements {
    * Returns a list of all available micro frontends.
    * @returns {{id: string, active: boolean, container: HTMLElement, type: ('main'|'split-view'|'modal')}[]} list of objects defining all micro frontends from the DOM
    * @example
-   * Luigi.elements().getMicrofrontends();
+   * AppLaunchpad.elements().getMicrofrontends();
    * @memberof Elements
    * @since 0.6.2
    */
@@ -91,7 +91,7 @@ class LuigiElements {
    * @memberof Elements
    * @since 0.4.12
    * @example
-   * Luigi.elements().getMicrofrontendIframes();
+   * AppLaunchpad.elements().getMicrofrontendIframes();
    */
   getMicrofrontendIframes() {
     return IframeHelpers.getMicrofrontendIframes();
@@ -104,7 +104,7 @@ class LuigiElements {
    * @memberof Elements
    * @since 0.4.12
    * @example
-   * Luigi.elements().getCurrentMicrofrontendIframe();
+   * AppLaunchpad.elements().getCurrentMicrofrontendIframe();
    */
   getCurrentMicrofrontendIframe() {
     return IframeHelpers.getCurrentMicrofrontendIframe();
@@ -116,11 +116,11 @@ class LuigiElements {
    * @memberof Elements
    * @since 1.21.0
    * @example
-   * Luigi.elements().getNavFooterContainer();
+   * AppLaunchpad.elements().getNavFooterContainer();
    */
   getNavFooterContainer() {
     return document.getElementsByClassName('lui-side-nav__footer')[0];
   }
 }
 
-export const elements = new LuigiElements();
+export const elements = new AppLaunchpadElements();

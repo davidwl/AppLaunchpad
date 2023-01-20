@@ -1,4 +1,4 @@
-import defaultLuigiConfig from '../../configs/default';
+import defaultAppLaunchpadConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
 describe('JS-TEST-APP', () => {
@@ -12,19 +12,19 @@ describe('JS-TEST-APP', () => {
     describe('Core api navigation test', () => {
       let newConfig;
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = cloneDeep(defaultAppLaunchpadConfig);
         newConfig.tag = 'js-test-app-core-api-nav-test';
       });
       it('Core API navigate and open and close modal', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
-          win.Luigi.navigation().navigate('/home/two');
+          win.AppLaunchpad.navigation().navigate('/home/two');
         });
         cy.expectPathToBe('/home/two');
 
         cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/settings', {
+          win.AppLaunchpad.navigation().openAsModal('/settings', {
             title: 'Preserved View',
             size: 'm'
           });
@@ -40,7 +40,7 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/home/two', { size: 'fullscreen' });
+          win.AppLaunchpad.navigation().openAsModal('/home/two', { size: 'fullscreen' });
         });
         cy.get('.lui-modal-mf').should('exist');
         cy.get('.lui-modal-mf').should('have.class', 'lui-modal-fullscreen');
@@ -51,7 +51,7 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/home/two', { width: '500px', height: '500px' });
+          win.AppLaunchpad.navigation().openAsModal('/home/two', { width: '500px', height: '500px' });
         });
         cy.get('.lui-modal-mf').should('exist');
         cy.get('.lui-modal-mf')
@@ -63,7 +63,7 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/home/two', { width: '20%', height: '40%' });
+          win.AppLaunchpad.navigation().openAsModal('/home/two', { width: '20%', height: '40%' });
         });
         cy.get('.lui-modal-mf').should('exist');
         cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:20%;height:40%;');
@@ -73,7 +73,7 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
+          win.AppLaunchpad.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
         });
         cy.get('.lui-modal-mf').should('exist');
         cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:50rem;height:70rem;');
@@ -84,7 +84,7 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/home/two', { width: '34psx', height: '70rm' });
+          win.AppLaunchpad.navigation().openAsModal('/home/two', { width: '34psx', height: '70rm' });
         });
         cy.get('.lui-modal-mf').should('exist');
         cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:80%;height:80%;');
@@ -94,7 +94,7 @@ describe('JS-TEST-APP', () => {
     describe('Normal navigation', () => {
       let newConfig;
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = cloneDeep(defaultAppLaunchpadConfig);
         newConfig.navigation.nodes[0].viewUrl = null;
         newConfig.tag = 'normal-navigation';
       });
@@ -102,7 +102,7 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="normal-navigation"]');
         cy.window().then(win => {
-          win.Luigi.navigation().navigate('/home');
+          win.AppLaunchpad.navigation().navigate('/home');
           cy.expectPathToBe('/home/two');
         });
       });
@@ -111,8 +111,8 @@ describe('JS-TEST-APP', () => {
         cy.get('#app[configversion="normal-navigation"]');
         cy.get('.fd-shellbar').should('exist');
         cy.window().then(win => {
-          win.Luigi.getConfig().settings.header.disabled = true;
-          win.Luigi.configChanged('settings');
+          win.AppLaunchpad.getConfig().settings.header.disabled = true;
+          win.AppLaunchpad.configChanged('settings');
         });
         cy.contains('.fd-shellbar').should('not.exist');
       });
@@ -120,7 +120,7 @@ describe('JS-TEST-APP', () => {
     describe('Tooltext for category button', () => {
       let newConfig;
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = cloneDeep(defaultAppLaunchpadConfig);
         newConfig.navigation.nodes[0].children[0].category = {
           label: 'Test Category',
           collapsible: true,
@@ -186,7 +186,7 @@ describe('JS-TEST-APP', () => {
   describe('ContextSwitcher', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       newConfig.navigation.nodes.push({
         hideFromNav: true,
         pathSegment: 'environments',
@@ -238,18 +238,18 @@ describe('JS-TEST-APP', () => {
       cy.contains('Environment 1')
         .should('exist')
         .click();
-      cy.get('[data-testid=luigi-contextswitcher-button]')
+      cy.get('[data-testid=applaunchpad-contextswitcher-button]')
         .find('label')
         .should('have.css', 'color', 'rgb(136, 255, 0)')
         .and('have.css', 'font-weight', '700');
 
-      cy.get('[data-testid=luigi-contextswitcher-button]')
+      cy.get('[data-testid=applaunchpad-contextswitcher-button]')
         .should('exist')
         .click();
       cy.contains('Environment 2')
         .should('exist')
         .click();
-      cy.get('[data-testid=luigi-contextswitcher-button]')
+      cy.get('[data-testid=applaunchpad-contextswitcher-button]')
         .find('label')
         .should('have.css', 'color', 'rgb(0, 136, 255)')
         .and('have.css', 'font-weight', '700');
@@ -277,7 +277,7 @@ describe('JS-TEST-APP', () => {
   describe('virtualTree with fromVirtualTreeRoot', localRetries, () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       newConfig.navigation.nodes.push({
         pathSegment: 'virtual',
         label: 'Virtual',
@@ -288,7 +288,7 @@ describe('JS-TEST-APP', () => {
         },
         context: {
           content:
-            '<button  onClick="LuigiClient.linkManager().fromVirtualTreeRoot().navigate(\'/this/is/a/tree\')">virtual</button>'
+            '<button  onClick="AppLaunchpadClient.linkManager().fromVirtualTreeRoot().navigate(\'/this/is/a/tree\')">virtual</button>'
         }
       });
     });
@@ -306,20 +306,20 @@ describe('JS-TEST-APP', () => {
       cy.expectPathToBe('/virtual/this/is/a/tree');
     });
   });
-  describe('Unload and load Luigi', () => {
+  describe('Unload and load AppLaunchpad', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       cy.visitTestApp('/home/two', newConfig);
     });
     it('Core API unload', () => {
       let config;
       cy.window().then(win => {
-        config = win.Luigi.getConfig();
+        config = win.AppLaunchpad.getConfig();
         config.navigation.nodes = [
           {
-            label: 'Luigi',
-            pathSegment: 'luigi',
+            label: 'AppLaunchpad',
+            pathSegment: 'applaunchpad',
             viewUrl: '/examples/microfrontends/multipurpose.html'
           }
         ];
@@ -328,13 +328,13 @@ describe('JS-TEST-APP', () => {
       cy.get('.fd-shellbar').should('be.visible');
 
       cy.window().then(win => {
-        win.Luigi.unload();
+        win.AppLaunchpad.unload();
       });
 
       cy.get('.fd-shellbar').should('not.exist');
 
       cy.window().then(win => {
-        win.Luigi.setConfig(config);
+        win.AppLaunchpad.setConfig(config);
       });
 
       cy.get('.fd-shellbar').should('be.visible');
@@ -350,7 +350,7 @@ describe('JS-TEST-APP', () => {
     describe('No Auth', () => {
       let newConfig;
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = cloneDeep(defaultAppLaunchpadConfig);
         newConfig.auth = undefined;
         newConfig.navigation.profile = {
           logout: {
@@ -361,20 +361,20 @@ describe('JS-TEST-APP', () => {
       });
       it('Static profile, and logging out with customLogoutFn', () => {
         cy.visitTestApp('/home/two', newConfig);
-        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+        cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         loginLink().should('not.exist');
 
         let profileLogout;
         cy.window().then(win => {
-          const config = win.Luigi.getConfig();
+          const config = win.AppLaunchpad.getConfig();
           profileLogout = config.navigation.profile.logout;
           profileLogout.customLogoutFn = () => {
             return true;
           };
           cy.spy(profileLogout, 'customLogoutFn');
-          win.Luigi.setConfig(config);
-          win.Luigi.configChanged('navigation.profile');
+          win.AppLaunchpad.setConfig(config);
+          win.AppLaunchpad.configChanged('navigation.profile');
         });
 
         // Verify profile value
@@ -391,11 +391,11 @@ describe('JS-TEST-APP', () => {
     describe('With Auth', () => {
       let newConfig;
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = cloneDeep(defaultAppLaunchpadConfig);
         newConfig.auth = {
           use: 'myOAuth2',
           myOAuth2: {
-            idpProvider: 'LuigiAuthOAuth2',
+            idpProvider: 'AppLaunchpadAuthOAuth2',
             authorizeUrl: '/auth/idpmock/implicit.html',
             logoutUrl: '/auth/idpmock/logout.html',
             post_logout_redirect_uri: '/auth/logout.html',
@@ -413,7 +413,7 @@ describe('JS-TEST-APP', () => {
           staticUserInfoFn: () => ({
             name: 'Static User',
             initials: 'LU',
-            email: 'other.luigi.user@example.com',
+            email: 'other.applaunchpad.user@example.com',
             picture: '/assets/favicon-sap.ico',
             icon: false
           })
@@ -424,7 +424,7 @@ describe('JS-TEST-APP', () => {
         newConfig.auth.disableAutoLogin = true;
         cy.visitTestApp('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+        cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
         logoutLink().should('not.exist');
         loginLink().should('exist');
       });
@@ -435,7 +435,7 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
 
         // Logged out
-        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+        cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
         logoutLink().should('not.exist');
         loginLink().should('exist');
 
@@ -456,7 +456,7 @@ describe('JS-TEST-APP', () => {
         };
         newConfig.auth.disableAutoLogin = false;
         cy.visitTestAppLoggedIn('/', newConfig);
-        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+        cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         loginLink().should('not.exist');
 
@@ -469,7 +469,7 @@ describe('JS-TEST-APP', () => {
         newConfig.auth.disableAutoLogin = false;
         cy.visitTestAppLoggedIn('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+        cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         loginLink().should('not.exist');
 
@@ -484,27 +484,27 @@ describe('JS-TEST-APP', () => {
         let cfg = cloneDeep(newConfig);
         cy.visitTestApp('/', cfg);
 
-        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+        cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
         loginLink().should('exist');
 
         cy.window().then(win => {
           cy.log('Trigger auth().login()');
-          win.Luigi.auth().login();
+          win.AppLaunchpad.auth().login();
         });
 
         cy.login('tets@email.com', 'tets', true, cfg);
 
-        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+        cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         cfg = cloneDeep(newConfig);
         cy.visit('http://localhost:4500/auth/logout.html');
-        cfg.auth.myOAuth2.idpProvider = 'LuigiAuthOAuth2';
+        cfg.auth.myOAuth2.idpProvider = 'AppLaunchpadAuthOAuth2';
 
         cy.visitTestAppLoggedIn('/', cfg);
         cy.get('#app[configversion="loginlogoutcoreapi"]');
         cy.window().then(win => {
           cy.log('Trigger auth().logout()');
-          win.Luigi.auth().logout();
+          win.AppLaunchpad.auth().logout();
         });
         cy.contains('Login again');
       });
@@ -519,7 +519,7 @@ describe('JS-TEST-APP', () => {
           }
         };
         cy.visitTestAppLoggedIn('/', newConfig);
-        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+        cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
         cy.get('[data-testid="settings-link"]').should('exist');
         cy.get('[data-testid="settings-link"]').contains('My UserSettings');
       });
@@ -529,7 +529,7 @@ describe('JS-TEST-APP', () => {
           userSettings: {}
         };
         cy.visitTestAppLoggedIn('/', newConfig);
-        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+        cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
         cy.get('[data-testid="settings-link"]').should('exist');
         cy.get('[data-testid="settings-link"]').contains('Settings');
       });
@@ -544,7 +544,7 @@ describe('JS-TEST-APP', () => {
         newConfig.auth.disableAutoLogin = false;
         cy.visitTestAppLoggedIn('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+        cy.get('[data-testid="applaunchpad-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         cy.get('[data-testid="settings-link"]').should('not.exist');
       });

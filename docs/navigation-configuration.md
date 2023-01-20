@@ -16,7 +16,7 @@ meta -->
 
 #  Basic navigation configuration
 
-This guide describes some basic features of Luigi navigation and how to configure it.
+This guide describes some basic features of AppLaunchpad navigation and how to configure it.
 
 If you are already familiar with the basics, take a look at:
 * [Advanced navigation configuration](navigation-advanced.md)
@@ -26,7 +26,7 @@ If you are already familiar with the basics, take a look at:
 
 ## Navigation elements
 
-There are three main elements to Luigi:
+There are three main elements to AppLaunchpad:
 
 1. Top navigation which displays the main navigation path. Additionally, it can include context, product, app, and profile [switchers](navigation-advanced.md#context-switcher).
 
@@ -42,7 +42,7 @@ There are three main elements to Luigi:
 
 To configure navigation, edit the JavaScript configuration file of your project, specifically the `navigation:` category. See [application setup](application-setup.md) for instructions on where to find this file for your framework.
 
->**TIP:** You can use [Luigi Fiddle](https://fiddle.luigi-project.io) to experiment with configuration.
+>**TIP:** You can use [AppLaunchpad Fiddle](https://fiddle.applaunchpad-project.io) to experiment with configuration.
 
 The configuration file contains a tree-like structure of **navigation nodes**. The first level nodes represent the top navigation, while their children represent the side navigation. The nodes have some basic properties, such as labels, links, views, and (optionally) children. These properties are called **navigation parameters**.
 
@@ -67,7 +67,7 @@ navigation: {
             },
             {
               externalLink: {
-                url: 'http://www.luigi-project.io',
+                url: 'http://www.applaunchpad-project.io',
                 sameWindow: false
               },
               label: 'This takes you to an external page',
@@ -141,10 +141,10 @@ This is an example of what a node with a category including a label and icon loo
 {
   category: { label: 'Links', icon: 'myIcon', collapsible: true },
   externalLink: {
-    url: 'http://www.luigi-project.io',
+    url: 'http://www.applaunchpad-project.io',
     sameWindow: false
   },
-  label: 'Click here to visit the Luigi homepage',
+  label: 'Click here to visit the AppLaunchpad homepage',
 },
 ...
 ```
@@ -155,10 +155,10 @@ To define all subsequent nodes, use the category label:
 {
   category: 'Links',
   externalLink: {
-    url: 'http://www.luigi-project.io',
+    url: 'http://www.applaunchpad-project.io',
     sameWindow: false
   },
-  label: 'Click here to visit the Luigi homepage',
+  label: 'Click here to visit the AppLaunchpad homepage',
 },
 ...
 ```
@@ -169,10 +169,10 @@ This is an example of what a node with a category including an id, label and ico
 {
   category: {id: 'anyId', label: 'Links', icon: 'myIcon', collapsible: true },
   externalLink: {
-    url: 'http://www.luigi-project.io',
+    url: 'http://www.applaunchpad-project.io',
     sameWindow: false
   },
-  label: 'Click here to visit the Luigi homepage',
+  label: 'Click here to visit the AppLaunchpad homepage',
 },
 ...
 ```
@@ -183,10 +183,10 @@ To define all subsequent nodes, use the category label:
 {
   category: 'anyId',
   externalLink: {
-    url: 'http://www.luigi-project.io',
+    url: 'http://www.applaunchpad-project.io',
     sameWindow: false
   },
-  label: 'Click here to visit the Luigi homepage',
+  label: 'Click here to visit the AppLaunchpad homepage',
 },
 ...
 ```

@@ -1,12 +1,12 @@
-import { LuigiAutoNavigationService } from './services/luigi-auto-navigation.service';
+import { AppLaunchpadAutoNavigationService } from './services/applaunchpad-auto-navigation.service';
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import {
   addInitListener,
   addContextUpdateListener,
   sendCustomMessage,
   addInactiveListener
-} from '@luigi-project/client';
-import { LuigiContextService, ILuigiContextTypes } from './services/luigi-context.service';
+} from '@applaunchpad-project/client';
+import { AppLaunchpadContextService, IAppLaunchpadContextTypes } from './services/applaunchpad-context.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,15 +16,18 @@ import { LuigiContextService, ILuigiContextTypes } from './services/luigi-contex
 export class AppComponent implements OnInit {
   public title = 'app';
 
-  constructor(private luigiService: LuigiContextService, private luigiAutoNav: LuigiAutoNavigationService) {}
+  constructor(
+    private applaunchpadService: AppLaunchpadContextService,
+    private applaunchpadAutoNav: AppLaunchpadAutoNavigationService
+  ) {}
 
   ngOnInit() {
     addInitListener(context => {
-      this.onLuigiContext('init', context);
-      this.luigiAutoNav.init();
+      this.onAppLaunchpadContext('init', context);
+      this.applaunchpadAutoNav.init();
     });
     addContextUpdateListener(context => {
-      this.onLuigiContext('update', context);
+      this.onAppLaunchpadContext('update', context);
       console.log('Context changed:', context);
     });
 
@@ -33,8 +36,8 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private onLuigiContext(contextType: ILuigiContextTypes, context: any): void {
-    this.luigiService.setContext({ contextType, context });
+  private onAppLaunchpadContext(contextType: IAppLaunchpadContextTypes, context: any): void {
+    this.applaunchpadService.setContext({ contextType, context });
     if (contextType === 'init') {
       sendCustomMessage({ id: 'my-micro-frontend-is-ready' });
     }

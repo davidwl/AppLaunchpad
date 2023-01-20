@@ -91,7 +91,7 @@
 </section>
 
 <section class="fd-section" *ngIf="nodeParams && hasBack">
-  <div class="fd-layout-panel luigi__margin-bottom--small">
+  <div class="fd-layout-panel applaunchpad__margin-bottom--small">
     <div class="fd-layout-panel__body">
       <div class="fd-message-strip" role="alert">
         <div class="fd-message-strip_text">
@@ -101,11 +101,11 @@
       </div>
     </div>
   </div>
-  <div *ngIf="hasBack" class="fd-layout-panel luigi__margin-bottom--small">
+  <div *ngIf="hasBack" class="fd-layout-panel applaunchpad__margin-bottom--small">
     <div class="fd-layout-panel__header">
       <div class="fd-layout-panel__head">
         <h3 class="fd-layout-panel__title">
-          LuigiClient hasBack/GoBack
+          AppLaunchpadClient hasBack/GoBack
         </h3>
       </div>
     </div>
@@ -113,7 +113,7 @@
       <div class="fd-form-item">
         <label class="fd-form-label">
           Modify goBackContext value, that you receive then via
-          LuigiClient.addContextUpdateListener():
+          AppLaunchpadClient.addContextUpdateListener():
         </label>
         <input type="text" class="fd-input" [(ngModel)]="callbackValue" />
       </div>

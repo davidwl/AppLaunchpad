@@ -5,7 +5,7 @@ const commonRules = require('./webpack-common-rules');
 const exec = require('child_process').exec;
 const fundamentalStyles = require('./fundamentalStyleClasses');
 
-const luigifiles = [
+const applaunchpadfiles = [
   ...fundamentalStyles,
   './node_modules/@babel/polyfill/dist/polyfill.js',
   './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
@@ -14,7 +14,7 @@ const luigifiles = [
 
 const env = process.env.NODE_ENV;
 
-class PatchLuigiPlugin {
+class PatchAppLaunchpadPlugin {
   constructor() {}
   static execHandler(err, stdout, stderr) {
     if (stdout) {
@@ -33,11 +33,11 @@ class PatchLuigiPlugin {
   }
   apply(compiler) {
     if (compiler.hooks) {
-      compiler.hooks.afterEmit.tap('Luigi Patch', () =>
+      compiler.hooks.afterEmit.tap('AppLaunchpad Patch', () =>
         exec(
-          'babel public-ie11/luigi-ie11.js --out-file public-ie11/luigi-ie11.js --presets=@babel/preset-env --root . --root-mode upward' +
+          'babel public-ie11/applaunchpad-ie11.js --out-file public-ie11/applaunchpad-ie11.js --presets=@babel/preset-env --root . --root-mode upward' +
             (process.env.MINIFY === 'false' ? '' : ' --minified'),
-          PatchLuigiPlugin.execHandler
+          PatchAppLaunchpadPlugin.execHandler
         )
       );
     }
@@ -47,7 +47,7 @@ class PatchLuigiPlugin {
 module.exports = {
   devtool: 'false',
   entry: {
-    'luigi-ie11': luigifiles
+    'applaunchpad-ie11': applaunchpadfiles
   },
   resolve: {
     alias: {
@@ -83,7 +83,7 @@ module.exports = {
       verbose: true
     }),
     new MiniCssExtractPlugin({ filename: '[name].css' }),
-    new PatchLuigiPlugin()
+    new PatchAppLaunchpadPlugin()
   ],
   stats: {
     warnings: false

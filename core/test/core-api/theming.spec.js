@@ -3,7 +3,7 @@ const assert = chai.assert;
 const expect = chai.expect;
 const sinon = require('sinon');
 
-import { LuigiConfig, LuigiTheming } from '../../src/core-api';
+import { AppLaunchpadConfig, AppLaunchpadTheming } from '../../src/core-api';
 
 describe('Core API - Theming', function() {
   this.retries(1);
@@ -17,9 +17,9 @@ describe('Core API - Theming', function() {
     };
   };
   beforeEach(() => {
-    sinon.stub(LuigiConfig);
-    LuigiConfig.getConfigValue.returns(getMockTheming());
-    LuigiConfig.getConfigValueAsync.returns(getMockTheming().themes);
+    sinon.stub(AppLaunchpadConfig);
+    AppLaunchpadConfig.getConfigValue.returns(getMockTheming());
+    AppLaunchpadConfig.getConfigValueAsync.returns(getMockTheming().themes);
   });
   afterEach(() => {
     sinon.reset();
@@ -28,36 +28,36 @@ describe('Core API - Theming', function() {
 
   describe('getAvailableThemes', () => {
     it('has themes', async () => {
-      const res = await LuigiTheming.getAvailableThemes();
+      const res = await AppLaunchpadTheming.getAvailableThemes();
       assert.deepEqual(res, getMockTheming().themes);
     });
     it('no theming defined', async () => {
-      LuigiConfig.getConfigValueAsync.returns(undefined);
-      const res = await LuigiTheming.getAvailableThemes();
+      AppLaunchpadConfig.getConfigValueAsync.returns(undefined);
+      const res = await AppLaunchpadTheming.getAvailableThemes();
       assert.isUndefined(res);
     });
   });
   it('setCurrentTheme', () => {
     const mockTheme = { id: 'light', name: 'Light Theme' };
-    assert.isUndefined(LuigiTheming.currentTheme);
+    assert.isUndefined(AppLaunchpadTheming.currentTheme);
 
-    LuigiTheming.setCurrentTheme(mockTheme);
+    AppLaunchpadTheming.setCurrentTheme(mockTheme);
 
-    assert.deepEqual(LuigiTheming.currentTheme, mockTheme);
+    assert.deepEqual(AppLaunchpadTheming.currentTheme, mockTheme);
   });
   describe('getThemeObject', () => {
     it('theme not found', async () => {
-      const res = await LuigiTheming.getThemeObject('notexistingtheme');
+      const res = await AppLaunchpadTheming.getThemeObject('notexistingtheme');
       assert.isUndefined(res);
     });
     it('no theming defined', async () => {
-      LuigiConfig.getConfigValueAsync.returns(undefined);
+      AppLaunchpadConfig.getConfigValueAsync.returns(undefined);
 
-      const res = await LuigiTheming.getThemeObject('dark');
+      const res = await AppLaunchpadTheming.getThemeObject('dark');
       assert.isUndefined(res);
     });
     it('get theme object', async () => {
-      const res = await LuigiTheming.getThemeObject('dark');
+      const res = await AppLaunchpadTheming.getThemeObject('dark');
       assert.deepEqual(res, { id: 'dark', name: 'Dark Theme' });
     });
   });

@@ -4,7 +4,7 @@ const expect = chai.expect;
 const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
-import { LuigiUX } from '../../src/core-api';
+import { AppLaunchpadUX } from '../../src/core-api';
 
 describe('Core API - UX', function() {
   this.retries(2);
@@ -24,7 +24,7 @@ describe('Core API - UX', function() {
   beforeEach(() => {
     clock = sinon.useFakeTimers();
     sinon.stub(document, 'querySelector');
-    sinon.spy(LuigiUX, 'hideAppLoadingIndicator');
+    sinon.spy(AppLaunchpadUX, 'hideAppLoadingIndicator');
   });
   afterEach(() => {
     sinon.restore();
@@ -36,7 +36,7 @@ describe('Core API - UX', function() {
       document.querySelector.returns(null);
 
       expect(() => {
-        LuigiUX.hideAppLoadingIndicator();
+        AppLaunchpadUX.hideAppLoadingIndicator();
         clock.tick(1e3);
       }).not.to.throw();
     });
@@ -47,7 +47,7 @@ describe('Core API - UX', function() {
       document.querySelector.returns(mockIndicatorElem);
 
       // when
-      LuigiUX.hideAppLoadingIndicator();
+      AppLaunchpadUX.hideAppLoadingIndicator();
       clock.tick(1e3);
 
       // then
@@ -59,8 +59,8 @@ describe('Core API - UX', function() {
   describe('removeBackdrop', () => {
     it('post message sent properly', () => {
       window.top.postMessage = sinon.spy();
-      LuigiUX.removeBackdrop();
-      sinon.assert.calledWithExactly(window.top.postMessage, { msg: 'luigi.remove-backdrop' }, '*');
+      AppLaunchpadUX.removeBackdrop();
+      sinon.assert.calledWithExactly(window.top.postMessage, { msg: 'applaunchpad.remove-backdrop' }, '*');
     });
   });
 });

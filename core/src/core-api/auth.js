@@ -1,11 +1,11 @@
-import { LuigiConfig } from './';
+import { AppLaunchpadConfig } from './';
 import { AuthStoreSvc, AuthLayerSvc } from '../services';
 /* istanbul ignore file */
 /**
  * Authorization helpers
  * @name Authorization
  */
-class LuigiAuth {
+class AppLaunchpadAuth {
   /**
    * @private
    * @memberof Authorization
@@ -18,10 +18,10 @@ class LuigiAuth {
    * @memberof Authorization
    * @returns {boolean} - `true` if authorization is enabled. Otherwise returns `false`.
    * @example
-   * Luigi.auth().isAuthorizationEnabled();
+   * AppLaunchpad.auth().isAuthorizationEnabled();
    */
   isAuthorizationEnabled() {
-    return !!LuigiConfig.getConfigValue('auth.use');
+    return !!AppLaunchpadConfig.getConfigValue('auth.use');
   }
 
   /**
@@ -30,7 +30,7 @@ class LuigiAuth {
    * @memberof Authorization
    * @since 1.5.0
    * @example
-   * Luigi.auth().login();
+   * AppLaunchpad.auth().login();
    */
   login() {
     if (this.isAuthorizationEnabled()) {
@@ -44,7 +44,7 @@ class LuigiAuth {
    * @memberof Authorization
    * @since 1.5.0
    * @example
-   * Luigi.auth().logout();
+   * AppLaunchpad.auth().logout();
    */
   logout() {
     if (this.isAuthorizationEnabled()) {
@@ -61,7 +61,7 @@ class LuigiAuth {
    * @param {string} redirectUrl
    */
   async handleAuthEvent(eventName, providerInstanceSettings, data, redirectUrl) {
-    const result = await LuigiConfig.executeConfigFnAsync(
+    const result = await AppLaunchpadConfig.executeConfigFnAsync(
       'auth.events.' + eventName,
       false,
       providerInstanceSettings,
@@ -81,7 +81,7 @@ class LuigiAuth {
    */
 
   /**
-   * Authorization object that is stored in auth store and used within Luigi. It is then available in [LuigiClient.addInitListener](luigi-client-api.md#addInitListener) and can also be used in the Core configuration.
+   * Authorization object that is stored in auth store and used within AppLaunchpad. It is then available in [AppLaunchpadClient.addInitListener](applaunchpad-client-api.md#addInitListener) and can also be used in the Core configuration.
    * @typedef {Object} AuthData
    * @property {string} accessToken - access token value
    * @property {string} accessTokenExpirationDate - timestamp value
@@ -89,10 +89,10 @@ class LuigiAuth {
    * @property {string} idToken - id token, used for renewing authentication
    */
   get store() {
-    if (!LuigiConfig.initialized) {
+    if (!AppLaunchpadConfig.initialized) {
       console.warn(
-        'Luigi Core is not initialized yet. Consider moving your code to the luigiAfterInit lifecycle hook. ' +
-          'Documentation: https://docs.luigi-project.io/docs/lifecycle-hooks'
+        'AppLaunchpad Core is not initialized yet. Consider moving your code to the applaunchpadAfterInit lifecycle hook. ' +
+          'Documentation: https://docs.applaunchpad-project.io/docs/lifecycle-hooks'
       );
     }
     return {
@@ -100,44 +100,44 @@ class LuigiAuth {
        * Retrieves the key name that is used to store the auth data.
        * @memberof AuthorizationStore
        * @returns {string} - name of the store key
-       * @example Luigi.auth().store.getStorageKey()
+       * @example AppLaunchpad.auth().store.getStorageKey()
        */
       getStorageKey: () => AuthStoreSvc.getStorageKey(),
       /**
-       * Retrieves the storage type that is used to store the auth data. To set it, use the `storage` property of the `auth` Luigi configuration object. Find out more [here](https://docs.luigi-project.io/docs/authorization-configuration?section=general-authorization-options).
+       * Retrieves the storage type that is used to store the auth data. To set it, use the `storage` property of the `auth` AppLaunchpad configuration object. Find out more [here](https://docs.applaunchpad-project.io/docs/authorization-configuration?section=general-authorization-options).
        * @memberof AuthorizationStore
        * @returns {('localStorage'|'sessionStorage'|'none')} - storage type
-       * @example Luigi.auth().store.getStorageType()
+       * @example AppLaunchpad.auth().store.getStorageType()
        */
       getStorageType: () => AuthStoreSvc.getStorageType(),
       /**
        * Retrieves the current auth object.
        * @memberof AuthorizationStore
        * @returns {AuthData} - the current auth data object
-       * @example Luigi.auth().store.getAuthData()
+       * @example AppLaunchpad.auth().store.getAuthData()
        */
       getAuthData: () => AuthStoreSvc.getAuthData(),
       /**
        * Sets authorization data
        * @memberof AuthorizationStore
        * @param {AuthData} data - new auth data object
-       * @example Luigi.auth().store.setAuthData(data)
+       * @example AppLaunchpad.auth().store.setAuthData(data)
        */
       setAuthData: data => AuthStoreSvc.setAuthData(data),
       /**
        * Clears authorization data from store
        * @memberof AuthorizationStore
-       * @example Luigi.auth().store.removeAuthData()
+       * @example AppLaunchpad.auth().store.removeAuthData()
        */
       removeAuthData: () => AuthStoreSvc.removeAuthData(),
       /**
        * Defines a new authorization session. Must be triggered after initial `setAuthData()` in order to trigger **onAuthSuccessful** event after login.
        * @memberof AuthorizationStore
-       * @example Luigi.auth().store.setNewlyAuthorized()
+       * @example AppLaunchpad.auth().store.setNewlyAuthorized()
        */
       setNewlyAuthorized: () => AuthStoreSvc.setNewlyAuthorized()
     };
   }
 }
 
-export const auth = new LuigiAuth();
+export const auth = new AppLaunchpadAuth();

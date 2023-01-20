@@ -13,7 +13,7 @@ export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
 showHelp() {
   echo ""
   echo ""
-  echo "Be sure to stop all other running luigi related"
+  echo "Be sure to stop all other running applaunchpad related"
   echo "frontend projects (ports 4200 and 8080 must not be in use)"
   echo ""
   echo ""
@@ -34,9 +34,9 @@ showHelp() {
   echo "against the currently checked out version."
   echo ""
   echo "--install"
-  echo "Run with --install flag if current luigi installation requires "
+  echo "Run with --install flag if current applaunchpad installation requires "
   echo "install and bundling, eg. directly after CI checkout. By default"
-  echo "we assume that luigi is installed and lerna run bundle was executed."
+  echo "we assume that applaunchpad is installed and lerna run bundle was executed."
   echo ""
   echo "Test only usage:"
   echo "--test-only"
@@ -72,7 +72,7 @@ declare -a APP_PUBLIC_FOLDERS=(
 )
 
 declare -a APP_PATH_CHECK=(
-  "/luigi-core/luigi.js" # e2e-test-application
+  "/applaunchpad-core/applaunchpad.js" # e2e-test-application
   "/index.html" # e2e-js-test-application
   "/customUserSettingsMf.html" # externalMf
 )
@@ -107,11 +107,11 @@ promptForTag() {
   fi
   if [ "" = "$TAG" ]; then
     # LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
-    echoe "Choose Luigi Version to test against"
+    echoe "Choose AppLaunchpad Version to test against"
     echo "No tag provided, pick one of the last releases;"
     echo "Fetching current releases are being fetched from github."
     echo ""
-    rawReleases=`curl -s https://api.github.com/repos/SAP/luigi/releases`
+    rawReleases=`curl -s https://api.github.com/repos/davidwl/applaunchpad/releases`
     # rawReleases=`cat releases`
 
     count=1;
@@ -139,7 +139,7 @@ promptForTag() {
 verifyInstallation() {
   ### VERIFY LOCAL CURRENT LUIGI
   if [ "$INSTALL" == "true" ]; then
-    echoe "Verifying current Luigi"
+    echoe "Verifying current AppLaunchpad"
 
     echoe "Core"
     cd "$LUIGI_DIR/core"
@@ -153,24 +153,24 @@ verifyInstallation() {
     cd "$LUIGI_DIR/plugins"
     npm i
 
-    echoe "Bundling current Luigi"
+    echoe "Bundling current AppLaunchpad"
     lerna run bundle
 
-    echoe "Luigi installation done"
+    echoe "AppLaunchpad installation done"
   fi
 }
 
 ### CHECKOUT THE SELECTED VERSION
-checkoutLuigiToTestfolder() {
+checkoutAppLaunchpadToTestfolder() {
   # check if lfolder exists, else only walk into it
   if [ ! -d $LUIGI_DIR_TESTING ]; then
     echoe "Creating test folder"
     if [ "$USER" == "travis" ]; then
       # travis
-      git clone https://github.com/SAP/luigi.git $LUIGI_DIR_TESTING
+      git clone https://github.com/davidwl/applaunchpad.git $LUIGI_DIR_TESTING
     else
       # osx localhost
-      git clone git@github.com:SAP/luigi.git $LUIGI_DIR_TESTING
+      git clone git@github.com:davidwl/applaunchpad.git $LUIGI_DIR_TESTING
     fi
   fi
 
@@ -189,11 +189,11 @@ checkoutLuigiToTestfolder() {
   done
 }
 
-linkLuigi() {
+linkAppLaunchpad() {
   for FOLDER in "${APP_FOLDERS[@]}"; do
-    NODE_MODULES=$LUIGI_DIR_TESTING/$FOLDER/node_modules/@luigi-project
-    echoe "Linking current Luigi to selected version in $FOLDER"
-    # remove installed luigi versions and symlink with latest
+    NODE_MODULES=$LUIGI_DIR_TESTING/$FOLDER/node_modules/@applaunchpad-project
+    echoe "Linking current AppLaunchpad to selected version in $FOLDER"
+    # remove installed applaunchpad versions and symlink with latest
     mkdir -p $NODE_MODULES
     rm -rf $NODE_MODULES/*
     ln -s $LUIGI_DIR/core/public $NODE_MODULES/core
@@ -264,11 +264,11 @@ startE2eTestrunner() {
 # Script
 
 LUIGI_DIR="${BASE_DIR}/.."
-LUIGI_FOLDERNAME="luigi-compatibility-testing"
+LUIGI_FOLDERNAME="applaunchpad-compatibility-testing"
 LUIGI_DIR_TESTING="$LUIGI_DIR/../$LUIGI_FOLDERNAME"
 
 EXAMPLE_DIR="$LUIGI_DIR_TESTING"
-NODE_MODULES=$EXAMPLE_DIR/node_modules/@luigi-project
+NODE_MODULES=$EXAMPLE_DIR/node_modules/@applaunchpad-project
 
 TESTONLY=""
 
@@ -294,10 +294,10 @@ done
 if [ "" == "$TESTONLY" ]; then
   promptForTag
   verifyInstallation
-  checkoutLuigiToTestfolder
-  linkLuigi
-  ls -lah $LUIGI_DIR_TESTING/test/e2e-test-application/node_modules/@luigi-project
-  cd $LUIGI_DIR_TESTING/test/e2e-test-application/node_modules/@luigi-project
+  checkoutAppLaunchpadToTestfolder
+  linkAppLaunchpad
+  ls -lah $LUIGI_DIR_TESTING/test/e2e-test-application/node_modules/@applaunchpad-project
+  cd $LUIGI_DIR_TESTING/test/e2e-test-application/node_modules/@applaunchpad-project
   ls *
   bundleApp
 else

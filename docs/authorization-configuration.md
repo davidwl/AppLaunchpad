@@ -16,7 +16,7 @@ meta -->
 
 # Authorization configuration
 
-To configure authorization in Luigi:
+To configure authorization in AppLaunchpad:
 
 1. Configure the [general authorization options](#general-authorization-options).
 
@@ -27,17 +27,17 @@ To configure authorization in Luigi:
 
 ## General authorization options
 
-* [General authorization configuration in Luigi](#how-do-i-configure-authorization-in-luigi)
+* [General authorization configuration in AppLaunchpad](#how-do-i-configure-authorization-in-applaunchpad)
 * [Show content to logged out users/allow anonymous access](#how-do-i-show-some-navigation-nodes-only-to-non-authenticated-users)
 
-### How do I configure authorization in Luigi?
+### How do I configure authorization in AppLaunchpad?
 
-You can configure Luigi authorization using the `auth:` section of your Luigi configuration file.
+You can configure AppLaunchpad authorization using the `auth:` section of your AppLaunchpad configuration file.
 
 This is an example of a simplified authorization structure:
 
 ```javascript
-import oidcProvider from '@luigi-project/plugin-auth-oidc';
+import oidcProvider from '@applaunchpad-project/plugin-auth-oidc';
 auth: {
   use: 'openIdConnect',
   openIdConnect: {
@@ -85,10 +85,10 @@ anonymousAccess: true // always show nodes
 
 ## OpenID Connect configuration
 
-This code snippet demonstrates how to configure authorization using OpenID Connect in Luigi. Note that you must install the [OpenID Plugin](auth-oidc.md) first.
+This code snippet demonstrates how to configure authorization using OpenID Connect in AppLaunchpad. Note that you must install the [OpenID Plugin](auth-oidc.md) first.
 
 ```javascript
-import oidcProvider from '@luigi-project/plugin-auth-oidc';
+import oidcProvider from '@applaunchpad-project/plugin-auth-oidc';
 auth: {
   use: 'openIdConnect',
   openIdConnect: {
@@ -142,15 +142,15 @@ auth: {
 - **description**: provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
 #### profileStorageInterceptorFn
 - **type**: function
-- **description**: provides a function to mutate the profile values of the [JSON Web Token (JWT)](https://jwt.io) before it gets stored in Luigi. It allows the removal of values like **email** to comply with data privacy restrictions. Since it is async, you could use it to enrich the profile data, but it should not get mixed up with **userInfoFn** which is specifically designed to define user information.
+- **description**: provides a function to mutate the profile values of the [JSON Web Token (JWT)](https://jwt.io) before it gets stored in AppLaunchpad. It allows the removal of values like **email** to comply with data privacy restrictions. Since it is async, you could use it to enrich the profile data, but it should not get mixed up with **userInfoFn** which is specifically designed to define user information.
 
 ### Third-party cookies and silent token refresh
 
-The OpenID Connect configuration allows you to specify the **automaticSilentRenew** option. When set to `true`, Luigi attempts to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
+The OpenID Connect configuration allows you to specify the **automaticSilentRenew** option. When set to `true`, AppLaunchpad attempts to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
 
-To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/SAP/luigi/tree/master/core/third-party-cookies) catalog. Deploy this file on a domain different from your main application's and set **thirdPartyCookiesScriptLocation** to the `init.html` file. During initialization, Luigi detects the cookies support and produces a warning in the console if cookies are disabled in the user's browser.
+To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/davidwl/applaunchpad/tree/master/core/third-party-cookies) catalog. Deploy this file on a domain different from your main application's and set **thirdPartyCookiesScriptLocation** to the `init.html` file. During initialization, AppLaunchpad detects the cookies support and produces a warning in the console if cookies are disabled in the user's browser.
 
-When Luigi fails to renew the token and then logs the user out, it adds the `?reason=tokenExpired&thirdPartyCookies=[VALUE]` query parameters to the logout page redirect URL. Luigi replaces **[VALUE]**  with one of these options:
+When AppLaunchpad fails to renew the token and then logs the user out, it adds the `?reason=tokenExpired&thirdPartyCookies=[VALUE]` query parameters to the logout page redirect URL. AppLaunchpad replaces **[VALUE]**  with one of these options:
 - `disabled` means that third party cookies are disabled.
 - `enabled` means that the browser supports third party cookies.
 - `not_checked` means that the script was not provided in **thirdPartyCookiesScriptLocation** or it could not be loaded.
@@ -159,10 +159,10 @@ Use these parameters to set a logout page.
 
 ## OAuth2 Implicit Grant configuration
 
-This code snippet demonstrates how to configure authorization using OAuth2 Implicit Grant in Luigi. Note that you must install the [OAuth2 Plugin](auth-oauth2.md) first.
+This code snippet demonstrates how to configure authorization using OAuth2 Implicit Grant in AppLaunchpad. Note that you must install the [OAuth2 Plugin](auth-oauth2.md) first.
 
 ```javascript
-import oAuth2ImplicitGrant from '@luigi-project/plugin-auth-oauth2';
+import oAuth2ImplicitGrant from '@applaunchpad-project/plugin-auth-oauth2';
 
 auth: {
   use: 'oAuth2ImplicitGrant',
@@ -216,7 +216,7 @@ auth: {
 - **description**: provides a function that returns a string in order to override the default **nonce**.
 #### logoutFn
 - **type**: function
-- **description**: provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback(redirectUri)** function after logout. Its parameter **redirectUri** is an URL or path to redirect to after executing **logoutCallback**. If no **redirectUri** is defined, Luigi stays in the current state.
+- **description**: provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback(redirectUri)** function after logout. Its parameter **redirectUri** is an URL or path to redirect to after executing **logoutCallback**. If no **redirectUri** is defined, AppLaunchpad stays in the current state.
 #### userInfoFn
 - **type**: function
 - **description**:provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
@@ -249,8 +249,8 @@ export class CustomAuthenticationProvider {
     // returns a promise which contains an error message if something went wrong
   }
 
-  logout(authData, logoutLuigiCore){
-    // call logoutLuigiCore() to reset stored data in Luigi Core
+  logout(authData, logoutAppLaunchpadCore){
+    // call logoutAppLaunchpadCore() to reset stored data in AppLaunchpad Core
     // logic to handle the logout mechanism
   }
 
@@ -270,16 +270,16 @@ export class CustomAuthenticationProvider {
   }
 
   unload() {
-    // logic that is called if you use Luigi.unload() in order to remove event listeners and intervals.
+    // logic that is called if you use AppLaunchpad.unload() in order to remove event listeners and intervals.
   }
 }
 ```
-Read more about [Luigi.unload()](luigi-core-api.md#unload).
+Read more about [AppLaunchpad.unload()](applaunchpad-core-api.md#unload).
 ​
-To use the custom authentication provider in your Luigi app, include this code in the `auth:` section of the configuration file:
+To use the custom authentication provider in your AppLaunchpad app, include this code in the `auth:` section of the configuration file:
 
 ```javascript
-Luigi.setConfig({
+AppLaunchpad.setConfig({
   auth: {
     use: 'myProviderConfig',
     myProviderConfig: {
@@ -292,17 +292,17 @@ Luigi.setConfig({
 ​
 [oAuth2ImplicitGrant.js](../core/src/providers/auth/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authorization library.
 ​
-After authorization is successful on the authorization provider's side, it redirects back to `Luigi callback.html` **redirect_uri**. The provider verifies the authorization data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page.
+After authorization is successful on the authorization provider's side, it redirects back to `AppLaunchpad callback.html` **redirect_uri**. The provider verifies the authorization data, saves it in  **localStorage** for AppLaunchpad, and redirects to the AppLaunchpad main page.
 ​
 [openIdConnect.js](../core/src/providers/auth/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authorization libraries.
 
 <!-- add-attribute:class:warning -->
->**NOTE:** Read more about authorization helpers in the [Core API: AuthorizationStore](luigi-core-api.md#AuthorizationStore) section.
+>**NOTE:** Read more about authorization helpers in the [Core API: AuthorizationStore](applaunchpad-core-api.md#AuthorizationStore) section.
 
 ​<!-- second empty line required for quote -->
 ### Persisting auth data
 ​
-Make sure to set this data in your authorization provider implementation. Most of the time it is used in a `callback.html` so that its data is available for Luigi after successful authorization:
+Make sure to set this data in your authorization provider implementation. Most of the time it is used in a `callback.html` so that its data is available for AppLaunchpad after successful authorization:
 ​
 ```javascript
 // partial content of callback.html
@@ -313,20 +313,20 @@ const data = {
   idToken: hashParams['id_token']
 };
 ​
-Luigi.auth().store.setAuthData(data);
-Luigi.auth().store.setNewlyAuthorized();
+AppLaunchpad.auth().store.setAuthData(data);
+AppLaunchpad.auth().store.setNewlyAuthorized();
 ​
-// redirect back to Luigi
+// redirect back to AppLaunchpad
 window.location.href = '/';
 ```
 
 ### Additional options ​
 
-Additionally, if you process authorization data during Luigi runtime (inside the custom provider, similarly to using the`openIdConnect` provider), dispatch the `luigi.auth.tokenIssued` Event to update the currently opened micro frontends with the latest authorization data. This is not required when processing authorization outside Luigi, for example when `oAuth2ImplicitGrant` provider processes the data in `callback.html` and redirects to Luigi afterward.
+Additionally, if you process authorization data during AppLaunchpad runtime (inside the custom provider, similarly to using the`openIdConnect` provider), dispatch the `applaunchpad.auth.tokenIssued` Event to update the currently opened micro frontends with the latest authorization data. This is not required when processing authorization outside AppLaunchpad, for example when `oAuth2ImplicitGrant` provider processes the data in `callback.html` and redirects to AppLaunchpad afterward.
 ​
 ```javascript
 window.postMessage(
-  { msg: 'luigi.auth.tokenIssued', authData: data },
+  { msg: 'applaunchpad.auth.tokenIssued', authData: data },
   '*'
 );
 ```

@@ -17,9 +17,9 @@ meta -->
 # Authorization events
 
 <!-- add-attribute:class:success -->
->**TIP:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
+>**TIP:** For learning and testing purposes, use the [AppLaunchpad Fiddle](https://fiddle.applaunchpad-project.io) page where you can configure a sample AppLaunchpad application.
 
-Luigi provides life cycle events which it can trigger internally or by authorization providers.
+AppLaunchpad provides life cycle events which it can trigger internally or by authorization providers.
 Events are part of the **auth** configuration object and have to be functions. They can be executed asynchronously.
 
 An example events configuration looks as follows:
@@ -46,11 +46,11 @@ You can disable the default behavior of `onAuthExpired` and `onAuthError` by mak
 
 -   `onAuthSuccessful` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed after logging in with the **authData** object parameter. If valid authorization data was found in the local storage, the function is not executed.
 -   `onAuthError` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed:
-    - by Luigi **reason** URL parameter with optional **error** URL parameter for detailed description was found on Luigi initialization. The OAuth2Provider uses this approach by redirecting from the authorization provider to `luigi.domain/?reason=someError&error=Error detail describe`.
+    - by AppLaunchpad **reason** URL parameter with optional **error** URL parameter for detailed description was found on AppLaunchpad initialization. The OAuth2Provider uses this approach by redirecting from the authorization provider to `applaunchpad.domain/?reason=someError&error=Error detail describe`.
     - by the OIDC provider if silent access token renewal fails
 
-    Return `false` to prevent redirecting to `logoutUrl` after executing this function. It goes to the Luigi main route `/` instead.
--   `onAuthExpired` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed if the token expires during runtime, or if Luigi is opened with outdated authorization data in the local storage. Return `false` to prevent redirecting to `logoutUrl` after executing this function.
+    Return `false` to prevent redirecting to `logoutUrl` after executing this function. It goes to the AppLaunchpad main route `/` instead.
+-   `onAuthExpired` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed if the token expires during runtime, or if AppLaunchpad is opened with outdated authorization data in the local storage. Return `false` to prevent redirecting to `logoutUrl` after executing this function.
 -   `onLogout` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed after the user logs out.
 - `onAuthExpireSoon` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** is executed before the token expires. For OAuth2 and OIDC you can set the **accessTokenExpiringNotificationTime** to specify the number of seconds required to pass before the event is fired. The default value is `60` seconds.
     - by using oAuth2ImplicitGrant you can specify **expirationCheckInterval** which is the number of seconds to pass between each check if the token is about to expire. The default value is `5` seconds.

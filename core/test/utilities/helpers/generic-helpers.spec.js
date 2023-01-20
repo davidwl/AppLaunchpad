@@ -1,7 +1,7 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-import { LuigiConfig } from '../../../src/core-api';
+import { AppLaunchpadConfig } from '../../../src/core-api';
 import { GenericHelpers } from '../../../src/utilities/helpers';
 
 describe('Generic-helpers', () => {
@@ -33,13 +33,13 @@ describe('Generic-helpers', () => {
   });
 
   it('getUrlWithoutHash', () => {
-    const url = 'http://luigi.url.de/#hashsomething';
+    const url = 'http://applaunchpad.url.de/#hashsomething';
     const withoutHash = GenericHelpers.getUrlWithoutHash(url);
-    assert.equal(withoutHash, 'http://luigi.url.de/');
+    assert.equal(withoutHash, 'http://applaunchpad.url.de/');
   });
 
   it('hasHash', () => {
-    const path = '#luigi/tets/something';
+    const path = '#applaunchpad/tets/something';
     const includingHash = GenericHelpers.hasHash(path);
     assert.isTrue(includingHash);
   });
@@ -50,11 +50,11 @@ describe('Generic-helpers', () => {
   });
 
   it('addLeadingSlash', () => {
-    assert.equal(GenericHelpers.addLeadingSlash('luigi'), '/luigi');
+    assert.equal(GenericHelpers.addLeadingSlash('applaunchpad'), '/applaunchpad');
   });
 
   it('trimLeadingSlash', () => {
-    assert.equal(GenericHelpers.trimLeadingSlash('/luigi'), 'luigi');
+    assert.equal(GenericHelpers.trimLeadingSlash('/applaunchpad'), 'applaunchpad');
   });
 
   it('isString', () => {
@@ -163,9 +163,9 @@ describe('Generic-helpers', () => {
   });
   describe('request experimental feature', () => {
     beforeEach(() => {
-      sinon.stub(LuigiConfig, 'getConfig');
+      sinon.stub(AppLaunchpadConfig, 'getConfig');
       console.warn = sinon.spy();
-      LuigiConfig.getConfig.returns({
+      AppLaunchpadConfig.getConfig.returns({
         settings: {
           experimental: {
             test: true

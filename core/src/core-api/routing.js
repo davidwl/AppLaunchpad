@@ -1,9 +1,9 @@
-import { LuigiConfig } from '.';
+import { AppLaunchpadConfig } from '.';
 import { GenericHelpers, RoutingHelpers } from '../utilities/helpers';
 /**
  * @name Routing
  */
-class LuigiRouting {
+class AppLaunchpadRouting {
   /**
    * Use these functions for navigation-related features.
    * @name Routing
@@ -16,12 +16,12 @@ class LuigiRouting {
    * @since 1.16.1
    * @returns {Object}
    * @example
-   * Luigi.routing().getSearchParams();
+   * AppLaunchpad.routing().getSearchParams();
    */
   getSearchParams() {
     const queryParams = {};
     const url = new URL(location);
-    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    if (AppLaunchpadConfig.getConfigValue('routing.useHashRouting')) {
       for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
         queryParams[key] = value;
       }
@@ -42,7 +42,7 @@ class LuigiRouting {
    * @param {Object} params
    * @param {boolean} keepBrowserHistory
    * @example
-   * Luigi.routing().addSearchParams({luigi:'rocks', mario:undefined}, false);
+   * AppLaunchpad.routing().addSearchParams({applaunchpad:'rocks', mario:undefined}, false);
    */
   addSearchParams(params, keepBrowserHistory) {
     if (!GenericHelpers.isObject(params)) {
@@ -50,14 +50,14 @@ class LuigiRouting {
       return;
     }
     const url = new URL(location);
-    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    if (AppLaunchpadConfig.getConfigValue('routing.useHashRouting')) {
       url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash);
     } else {
       RoutingHelpers.modifySearchParams(params, url.searchParams);
     }
 
     this.handleBrowserHistory(keepBrowserHistory, url);
-    LuigiConfig.configChanged();
+    AppLaunchpadConfig.configChanged();
   }
 
   addNodeParams(params, keepBrowserHistory) {
@@ -68,14 +68,14 @@ class LuigiRouting {
 
     const paramPrefix = RoutingHelpers.getContentViewParamPrefix();
     const url = new URL(location);
-    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    if (AppLaunchpadConfig.getConfigValue('routing.useHashRouting')) {
       url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash, paramPrefix);
     } else {
       RoutingHelpers.modifySearchParams(params, url.searchParams, paramPrefix);
     }
 
     this.handleBrowserHistory(keepBrowserHistory, url);
-    LuigiConfig.configChanged();
+    AppLaunchpadConfig.configChanged();
   }
 
   sanitizeUrl(url) {
@@ -99,13 +99,13 @@ class LuigiRouting {
 
   getAnchor() {
     const { hash } = new URL(location);
-    const useHashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
+    const useHashRouting = AppLaunchpadConfig.getConfigValue('routing.useHashRouting');
 
     return useHashRouting && hash.split('#').length === 2 ? '' : hash.split('#').pop();
   }
 
   setAnchor(value) {
-    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+    if (AppLaunchpadConfig.getConfigValue('routing.useHashRouting')) {
       const { hash } = new URL(location);
       const hashArray = hash.split('#');
       const hasExistingHash = hashArray.length > 2;
@@ -118,4 +118,4 @@ class LuigiRouting {
   }
 }
 
-export const routing = new LuigiRouting();
+export const routing = new AppLaunchpadRouting();

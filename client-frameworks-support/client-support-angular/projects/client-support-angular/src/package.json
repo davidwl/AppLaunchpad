@@ -1,17 +1,17 @@
 {
-  "name": "@luigi-project/client-support-angular",
+  "name": "@applaunchpad-project/client-support-angular",
   "version": "1.7.0",
   "license": "Apache-2.0",
   "private": false,
   "peerDependencies": {
     "@angular/common": "^11.0.0",
     "@angular/core": "^11.0.0",
-    "@luigi-project/client": "^1.25.0",
-    "@luigi-project/testing-utilities": "^1.25.0"
+    "@applaunchpad-project/client": "^1.25.0",
+    "@applaunchpad-project/testing-utilities": "^1.25.0"
   },
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/SAP/luigi.git"
+    "url": "ssh://github.com/davidwl/applaunchpad.git"
   },
   "dependencies": {
     "tslib": "^2.0.0"

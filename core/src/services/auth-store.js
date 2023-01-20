@@ -1,10 +1,10 @@
-import { LuigiConfig } from '../core-api';
+import { AppLaunchpadConfig } from '../core-api';
 
 class AuthStoreSvcClass {
   constructor() {
     this._defaultStorage = 'localStorage';
-    this._authKey = 'luigi.auth';
-    this._newlyAuthorizedKey = 'luigi.newlyAuthorized';
+    this._authKey = 'applaunchpad.auth';
+    this._newlyAuthorizedKey = 'applaunchpad.newlyAuthorized';
     this._invalidStorageMsg =
       'Configuration Error: Invalid auth.storage value defined. Must be one of localStorage, sessionStorage or none.';
   }
@@ -15,7 +15,7 @@ class AuthStoreSvcClass {
 
   getStorageType() {
     if (!this._storageType) {
-      this._storageType = LuigiConfig.getConfigValue('auth.storage') || this._defaultStorage;
+      this._storageType = AppLaunchpadConfig.getConfigValue('auth.storage') || this._defaultStorage;
     }
     return this._storageType;
   }

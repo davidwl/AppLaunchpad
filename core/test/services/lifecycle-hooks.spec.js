@@ -4,7 +4,7 @@ const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
 import { LifecycleHooks } from '../../src/services/lifecycle-hooks';
-import { LuigiConfig, LuigiUX } from '../../src/core-api';
+import { AppLaunchpadConfig, AppLaunchpadUX } from '../../src/core-api';
 
 describe('LifecycleHooks', function() {
   this.retries(2);
@@ -12,37 +12,37 @@ describe('LifecycleHooks', function() {
 
   beforeEach(() => {
     clock = sinon.useFakeTimers();
-    sinon.stub(LuigiConfig, 'getConfigBooleanValue');
-    sinon.spy(LuigiUX, 'hideAppLoadingIndicator');
+    sinon.stub(AppLaunchpadConfig, 'getConfigBooleanValue');
+    sinon.spy(AppLaunchpadUX, 'hideAppLoadingIndicator');
   });
   afterEach(() => {
     sinon.restore();
     clock.restore();
   });
 
-  describe('luigiAfterInit', () => {
+  describe('applaunchpadAfterInit', () => {
     it('hideAutomatically set to true', () => {
       // given
-      LuigiConfig.getConfigBooleanValue.returns(true);
+      AppLaunchpadConfig.getConfigBooleanValue.returns(true);
 
       // when
-      LifecycleHooks.luigiAfterInit();
+      LifecycleHooks.applaunchpadAfterInit();
       clock.tick(1e3);
 
       // then
-      sinon.assert.called(LuigiUX.hideAppLoadingIndicator);
+      sinon.assert.called(AppLaunchpadUX.hideAppLoadingIndicator);
     });
 
     it('hideAutomatically set to false', () => {
       // given
-      LuigiConfig.getConfigBooleanValue.returns(false);
+      AppLaunchpadConfig.getConfigBooleanValue.returns(false);
 
       // when
-      LifecycleHooks.luigiAfterInit();
+      LifecycleHooks.applaunchpadAfterInit();
       clock.tick(1e3);
 
       // then
-      sinon.assert.notCalled(LuigiUX.hideAppLoadingIndicator);
+      sinon.assert.notCalled(AppLaunchpadUX.hideAppLoadingIndicator);
     });
   });
 });

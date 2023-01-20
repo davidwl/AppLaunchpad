@@ -104,11 +104,11 @@ class Helpers {
     return Object.prototype.toString.call(item) === '[object Object]';
   }
 
-  getLuigiCoreDomain() {
+  getAppLaunchpadCoreDomain() {
     return this.origin;
   }
 
-  setLuigiCoreDomain(origin) {
+  setAppLaunchpadCoreDomain(origin) {
     // protect against "null" string set by at least Chrome browser when file protocol used
     if (origin && origin !== 'null') {
       this.origin = origin;
@@ -116,20 +116,22 @@ class Helpers {
   }
 
   setTargetOrigin(origin) {
-    this.setLuigiCoreDomain(origin);
+    this.setAppLaunchpadCoreDomain(origin);
   }
 
-  sendPostMessageToLuigiCore(msg) {
+  sendPostMessageToAppLaunchpadCore(msg) {
     if (this.origin) {
       // protect against potential postMessage problems, since origin value may be set incorrectly
       try {
         window.parent.postMessage(msg, this.origin);
       } catch (error) {
-        console.warn('Unable to post message ' + msg + ' to Luigi Core from origin ' + this.origin + ': ' + error);
+        console.warn(
+          'Unable to post message ' + msg + ' to AppLaunchpad Core from origin ' + this.origin + ': ' + error
+        );
       }
     } else {
       console.warn(
-        'There is no target origin set. You can specify the target origin by calling LuigiClient.setTargetOrigin("targetorigin") in your micro frontend.'
+        'There is no target origin set. You can specify the target origin by calling AppLaunchpadClient.setTargetOrigin("targetorigin") in your micro frontend.'
       );
     }
   }

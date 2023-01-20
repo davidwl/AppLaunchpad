@@ -2,10 +2,10 @@
 import { navigation } from './navigation';
 import { routing } from './routing';
 import { settings } from './settings';
-import {globalSearch} from './globalSearch';
-import {communication} from './communication';
+import { globalSearch } from './globalSearch';
+import { communication } from './communication';
 
-Luigi.setConfig({
+AppLaunchpad.setConfig({
   // auth,
   navigation,
   routing,

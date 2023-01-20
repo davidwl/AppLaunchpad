@@ -7,7 +7,7 @@ describe('Header', function() {
     let clock;
     let component;
     const setHeaderSettings = headerSettings => {
-      window.Luigi.config = {
+      window.AppLaunchpad.config = {
         settings: {
           header: Object.assign({}, headerSettings)
         }
@@ -15,7 +15,7 @@ describe('Header', function() {
     };
 
     const addToConfig = addition => {
-      window.Luigi.config = { ...window.Luigi.config, ...addition };
+      window.AppLaunchpad.config = { ...window.AppLaunchpad.config, ...addition };
     };
 
     beforeEach(() => {
@@ -42,14 +42,14 @@ describe('Header', function() {
     });
 
     it('should not fail for undefined arguments', async () => {
-      window.Luigi.config = {};
+      window.AppLaunchpad.config = {};
       await headerService.processHeaderSettings(component);
     });
 
     it('should resolve title and subtitle', async () => {
       // given
       const headerSettings = {
-        title: 'Luigi Demo',
+        title: 'AppLaunchpad Demo',
         subTitle: 'good stuff'
       };
       setHeaderSettings(headerSettings);
@@ -275,7 +275,7 @@ describe('Header', function() {
   describe('updateTitle', () => {
     let component;
     const setHeaderSettings = headerSettings => {
-      window.Luigi.config = {
+      window.AppLaunchpad.config = {
         settings: {
           header: Object.assign({}, headerSettings)
         }
@@ -308,11 +308,11 @@ describe('Header', function() {
         subTitle: 'Title is not defined'
       };
       setHeaderSettings(headerSettings);
-      assert.equal(window.Luigi.config.settings.header.title, undefined);
+      assert.equal(window.AppLaunchpad.config.settings.header.title, undefined);
 
       document.title = '';
       component.set({
-        defaultTitle: window.Luigi.config.settings.header.title
+        defaultTitle: window.AppLaunchpad.config.settings.header.title
       });
 
       headerService.updateTitle(component);
@@ -329,7 +329,7 @@ describe('Header', function() {
       document.title = '';
 
       component.set({
-        defaultTitle: window.Luigi.config.settings.header.title
+        defaultTitle: window.AppLaunchpad.config.settings.header.title
       });
 
       headerService.updateTitle(component);
@@ -341,11 +341,11 @@ describe('Header', function() {
         title: 'SubTitle is not defined'
       };
       setHeaderSettings(headerSettings);
-      assert.equal(window.Luigi.config.settings.header.subTitle, undefined);
+      assert.equal(window.AppLaunchpad.config.settings.header.subTitle, undefined);
       document.title = '';
 
       component.set({
-        defaultTitle: window.Luigi.config.settings.header.title
+        defaultTitle: window.AppLaunchpad.config.settings.header.title
       });
 
       headerService.updateTitle(component);
@@ -353,10 +353,10 @@ describe('Header', function() {
     });
 
     it('update title and subTitle', () => {
-      assert.equal(window.Luigi.config.settings.header.subTitle, undefined);
+      assert.equal(window.AppLaunchpad.config.settings.header.subTitle, undefined);
 
       const headerSettings = {
-        title: 'Luigi with subTitle',
+        title: 'AppLaunchpad with subTitle',
         subTitle: 'here'
       };
       setHeaderSettings(headerSettings);
@@ -364,20 +364,20 @@ describe('Header', function() {
       document.title = '';
 
       component.set({
-        defaultTitle: window.Luigi.config.settings.header.title
+        defaultTitle: window.AppLaunchpad.config.settings.header.title
       });
       component.set({
-        defaultSubTitle: window.Luigi.config.settings.header.subTitle
+        defaultSubTitle: window.AppLaunchpad.config.settings.header.subTitle
       });
 
       headerService.updateTitle(component);
-      assert.equal(document.title, 'Luigi with subTitle');
-      assert.equal(window.Luigi.config.settings.header.subTitle, 'here');
+      assert.equal(document.title, 'AppLaunchpad with subTitle');
+      assert.equal(window.AppLaunchpad.config.settings.header.subTitle, 'here');
     });
 
     it('set appSwitcherItems, update title', () => {
       const headerSettings = {
-        title: 'Luigi',
+        title: 'AppLaunchpad',
         subTitle: 'one'
       };
       setHeaderSettings(headerSettings);
@@ -385,12 +385,12 @@ describe('Header', function() {
       document.title = '';
       const items = [
         {
-          title: 'Luigi One',
+          title: 'AppLaunchpad One',
           subTitle: 'project one',
           link: '/projects/pr1'
         },
         {
-          title: 'Luigi Two',
+          title: 'AppLaunchpad Two',
           subTitle: 'project two',
           link: '/projects/pr2'
         }
@@ -420,7 +420,7 @@ describe('Header', function() {
         pathData: pathData
       });
       headerService.updateTitle(component);
-      assert.equal(document.title, 'Luigi Two');
+      assert.equal(document.title, 'AppLaunchpad Two');
     });
   });
 });

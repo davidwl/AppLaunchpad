@@ -1,7 +1,7 @@
 <script>
   import { AuthLayerSvc } from './services';
   import { createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiAuth, LuigiConfig, LuigiUX } from './core-api';
+  import { AppLaunchpadAuth, AppLaunchpadConfig, AppLaunchpadUX } from './core-api';
   import {
     AuthHelpers,
     GenericHelpers,
@@ -10,7 +10,7 @@
     RoutingHelpers,
   } from './utilities/helpers';
   import { AuthStoreSvc, Routing } from './services';
-  import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
+  import { TOP_NAV_DEFAULTS } from './utilities/applaunchpad-config-defaults';
   import { KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
 
   const dispatch = createEventDispatcher();
@@ -36,7 +36,7 @@
   let initialsOfUser;
 
   onMount(async () => {
-    if (!LuigiAuth.isAuthorizationEnabled()) {
+    if (!AppLaunchpadAuth.isAuthorizationEnabled()) {
       isAuthorizationEnabled = false;
       setProfileUserData();
     } else {
@@ -81,21 +81,21 @@
       StateHelpers.doOnStoreChange(
         store,
         async () => {
-          const logoutItem = await LuigiConfig.getConfigValueAsync(
+          const logoutItem = await AppLaunchpadConfig.getConfigValueAsync(
             'navigation.profile.logout'
           );
           //check if the User Settings schema exist
-          const userSettingsConfig = await LuigiConfig.getConfigValueAsync(
+          const userSettingsConfig = await AppLaunchpadConfig.getConfigValueAsync(
             'userSettings'
           );
           const userSettings = userSettingsConfig
             ? userSettingsConfig
-            : await LuigiConfig.getConfigValueAsync('settings.userSettings');
+            : await AppLaunchpadConfig.getConfigValueAsync('settings.userSettings');
           hasUserSettings = Boolean(userSettings);
           //check if Settings dropdown is enabled for navigation in Shellbar
           const profileNavData = {
             items:
-              (await LuigiConfig.getConfigValueAsync(
+              (await AppLaunchpadConfig.getConfigValueAsync(
                 'navigation.profile.items'
               )) || [],
           };
@@ -132,7 +132,7 @@
   }
 
   export async function setProfileUserData() {
-    const uInfo = await LuigiConfig.getConfigValueAsync(
+    const uInfo = await AppLaunchpadConfig.getConfigValueAsync(
       'navigation.profile.staticUserInfoFn'
     );
     if (uInfo) {
@@ -172,7 +172,7 @@
   }
 
   export function onUserSettingsClick() {
-    LuigiUX.openUserSettings();
+    AppLaunchpadUX.openUserSettings();
     dispatch('toggleDropdownState');
   }
 
@@ -199,7 +199,7 @@
             aria-label="Username"
             id="username"
             class="lui-username fd-has-type-1"
-            data-testid="luigi-topnav-profile-username"
+            data-testid="applaunchpad-topnav-profile-username"
             >{userInfo.name ? userInfo.name : userInfo.email}</span
           >
         </li>
@@ -212,7 +212,7 @@
         >
           <a
             class="fd-menu__link"
-            data-testid="luigi-topnav-profile-item"
+            data-testid="applaunchpad-topnav-profile-item"
             href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
             on:click={(event) => {
               NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);

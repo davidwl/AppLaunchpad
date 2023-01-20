@@ -1,10 +1,10 @@
 import { NavigationHelpers } from '../../utilities/helpers';
-import { LuigiConfig } from '../../core-api';
+import { AppLaunchpadConfig } from '../../core-api';
 import { CSS_BREAKPOINTS } from '../../utilities/constants';
 
 class SemiCollapsibleNavigationClass {
   initial() {
-    this.responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
+    this.responsiveNavSetting = AppLaunchpadConfig.getConfigValue('settings.responsiveNavigation');
 
     const isResponsiveNavSemiCollapsibleOrFiori3 =
       this.responsiveNavSetting === 'semiCollapsible' || this.responsiveNavSetting === 'Fiori3';

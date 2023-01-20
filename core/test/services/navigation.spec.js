@@ -5,7 +5,7 @@ const sinon = require('sinon');
 import { Navigation } from '../../src/navigation/services/navigation';
 import { RoutingHelpers, GenericHelpers } from '../../src/utilities/helpers';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
-import { LuigiConfig } from '../../src/core-api';
+import { AppLaunchpadConfig } from '../../src/core-api';
 
 const sampleNavPromise = new Promise(function(resolve) {
   const lazyLoadedChildrenNodesProviderFn = () => {
@@ -79,7 +79,7 @@ describe('Navigation', function() {
   });
   afterEach(() => {
     // reset
-    LuigiConfig.config = {};
+    AppLaunchpadConfig.config = {};
     sinon.restore();
     NodeDataManagementStorage.deleteCache();
     sinon.reset();
@@ -188,7 +188,7 @@ describe('Navigation', function() {
     });
     it('uses navigationPermissionChecker and returns correct amount of children', async () => {
       //given
-      LuigiConfig.config = {
+      AppLaunchpadConfig.config = {
         navigation: {
           nodeAccessibilityResolver: (nodeToCheckPermissionFor, currentNode, currentContext) => {
             if (nodeToCheckPermissionFor.constraints) {
@@ -245,7 +245,7 @@ describe('Navigation', function() {
       assert.deepEqual(result, {});
     });
     it('should return node if pathSegment is not defined', () => {
-      const mockNode = { label: 'Luigi' };
+      const mockNode = { label: 'AppLaunchpad' };
       const result = Navigation.bindChildToParent(mockNode, nodeWithoutPathSegment);
       assert.deepEqual(result, mockNode);
     });
@@ -747,7 +747,7 @@ describe('Navigation', function() {
     it('extracts the data', async () => {
       sinon.stub(Navigation, 'getNavigationPath').returns('path-data');
       sinon.stub(RoutingHelpers, 'getLastNodeObject').returns('node-object');
-      sinon.stub(LuigiConfig, 'getConfigValueAsync').returns('navigation-nodes');
+      sinon.stub(AppLaunchpadConfig, 'getConfigValueAsync').returns('navigation-nodes');
 
       const expected = {
         nodeObject: 'node-object',
@@ -755,7 +755,7 @@ describe('Navigation', function() {
       };
       const actual = await Navigation.extractDataFromPath('path');
 
-      sinon.assert.calledWithExactly(LuigiConfig.getConfigValueAsync, 'navigation.nodes');
+      sinon.assert.calledWithExactly(AppLaunchpadConfig.getConfigValueAsync, 'navigation.nodes');
       sinon.assert.calledWithExactly(Navigation.getNavigationPath, 'navigation-nodes', 'path');
       sinon.assert.calledWithExactly(RoutingHelpers.getLastNodeObject, 'path-data');
       expect(actual).to.eql(expected);
@@ -770,7 +770,7 @@ describe('Navigation', function() {
 
     it('when nodeChangeHook is defined', () => {
       console.log = sinon.spy();
-      LuigiConfig.config = {
+      AppLaunchpadConfig.config = {
         navigation: {
           nodeChangeHook: () => {
             console.log('Tets!');
@@ -781,13 +781,13 @@ describe('Navigation', function() {
       sinon.assert.calledOnce(console.log);
     });
     it('when nodeChangeHook is not defined', () => {
-      sinon.stub(LuigiConfig, 'getConfigValue');
-      LuigiConfig.config = {
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue');
+      AppLaunchpadConfig.config = {
         navigation: {}
       };
       Navigation.onNodeChange();
-      sinon.assert.calledWithExactly(LuigiConfig.getConfigValue, 'navigation.nodeChangeHook');
-      const result = LuigiConfig.getConfigValue('navigation.nodeChangeHook');
+      sinon.assert.calledWithExactly(AppLaunchpadConfig.getConfigValue, 'navigation.nodeChangeHook');
+      const result = AppLaunchpadConfig.getConfigValue('navigation.nodeChangeHook');
       assert.equal(result, undefined);
     });
   });
@@ -867,24 +867,24 @@ describe('Navigation', function() {
   });
   describe('buildVirtualViewUrl', () => {
     it('returns same if virtualTree is not defined', () => {
-      const given = 'https://mf.luigi-project.io';
+      const given = 'https://mf.applaunchpad-project.io';
       assert.equal(Navigation.buildVirtualViewUrl(given), given);
     });
     it('returns valid substituted string without proper pathParams', () => {
       const mock = {
-        url: 'https://mf.luigi-project.io#!',
+        url: 'https://mf.applaunchpad-project.io#!',
         pathParams: {
           otherParam: 'foo'
         },
         index: 1
       };
-      const expected = 'https://mf.luigi-project.io#!/:virtualSegment_1/';
+      const expected = 'https://mf.applaunchpad-project.io#!/:virtualSegment_1/';
 
       assert.equal(Navigation.buildVirtualViewUrl(mock.url, mock.pathParams, mock.index), expected);
     });
     it('returns valid substituted string with pathParams', () => {
       const mock = {
-        url: 'https://mf.luigi-project.io#!/x',
+        url: 'https://mf.applaunchpad-project.io#!/x',
         pathParams: {
           otherParam: 'foo',
           virtualSegment_1: 'one',
@@ -894,7 +894,7 @@ describe('Navigation', function() {
       };
 
       // trailing slash is expected, it gets removed later by trimTrailingSlash() before setting viewUrl
-      const expected = 'https://mf.luigi-project.io#!/x/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/';
+      const expected = 'https://mf.applaunchpad-project.io#!/x/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/';
 
       assert.equal(Navigation.buildVirtualViewUrl(mock.url, mock.pathParams, mock.index), expected);
     });
@@ -902,7 +902,7 @@ describe('Navigation', function() {
   describe('buildVirtualTree', () => {
     it('unchanged node if not a virtual tree root', () => {
       const given = {
-        label: 'Luigi'
+        label: 'AppLaunchpad'
       };
       const expected = Object.assign({}, given);
 
@@ -912,7 +912,7 @@ describe('Navigation', function() {
     });
     it('unchanged if directly accessing a node which is defined as virtual tree root', () => {
       const mockNode = {
-        label: 'Luigi',
+        label: 'AppLaunchpad',
         virtualTree: true,
         viewUrl: 'foo'
       };
@@ -926,9 +926,9 @@ describe('Navigation', function() {
     });
     it('with first virtual tree segment', () => {
       const mockNode = {
-        label: 'Luigi',
+        label: 'AppLaunchpad',
         virtualTree: true,
-        viewUrl: 'http://mf.luigi-project.io'
+        viewUrl: 'http://mf.applaunchpad-project.io'
       };
       const mockNodeNames = ['foo'];
 
@@ -940,8 +940,8 @@ describe('Navigation', function() {
             _virtualPathIndex: 1,
             label: ':virtualSegment_1',
             pathSegment: ':virtualSegment_1',
-            viewUrl: 'http://mf.luigi-project.io/:virtualSegment_1',
-            _virtualViewUrl: 'http://mf.luigi-project.io'
+            viewUrl: 'http://mf.applaunchpad-project.io/:virtualSegment_1',
+            _virtualViewUrl: 'http://mf.applaunchpad-project.io'
           }
         ]
       });
@@ -956,8 +956,8 @@ describe('Navigation', function() {
         _virtualPathIndex: 3,
         label: ':virtualSegment_3',
         pathSegment: ':virtualSegment_3',
-        viewUrl: 'http://mf.luigi-project.io/:virtualSegment_2/:virtualSegment_3',
-        _virtualViewUrl: 'http://mf.luigi-project.io'
+        viewUrl: 'http://mf.applaunchpad-project.io/:virtualSegment_2/:virtualSegment_3',
+        _virtualViewUrl: 'http://mf.applaunchpad-project.io'
       };
       const mockNodeNames = ['foo'];
       const pathParams = {
@@ -975,8 +975,8 @@ describe('Navigation', function() {
             label: ':virtualSegment_4',
             pathSegment: ':virtualSegment_4',
             viewUrl:
-              'http://mf.luigi-project.io/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/:virtualSegment_4',
-            _virtualViewUrl: 'http://mf.luigi-project.io'
+              'http://mf.applaunchpad-project.io/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/:virtualSegment_4',
+            _virtualViewUrl: 'http://mf.applaunchpad-project.io'
           }
         ]
       });

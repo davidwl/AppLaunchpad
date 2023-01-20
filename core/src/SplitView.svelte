@@ -7,7 +7,7 @@
     createEventDispatcher,
     getContext,
   } from 'svelte';
-  import { LuigiElements } from './core-api';
+  import { AppLaunchpadElements } from './core-api';
   import { SplitViewSvc } from './services';
   import {
     EventListenerHelpers,
@@ -131,16 +131,16 @@
     // actions, like collapse, expand, setSize as well as register
     // event handlers: onCollapse, onExpand, onResize
 
-    if ('luigi.navigation.splitview.close' === e.data.msg) {
+    if ('applaunchpad.navigation.splitview.close' === e.data.msg) {
       SplitViewSvc.close(getComponentWrapper());
     }
-    if ('luigi.navigation.splitview.collapse' === e.data.msg) {
+    if ('applaunchpad.navigation.splitview.collapse' === e.data.msg) {
       collapse();
     }
-    if ('luigi.navigation.splitview.expand' === e.data.msg) {
+    if ('applaunchpad.navigation.splitview.expand' === e.data.msg) {
       expand();
     }
-    if ('luigi.navigation.splitview.resize' === e.data.msg) {
+    if ('applaunchpad.navigation.splitview.resize' === e.data.msg) {
       const percentBottom = parseInt(e.data.data);
       SplitViewSvc.calculateAndSetSplitViewValues(
         percentBottom,
@@ -195,7 +195,7 @@
     }
   }
   export function updateSizes() {
-    const shellbarHeight = LuigiElements.getShellbar().clientHeight;
+    const shellbarHeight = AppLaunchpadElements.getShellbar().clientHeight;
     SplitViewSvc.internalValues.innerHeight = GenericHelpers.getInnerHeight();
     SplitViewSvc.internalValues.rightContentHeight =
       SplitViewSvc.internalValues.innerHeight - shellbarHeight;
@@ -345,7 +345,7 @@
     top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
   }
   :global(.splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
-    left: var(--luigi__left-sidenav--width);
+    left: var(--applaunchpad__left-sidenav--width);
   }
 
   :global(.lui-collapsed.splitViewContainer) {
@@ -366,7 +366,7 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    left: var(--luigi__left-sidenav--width);
+    left: var(--applaunchpad__left-sidenav--width);
     top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
     height: 8px;
     cursor: row-resize;
@@ -415,7 +415,7 @@
   }
 
   :global(.lui-breadcrumb) :global(#splitViewDraggerBackdrop) {
-    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+    top: calc(#{$topNavHeight} + var(--applaunchpad__breadcrumb--height));
   }
 
   :global(#splitViewDraggerBackdrop) {
@@ -424,7 +424,7 @@
     top: $topNavHeight;
     right: 0;
     bottom: 0;
-    left: var(--luigi__left-sidenav--width);
+    left: var(--applaunchpad__left-sidenav--width);
     display: none;
   }
 
@@ -459,7 +459,7 @@
   @media (max-width: ($desktopMinWidth - 1)) {
     :global(body.lui-simpleSlideInNav) {
       :global(.fd-app__sidebar) {
-        left: calc(var(--luigi__left-sidenav--width) * -1);
+        left: calc(var(--applaunchpad__left-sidenav--width) * -1);
       }
       :global(#splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
         left: 0;

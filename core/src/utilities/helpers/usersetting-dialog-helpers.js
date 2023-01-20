@@ -1,12 +1,12 @@
 import { GenericHelpers, RoutingHelpers, IframeHelpers } from './';
-import { LuigiConfig } from '../../core-api';
+import { AppLaunchpadConfig } from '../../core-api';
 class UserSettingsHelperClass {
   constructor() {}
 
   processUserSettingGroups() {
     const userSettingGroups = [];
-    const userSettingGroupsFromConfig = LuigiConfig.getConfigValue('userSettings.userSettingGroups');
-    const userSettingGroupsFromOldConfig = LuigiConfig.getConfigValue('settings.userSettings.userSettingGroups');
+    const userSettingGroupsFromConfig = AppLaunchpadConfig.getConfigValue('userSettings.userSettingGroups');
+    const userSettingGroupsFromOldConfig = AppLaunchpadConfig.getConfigValue('settings.userSettings.userSettingGroups');
     //regarding backwards compatibility
     const userSettingsSchema = userSettingGroupsFromConfig
       ? userSettingGroupsFromConfig

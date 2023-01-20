@@ -3,7 +3,12 @@ const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 import { GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
-import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../../src/core-api';
+import {
+  AppLaunchpadConfig,
+  AppLaunchpadFeatureToggles,
+  AppLaunchpadI18N,
+  AppLaunchpadRouting
+} from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
 import { config } from '../../../src/core-api/config';
 
@@ -83,8 +88,8 @@ describe('Routing-helpers', () => {
         setItem: sinon.stub()
       };
       sinon.stub(config, 'configChanged');
-      sinon.stub(LuigiI18N, '_notifyLocaleChange');
-      LuigiI18N.setCurrentLocale('en');
+      sinon.stub(AppLaunchpadI18N, '_notifyLocaleChange');
+      AppLaunchpadI18N.setCurrentLocale('en');
     });
     afterEach(() => {
       sinon.restore();
@@ -129,15 +134,15 @@ describe('Routing-helpers', () => {
       sinon.restore();
     });
     it('substitutes search query parameter', () => {
-      sinon.stub(LuigiRouting, 'getSearchParams').returns({ luigi: 'rocks' });
-      const viewUrl = '/microfrontend.html?luigi={routing.queryParams.luigi}';
-      const expected = '/microfrontend.html?luigi=rocks';
+      sinon.stub(AppLaunchpadRouting, 'getSearchParams').returns({ applaunchpad: 'rocks' });
+      const viewUrl = '/microfrontend.html?applaunchpad={routing.queryParams.applaunchpad}';
+      const expected = '/microfrontend.html?applaunchpad=rocks';
 
       expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
     });
     it('substitutes search query parameter', () => {
-      sinon.stub(LuigiRouting, 'getSearchParams').returns({ mario: 'rocks' });
-      const viewUrl = '/microfrontend.html?luigi={routing.queryParams.luigi}';
+      sinon.stub(AppLaunchpadRouting, 'getSearchParams').returns({ mario: 'rocks' });
+      const viewUrl = '/microfrontend.html?applaunchpad={routing.queryParams.applaunchpad}';
       const expected = '/microfrontend.html';
 
       expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
@@ -396,7 +401,7 @@ describe('Routing-helpers', () => {
         getItem: sinon.stub(),
         setItem: sinon.stub()
       };
-      sinon.stub(LuigiConfig, 'getConfigBooleanValue');
+      sinon.stub(AppLaunchpadConfig, 'getConfigBooleanValue');
       sinon.stub(Routing, 'buildFromRelativePath');
       sinon.stub(RoutingHelpers, 'buildRoute');
       sinon.stub(GenericHelpers, 'replaceVars');
@@ -406,10 +411,10 @@ describe('Routing-helpers', () => {
     });
     it('external link with context templating', () => {
       const node = {
-        externalLink: { url: 'https://luigi.io?foo={context.someValue}', sameWindow: true },
+        externalLink: { url: 'https://applaunchpad.io?foo={context.someValue}', sameWindow: true },
         context: { someValue: 'bar' }
       };
-      const expected = 'https://luigi.io?foo=bar';
+      const expected = 'https://applaunchpad.io?foo=bar';
       GenericHelpers.replaceVars.returns(expected);
       assert.equal(RoutingHelpers.getRouteLink(node, {}), expected);
     });
@@ -457,7 +462,7 @@ describe('Routing-helpers', () => {
       };
       sinon.stub(RoutingHelpers, 'getRouteLink');
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('routing.useHashRouting')
         .returns(false);
     });
@@ -465,39 +470,39 @@ describe('Routing-helpers', () => {
       sinon.restore();
     });
     it('get node href', () => {
-      const url = 'https://luigi-project.io';
+      const url = 'https://applaunchpad-project.io';
       const node = {
         externalLink: { url },
         link: 'something',
         pathSegment: 'something-else'
       };
       RoutingHelpers.getRouteLink.returns({ url });
-      expect(RoutingHelpers.calculateNodeHref(node, {})).to.equal('https://luigi-project.io');
+      expect(RoutingHelpers.calculateNodeHref(node, {})).to.equal('https://applaunchpad-project.io');
     });
   });
   describe('getNodeHref', () => {
     beforeEach(() => {
-      sinon.stub(LuigiConfig, 'getConfigBooleanValue');
+      sinon.stub(AppLaunchpadConfig, 'getConfigBooleanValue');
       sinon.stub(RoutingHelpers, 'getRouteLink');
     });
     afterEach(() => {
       sinon.restore();
     });
     it('returns undefined on falsy config value', () => {
-      LuigiConfig.getConfigBooleanValue.returns(false);
+      AppLaunchpadConfig.getConfigBooleanValue.returns(false);
 
       expect(RoutingHelpers.getNodeHref({}, {})).to.equal(undefined);
       sinon.assert.notCalled(RoutingHelpers.getRouteLink);
-      sinon.assert.calledWith(LuigiConfig.getConfigBooleanValue, 'navigation.addNavHrefs');
+      sinon.assert.calledWith(AppLaunchpadConfig.getConfigBooleanValue, 'navigation.addNavHrefs');
     });
     it('returns valid link on url object', () => {
-      LuigiConfig.getConfigBooleanValue.returns(true);
+      AppLaunchpadConfig.getConfigBooleanValue.returns(true);
       RoutingHelpers.getRouteLink.returns({ url: '/test' });
       expect(RoutingHelpers.getNodeHref({ pathSegment: 'test' }, {})).to.equal('/test');
       sinon.assert.calledOnce(RoutingHelpers.getRouteLink);
     });
     it('returns valid link on string received', () => {
-      LuigiConfig.getConfigBooleanValue.returns(true);
+      AppLaunchpadConfig.getConfigBooleanValue.returns(true);
       RoutingHelpers.getRouteLink.returns('/test');
       expect(RoutingHelpers.getNodeHref({ pathSegment: 'test' }, {})).to.equal('/test');
       sinon.assert.calledOnce(RoutingHelpers.getRouteLink);
@@ -632,7 +637,7 @@ describe('Routing-helpers', () => {
   });
   describe('set feature toggle from url', () => {
     beforeEach(() => {
-      sinon.stub(LuigiFeatureToggles, 'setFeatureToggle');
+      sinon.stub(AppLaunchpadFeatureToggles, 'setFeatureToggle');
     });
     afterEach(() => {
       sinon.restore();
@@ -640,17 +645,17 @@ describe('Routing-helpers', () => {
     let mockPath = '/projects/pr1/settings?ft=test';
     it('setFeatureToggle will be called', () => {
       RoutingHelpers.setFeatureToggles('ft', mockPath);
-      sinon.assert.calledWith(LuigiFeatureToggles.setFeatureToggle, 'test');
+      sinon.assert.calledWith(AppLaunchpadFeatureToggles.setFeatureToggle, 'test');
     });
     it('setFeatureToggle will be called with two featureToggles', () => {
       mockPath = '/projects/pr1/settings?ft=test,test2';
       RoutingHelpers.setFeatureToggles('ft', mockPath);
-      sinon.assert.calledWith(LuigiFeatureToggles.setFeatureToggle, 'test');
-      sinon.assert.calledWith(LuigiFeatureToggles.setFeatureToggle, 'test2');
+      sinon.assert.calledWith(AppLaunchpadFeatureToggles.setFeatureToggle, 'test');
+      sinon.assert.calledWith(AppLaunchpadFeatureToggles.setFeatureToggle, 'test2');
     });
     it("setFeatureToggle won't be called with wrong queryParam name", () => {
       RoutingHelpers.setFeatureToggles('fft', mockPath);
-      sinon.assert.notCalled(LuigiFeatureToggles.setFeatureToggle);
+      sinon.assert.notCalled(AppLaunchpadFeatureToggles.setFeatureToggle);
     });
   });
 
@@ -660,7 +665,7 @@ describe('Routing-helpers', () => {
 
   describe('getModalViewParamName', () => {
     beforeEach(() => {
-      sinon.stub(LuigiConfig, 'getConfigValue');
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue');
     });
     afterEach(() => {
       sinon.restore();
@@ -669,7 +674,7 @@ describe('Routing-helpers', () => {
       assert.equal(RoutingHelpers.getModalViewParamName(), 'modal');
     });
     it('without config value', () => {
-      LuigiConfig.getConfigValue.returns('custom');
+      AppLaunchpadConfig.getConfigValue.returns('custom');
       assert.equal(RoutingHelpers.getModalViewParamName(), 'custom');
     });
   });
@@ -735,15 +740,15 @@ describe('Routing-helpers', () => {
       currentNode = {
         clientPermissions: {
           urlParameters: {
-            luigi: {
+            applaunchpad: {
               read: true,
               write: true
             }
           }
         }
       };
-      sinon.stub(LuigiRouting, 'getSearchParams').returns({ luigi: 'rocks', test: 'tets' });
-      LuigiRouting.addSearchParams = sinon.spy();
+      sinon.stub(AppLaunchpadRouting, 'getSearchParams').returns({ applaunchpad: 'rocks', test: 'tets' });
+      AppLaunchpadRouting.addSearchParams = sinon.spy();
       console.warn = sinon.spy();
     });
     afterEach(() => {
@@ -751,20 +756,20 @@ describe('Routing-helpers', () => {
       sinon.reset();
     });
     it('Client can read allowed search param', () => {
-      assert.deepEqual(RoutingHelpers.prepareSearchParamsForClient(currentNode), { luigi: 'rocks' });
+      assert.deepEqual(RoutingHelpers.prepareSearchParamsForClient(currentNode), { applaunchpad: 'rocks' });
     });
     it('Client can write allowed search params', () => {
-      RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
-      sinon.assert.calledWith(LuigiRouting.addSearchParams, { luigi: 'rocks' });
+      RoutingHelpers.addSearchParamsFromClient(currentNode, { applaunchpad: 'rocks', test: 'tets' });
+      sinon.assert.calledWith(AppLaunchpadRouting.addSearchParams, { applaunchpad: 'rocks' });
     });
-    it('Client can not read luigi url parameter', () => {
-      currentNode.clientPermissions.urlParameters.luigi.read = false;
+    it('Client can not read applaunchpad url parameter', () => {
+      currentNode.clientPermissions.urlParameters.applaunchpad.read = false;
       assert.deepEqual(RoutingHelpers.prepareSearchParamsForClient(currentNode), {});
     });
-    it('Client can not write luigi url parameter', () => {
-      currentNode.clientPermissions.urlParameters.luigi.write = false;
-      RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
-      sinon.assert.calledWith(console.warn, 'No permission to add the search param "luigi" to the url');
+    it('Client can not write applaunchpad url parameter', () => {
+      currentNode.clientPermissions.urlParameters.applaunchpad.write = false;
+      RoutingHelpers.addSearchParamsFromClient(currentNode, { applaunchpad: 'rocks', test: 'tets' });
+      sinon.assert.calledWith(console.warn, 'No permission to add the search param "applaunchpad" to the url');
     });
     it('Client can only write specific url parameter', () => {
       currentNode.clientPermissions.urlParameters = {
@@ -772,14 +777,14 @@ describe('Routing-helpers', () => {
           write: true,
           read: true
         },
-        luigi: {
+        applaunchpad: {
           write: false,
           read: false
         }
       };
-      RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
-      sinon.assert.calledWith(LuigiRouting.addSearchParams, { test: 'tets' });
-      sinon.assert.calledWith(console.warn, 'No permission to add the search param "luigi" to the url');
+      RoutingHelpers.addSearchParamsFromClient(currentNode, { applaunchpad: 'rocks', test: 'tets' });
+      sinon.assert.calledWith(AppLaunchpadRouting.addSearchParams, { test: 'tets' });
+      sinon.assert.calledWith(console.warn, 'No permission to add the search param "applaunchpad" to the url');
     });
   });
 
@@ -832,7 +837,7 @@ describe('Routing-helpers', () => {
     it('with custom pageNotFoundHandler defined redirectTo path', async () => {
       const customRedirect = 'somecustompath';
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('routing.pageNotFoundHandler')
         .returns(() => {
           return { redirectTo: customRedirect };
@@ -845,7 +850,7 @@ describe('Routing-helpers', () => {
       const customKeepURL = true;
       const somePath = 'somePath';
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('routing.pageNotFoundHandler')
         .returns(() => {
           return {
@@ -865,7 +870,7 @@ describe('Routing-helpers', () => {
 
     it('with custom pageNotFoundHandler not defined', async () => {
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('routing.pageNotFoundHandler')
         .returns();
       const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath');
@@ -874,7 +879,7 @@ describe('Routing-helpers', () => {
 
     it('with custom pageNotFoundHandler not a function', async () => {
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('routing.pageNotFoundHandler')
         .returns({ thisObject: 'should be function instead' });
       const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath').path;
@@ -889,7 +894,7 @@ describe('Routing-helpers', () => {
 
     beforeEach(() => {
       console.warn = sinon.spy();
-      sinon.stub(LuigiI18N, 'getTranslation');
+      sinon.stub(AppLaunchpadI18N, 'getTranslation');
       sinon.stub(RoutingHelpers, 'getPageNotFoundRedirectResult');
       sinon.stub(RoutingHelpers, 'showRouteNotFoundAlert');
       sinon.stub(component, 'showAlert');
@@ -917,8 +922,8 @@ describe('Routing-helpers', () => {
 
     it('with custom pageNotFoundHandler as not defined', async () => {
       const path = 'notFoundPath';
-      LuigiI18N.getTranslation
-        .withArgs('luigi.requestedRouteNotFound', { route: path })
+      AppLaunchpadI18N.getTranslation
+        .withArgs('applaunchpad.requestedRouteNotFound', { route: path })
         .returns('Could not find the requested route');
       // set pageNotFoundHandler as undefined with stub
       RoutingHelpers.getPageNotFoundRedirectResult.returns({});
@@ -961,7 +966,7 @@ describe('Routing-helpers', () => {
   describe('modifySearchParams', () => {
     beforeEach(() => {
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('routing.useHashRouting')
         .returns(false);
     });
@@ -970,13 +975,13 @@ describe('Routing-helpers', () => {
     });
     it('modifySearchParams', () => {
       const searchParams = new URLSearchParams('mario=rocks');
-      RoutingHelpers.modifySearchParams({ test: 'tets', luigi: 'rocks', mario: undefined }, searchParams);
-      assert.equal(searchParams.toString(), 'test=tets&luigi=rocks');
+      RoutingHelpers.modifySearchParams({ test: 'tets', applaunchpad: 'rocks', mario: undefined }, searchParams);
+      assert.equal(searchParams.toString(), 'test=tets&applaunchpad=rocks');
     });
     it('modifySearchParams with paramPrefix', () => {
       const searchParams = new URLSearchParams('~mario=rocks');
-      RoutingHelpers.modifySearchParams({ test: 'tets', luigi: 'rocks' }, searchParams, '~');
-      assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=tets&%7Eluigi=rocks');
+      RoutingHelpers.modifySearchParams({ test: 'tets', applaunchpad: 'rocks' }, searchParams, '~');
+      assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=tets&%7Eapplaunchpad=rocks');
     });
   });
 

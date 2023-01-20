@@ -1,5 +1,5 @@
 import { GenericHelpers } from '../../src/utilities/helpers';
-import { LuigiConfig } from '../../src/core-api';
+import { AppLaunchpadConfig } from '../../src/core-api';
 
 const chai = require('chai');
 const assert = chai.assert;
@@ -42,11 +42,7 @@ describe('AuthStore', () => {
         // ERROR opaque origins
         AuthStoreSvc._setStore(mockKey, mockData);
 
-        sinon.assert.calledWithExactly(
-          global.localStorage.setItem,
-          mockKey,
-          JSON.stringify(mockData)
-        );
+        sinon.assert.calledWithExactly(global.localStorage.setItem, mockKey, JSON.stringify(mockData));
       });
       xit('sessionStorage: stores a value in sessionStorage', () => {
         // ERROR opaque origins
@@ -107,34 +103,34 @@ describe('AuthStore', () => {
   describe('Methods', () => {
     describe('getStorageKey', () => {
       it('retrieves the internal key', () => {
-        assert.equal(AuthStoreSvc.getStorageKey(), 'luigi.auth');
+        assert.equal(AuthStoreSvc.getStorageKey(), 'applaunchpad.auth');
       });
     });
     describe('getStorageType', () => {
       beforeEach(() => {
         AuthStoreSvc._storageType = undefined;
-        sinon.stub(LuigiConfig, 'getConfigValue');
+        sinon.stub(AppLaunchpadConfig, 'getConfigValue');
       });
       it('no config', () => {
         assert.equal(AuthStoreSvc.getStorageType(), 'localStorage');
-        sinon.assert.calledOnce(LuigiConfig.getConfigValue);
+        sinon.assert.calledOnce(AppLaunchpadConfig.getConfigValue);
       });
       it('config defined', () => {
-        LuigiConfig.getConfigValue.returns('sessionStorage');
+        AppLaunchpadConfig.getConfigValue.returns('sessionStorage');
         assert.equal(AuthStoreSvc.getStorageType(), 'sessionStorage');
-        sinon.assert.calledOnce(LuigiConfig.getConfigValue);
+        sinon.assert.calledOnce(AppLaunchpadConfig.getConfigValue);
       });
       it('subsequent calls with cached config value', () => {
         AuthStoreSvc._storageType = 'localStorage';
         assert.equal(AuthStoreSvc.getStorageType(), 'localStorage');
         assert.equal(AuthStoreSvc.getStorageType(), 'localStorage');
-        sinon.assert.notCalled(LuigiConfig.getConfigValue);
+        sinon.assert.notCalled(AppLaunchpadConfig.getConfigValue);
       });
     });
     describe('storageKey and -type based methods', () => {
       beforeEach(() => {
         // sinon.stub(AuthStoreSvc, '_setStore'); // WHY does it not work if this is defined here
-        sinon.stub(AuthStoreSvc, 'getStorageKey').returns('luigi.auth');
+        sinon.stub(AuthStoreSvc, 'getStorageKey').returns('applaunchpad.auth');
         sinon.stub(AuthStoreSvc, 'getStorageType').returns('localStorage');
       });
       afterEach(() => {
@@ -157,11 +153,7 @@ describe('AuthStore', () => {
 
         AuthStoreSvc.setAuthData(mockData);
 
-        sinon.assert.calledWithExactly(
-          AuthStoreSvc._setStore,
-          'luigi.auth',
-          mockData
-        );
+        sinon.assert.calledWithExactly(AuthStoreSvc._setStore, 'applaunchpad.auth', mockData);
         sinon.restore();
       });
       describe('removeAuthData', () => {
@@ -169,11 +161,7 @@ describe('AuthStore', () => {
 
         AuthStoreSvc.removeAuthData();
 
-        sinon.assert.calledWithExactly(
-          AuthStoreSvc._setStore,
-          'luigi.auth',
-          undefined
-        );
+        sinon.assert.calledWithExactly(AuthStoreSvc._setStore, 'applaunchpad.auth', undefined);
         sinon.restore();
       });
       describe('isNewlyAuthorized', () => {
@@ -182,10 +170,7 @@ describe('AuthStore', () => {
 
           const result = AuthStoreSvc.isNewlyAuthorized();
 
-          sinon.assert.alwaysCalledWithExactly(
-            AuthStoreSvc._getStore,
-            'luigi.newlyAuthorized'
-          );
+          sinon.assert.alwaysCalledWithExactly(AuthStoreSvc._getStore, 'applaunchpad.newlyAuthorized');
           assert.isFalse(result);
         });
         it('gets true from defined value', () => {
@@ -193,10 +178,7 @@ describe('AuthStore', () => {
 
           const result = AuthStoreSvc.isNewlyAuthorized();
 
-          sinon.assert.alwaysCalledWithExactly(
-            AuthStoreSvc._getStore,
-            'luigi.newlyAuthorized'
-          );
+          sinon.assert.alwaysCalledWithExactly(AuthStoreSvc._getStore, 'applaunchpad.newlyAuthorized');
           assert.isTrue(result);
         });
       });
@@ -205,11 +187,7 @@ describe('AuthStore', () => {
 
         AuthStoreSvc.setNewlyAuthorized();
 
-        sinon.assert.alwaysCalledWithExactly(
-          AuthStoreSvc._setStore,
-          'luigi.newlyAuthorized',
-          true
-        );
+        sinon.assert.alwaysCalledWithExactly(AuthStoreSvc._setStore, 'applaunchpad.newlyAuthorized', true);
         sinon.restore();
       });
       describe('removeNewlyAuthorized', () => {
@@ -217,11 +195,7 @@ describe('AuthStore', () => {
 
         AuthStoreSvc.removeNewlyAuthorized();
 
-        sinon.assert.alwaysCalledWithExactly(
-          AuthStoreSvc._setStore,
-          'luigi.newlyAuthorized',
-          undefined
-        );
+        sinon.assert.alwaysCalledWithExactly(AuthStoreSvc._setStore, 'applaunchpad.newlyAuthorized', undefined);
         sinon.restore();
       });
     });

@@ -30,9 +30,9 @@ class Navigation {
     defaultChildNode: 'docs',
     children: [
       {
-        label: 'About Luigi',
+        label: 'About AppLaunchpad',
         externalLink: {
-          url: 'https://luigi-project.io/about',
+          url: 'https://applaunchpad-project.io/about',
           sameWindow: true
         }
       },
@@ -47,28 +47,28 @@ class Navigation {
       {
         label: 'Blog',
         externalLink: {
-          url: 'https://luigi-project.io/blog',
+          url: 'https://applaunchpad-project.io/blog',
           sameWindow: true
         }
       },
       {
         label: 'Twitter',
         externalLink: {
-          url: 'https://twitter.com/luigiprojectio'
+          url: 'https://twitter.com/applaunchpadprojectio'
         },
         icon: 'twitter'
       },
       {
         label: 'Slack',
         externalLink: {
-          url: 'https://slack.luigi-project.io'
+          url: 'https://slack.applaunchpad-project.io'
         },
         icon: 'slack'
       },
       {
         label: 'Github',
         externalLink: {
-          url: 'https://github.com/SAP/luigi'
+          url: 'https://github.com/davidwl/applaunchpad'
         },
         icon: 'github'
       }
@@ -92,9 +92,9 @@ class Navigation {
   getProfileItems = () => {
     const items = [
       {
-        label: 'Luigi in Github',
+        label: 'AppLaunchpad in Github',
         externalLink: {
-          url: 'https://github.com/SAP/luigi',
+          url: 'https://github.com/davidwl/applaunchpad',
           sameWindow: false
         }
       }

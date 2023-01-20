@@ -5,8 +5,8 @@ const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 
-import { LuigiI18N } from '../../src/core-api';
-import { LuigiConfig } from '../../src/core-api';
+import { AppLaunchpadI18N } from '../../src/core-api';
+import { AppLaunchpadConfig } from '../../src/core-api';
 
 describe('I18N', function() {
   this.retries(2);
@@ -24,46 +24,37 @@ describe('I18N', function() {
 
   describe('current locale', () => {
     it('should return default locale', () => {
-      const locale = LuigiI18N.getCurrentLocale();
+      const locale = AppLaunchpadI18N.getCurrentLocale();
       assert.equal(locale, 'en');
     });
 
     it('should return previously set locale', () => {
       global.sessionStorage.getItem.returns('mock-locale');
-      const locale = LuigiI18N.getCurrentLocale();
+      const locale = AppLaunchpadI18N.getCurrentLocale();
       assert.equal(locale, 'mock-locale');
     });
 
     it('sets locale', () => {
-      sinon.stub(LuigiI18N, '_notifyLocaleChange');
-      LuigiI18N.setCurrentLocale('de');
-      sinon.assert.calledWithExactly(
-        global.sessionStorage.setItem,
-        'luigi.currentLocale',
-        'de'
-      );
-      sinon.assert.calledWithExactly(LuigiI18N._notifyLocaleChange, 'de');
+      sinon.stub(AppLaunchpadI18N, '_notifyLocaleChange');
+      AppLaunchpadI18N.setCurrentLocale('de');
+      sinon.assert.calledWithExactly(global.sessionStorage.setItem, 'applaunchpad.currentLocale', 'de');
+      sinon.assert.calledWithExactly(AppLaunchpadI18N._notifyLocaleChange, 'de');
     });
 
     it('should not set empty locale', () => {
-      sinon.stub(LuigiI18N, '_notifyLocaleChange');
-      LuigiI18N.setCurrentLocale('');
+      sinon.stub(AppLaunchpadI18N, '_notifyLocaleChange');
+      AppLaunchpadI18N.setCurrentLocale('');
       sinon.assert.notCalled(global.sessionStorage.setItem);
-      sinon.assert.notCalled(LuigiI18N._notifyLocaleChange);
+      sinon.assert.notCalled(AppLaunchpadI18N._notifyLocaleChange);
     });
   });
 
   describe('current locale listeners', () => {
     it('does not add listener when it is not a function', () => {
       sinon.stub(GenericHelpers, 'isFunction').returns(false);
-      const listenerId = LuigiI18N.addCurrentLocaleChangeListener(
-        'mock-listener'
-      );
-      sinon.assert.calledWithExactly(
-        GenericHelpers.isFunction,
-        'mock-listener'
-      );
-      assert.equal(Object.getOwnPropertyNames(LuigiI18N.listeners).length, 0);
+      const listenerId = AppLaunchpadI18N.addCurrentLocaleChangeListener('mock-listener');
+      sinon.assert.calledWithExactly(GenericHelpers.isFunction, 'mock-listener');
+      assert.equal(Object.getOwnPropertyNames(AppLaunchpadI18N.listeners).length, 0);
       assert.equal(listenerId, undefined);
     });
 
@@ -71,36 +62,36 @@ describe('I18N', function() {
       sinon.stub(GenericHelpers, 'isFunction').returns(true);
       sinon.stub(GenericHelpers, 'getRandomId').returns(123);
       const mockListener = () => 'mock-method';
-      const listenerId = LuigiI18N.addCurrentLocaleChangeListener(mockListener);
+      const listenerId = AppLaunchpadI18N.addCurrentLocaleChangeListener(mockListener);
       sinon.assert.calledWithExactly(GenericHelpers.isFunction, mockListener);
       sinon.assert.calledWithExactly(GenericHelpers.getRandomId);
-      assert.equal(LuigiI18N.listeners[123], mockListener);
+      assert.equal(AppLaunchpadI18N.listeners[123], mockListener);
       assert.equal(listenerId, 123);
     });
 
     it('remove a listener', () => {
-      LuigiI18N.listeners[123] = () => {};
-      LuigiI18N.removeCurrentLocaleChangeListener(123);
-      assert.equal(LuigiI18N.listeners[123], undefined);
+      AppLaunchpadI18N.listeners[123] = () => {};
+      AppLaunchpadI18N.removeCurrentLocaleChangeListener(123);
+      assert.equal(AppLaunchpadI18N.listeners[123], undefined);
     });
 
     it('does not remove a listener when called with a wrong id', () => {
       const listener = () => {};
-      LuigiI18N.listeners[123] = listener;
-      LuigiI18N.removeCurrentLocaleChangeListener(456);
-      assert.equal(LuigiI18N.listeners[123], listener);
+      AppLaunchpadI18N.listeners[123] = listener;
+      AppLaunchpadI18N.removeCurrentLocaleChangeListener(456);
+      assert.equal(AppLaunchpadI18N.listeners[123], listener);
     });
 
     it('should be notified by locale change', () => {
-      LuigiI18N.listeners = {
+      AppLaunchpadI18N.listeners = {
         id1: sinon.stub(),
         id2: sinon.stub(),
         id3: sinon.stub()
       };
-      LuigiI18N._notifyLocaleChange('pl');
-      sinon.assert.calledWithExactly(LuigiI18N.listeners.id1, 'pl');
-      sinon.assert.calledWithExactly(LuigiI18N.listeners.id2, 'pl');
-      sinon.assert.calledWithExactly(LuigiI18N.listeners.id3, 'pl');
+      AppLaunchpadI18N._notifyLocaleChange('pl');
+      sinon.assert.calledWithExactly(AppLaunchpadI18N.listeners.id1, 'pl');
+      sinon.assert.calledWithExactly(AppLaunchpadI18N.listeners.id2, 'pl');
+      sinon.assert.calledWithExactly(AppLaunchpadI18N.listeners.id3, 'pl');
       sinon.assert.called(config.configChanged);
     });
   });
@@ -108,14 +99,14 @@ describe('I18N', function() {
   describe('custom translation', () => {
     let mockConfig;
     //custom config
-    let luigi = {
+    let applaunchpad = {
       en: {
         tets: 'tests'
       },
       de: {
-        project: 'luigi'
+        project: 'applaunchpad'
       },
-      luigi: {
+      applaunchpad: {
         it: {
           da: 'Toni'
         }
@@ -123,8 +114,8 @@ describe('I18N', function() {
     };
     const getMockConfig = () => ({
       getTranslation: (key, interpolations, locale) => {
-        if (luigi[locale]) {
-          return luigi[locale][key];
+        if (applaunchpad[locale]) {
+          return applaunchpad[locale][key];
         }
       }
     });
@@ -133,20 +124,20 @@ describe('I18N', function() {
     });
 
     it('_initCustomImplementation: get custom translation from config', () => {
-      sinon.stub(LuigiConfig, 'getConfigValue').returns(mockConfig);
-      LuigiI18N._initCustomImplementation();
-      assert.equal(LuigiI18N.translationImpl, mockConfig);
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue').returns(mockConfig);
+      AppLaunchpadI18N._initCustomImplementation();
+      assert.equal(AppLaunchpadI18N.translationImpl, mockConfig);
     });
 
     it('findTranslation test', () => {
       sinon.stub(Object, 'hasOwnProperty').returns(true);
       const translationTable = {
-        luigi: {
-          luigiModal: {
-            header: 'Luigi status modal',
+        applaunchpad: {
+          applaunchpadModal: {
+            header: 'AppLaunchpad status modal',
             body: {
-              error: 'Luigi is sad!',
-              success: 'Luigi is happy!'
+              error: 'AppLaunchpad is sad!',
+              success: 'AppLaunchpad is happy!'
             }
           },
           button: {
@@ -155,37 +146,31 @@ describe('I18N', function() {
           }
         }
       };
-      LuigiI18N.translationTable = translationTable;
+      AppLaunchpadI18N.translationTable = translationTable;
       assert.equal(
-        LuigiI18N.findTranslation(
-          'luigi.luigiModal.body.success',
-          LuigiI18N.translationTable
+        AppLaunchpadI18N.findTranslation(
+          'applaunchpad.applaunchpadModal.body.success',
+          AppLaunchpadI18N.translationTable
         ),
-        'Luigi is happy!'
+        'AppLaunchpad is happy!'
       );
       assert.equal(
-        LuigiI18N.findTranslation(
-          'luigi.button.confirm',
-          LuigiI18N.translationTable
-        ),
+        AppLaunchpadI18N.findTranslation('applaunchpad.button.confirm', AppLaunchpadI18N.translationTable),
         'yes'
       );
     });
 
     it('custom translation test', () => {
-      LuigiI18N.translationImpl = mockConfig;
-      assert.equal(LuigiI18N.getTranslation('tets', null, 'en'), 'tests');
-      assert.equal(LuigiI18N.getTranslation('project', null, 'de'), 'luigi');
+      AppLaunchpadI18N.translationImpl = mockConfig;
+      assert.equal(AppLaunchpadI18N.getTranslation('tets', null, 'en'), 'tests');
+      assert.equal(AppLaunchpadI18N.getTranslation('project', null, 'de'), 'applaunchpad');
 
-      LuigiI18N.translationImpl = null;
-      LuigiI18N.translationTable = luigi;
-      assert.equal(LuigiI18N.getTranslation('tets'), 'tets');
-      assert.equal(LuigiI18N.getTranslation('luigi.it.da'), 'Toni');
+      AppLaunchpadI18N.translationImpl = null;
+      AppLaunchpadI18N.translationTable = applaunchpad;
+      assert.equal(AppLaunchpadI18N.getTranslation('tets'), 'tets');
+      assert.equal(AppLaunchpadI18N.getTranslation('applaunchpad.it.da'), 'Toni');
       // //not matching key
-      assert.equal(
-        LuigiI18N.getTranslation('luigi.de.project'),
-        'luigi.de.project'
-      );
+      assert.equal(AppLaunchpadI18N.getTranslation('applaunchpad.de.project'), 'applaunchpad.de.project');
     });
   });
 });

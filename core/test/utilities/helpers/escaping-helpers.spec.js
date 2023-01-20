@@ -94,16 +94,16 @@ describe('Escaping-helpers', () => {
     });
 
     it('with links', () => {
-      const text = `Hello Luigi. {issues} {pulls}`;
+      const text = `Hello AppLaunchpad. {issues} {pulls}`;
       const links = {
         issues: {
           text: 'Issues',
-          url: `http://github.com/SAP/luigi/issues`,
+          url: `http://github.com/davidwl/applaunchpad/issues`,
           dismissKey: 'goToHome'
         },
         pulls: {
           text: 'Pulls',
-          url: `http://github.com/SAP/luigi/pulls`
+          url: `http://github.com/davidwl/applaunchpad/pulls`
         }
       };
       const uniqueID = 1234567890;
@@ -114,17 +114,17 @@ describe('Escaping-helpers', () => {
       // then
       const expectedResult = {
         sanitizedText:
-          'Hello Luigi. <a id="_luigi_alert_1234567890_link_issues-sanitizeParam">Issues-sanitizeHtml</a> <a id="_luigi_alert_1234567890_link_pulls-sanitizeParam">Pulls-sanitizeHtml</a>-sanitizeHtml',
+          'Hello AppLaunchpad. <a id="_applaunchpad_alert_1234567890_link_issues-sanitizeParam">Issues-sanitizeHtml</a> <a id="_applaunchpad_alert_1234567890_link_pulls-sanitizeParam">Pulls-sanitizeHtml</a>-sanitizeHtml',
         links: [
           {
             dismissKey: 'goToHome-sanitizeHtml',
-            elemId: '_luigi_alert_1234567890_link_issues-sanitizeParam',
-            url: 'http://github.com/SAP/luigi/issues-sanitizeHtml'
+            elemId: '_applaunchpad_alert_1234567890_link_issues-sanitizeParam',
+            url: 'http://github.com/davidwl/applaunchpad/issues-sanitizeHtml'
           },
           {
             dismissKey: undefined,
-            elemId: '_luigi_alert_1234567890_link_pulls-sanitizeParam',
-            url: 'http://github.com/SAP/luigi/pulls-sanitizeHtml'
+            elemId: '_applaunchpad_alert_1234567890_link_pulls-sanitizeParam',
+            url: 'http://github.com/davidwl/applaunchpad/pulls-sanitizeHtml'
           }
         ]
       };

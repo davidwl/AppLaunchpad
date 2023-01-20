@@ -1,4 +1,4 @@
-import defaultLuigiConfig from '../../configs/default';
+import defaultAppLaunchpadConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
 describe('JS-TEST-APP 3', () => {
@@ -8,18 +8,18 @@ describe('JS-TEST-APP 3', () => {
       openMode: 4
     }
   };
-  describe('LuigiClient add and delete node and search params', () => {
+  describe('AppLaunchpadClient add and delete node and search params', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       newConfig.routing.useHashRouting = true;
       const node = {
         pathSegment: 'mynode',
         label: 'MyNode',
-        viewUrl: '/examples/microfrontends/luigi-client-test.html',
+        viewUrl: '/examples/microfrontends/applaunchpad-client-test.html',
         clientPermissions: {
           urlParameters: {
-            luigi: {
+            applaunchpad: {
               read: true,
               write: true
             },
@@ -43,7 +43,7 @@ describe('JS-TEST-APP 3', () => {
           .contains('add search params')
           .click();
       });
-      cy.expectPathToBe('/home/mynode?luigi=rocks&q=test');
+      cy.expectPathToBe('/home/mynode?applaunchpad=rocks&q=test');
       cy.getIframeBody().then($body => {
         cy.wrap($body)
           .find('[data-testid="lui-delete-search-params"]')
@@ -52,7 +52,7 @@ describe('JS-TEST-APP 3', () => {
           .contains('delete search params')
           .click();
       });
-      cy.expectPathToBe('/home/mynode?luigi=rocks');
+      cy.expectPathToBe('/home/mynode?applaunchpad=rocks');
     });
     it('Add and delete node params hash routing enabled', () => {
       cy.visitTestApp('/home/mynode', newConfig);
@@ -64,7 +64,7 @@ describe('JS-TEST-APP 3', () => {
           .contains('add node params')
           .click();
       });
-      cy.expectPathToBe('/home/mynode?%7Eq=test&%7Eluigi=rocks');
+      cy.expectPathToBe('/home/mynode?%7Eq=test&%7Eapplaunchpad=rocks');
       cy.getIframeBody().then($body => {
         cy.wrap($body)
           .find('[data-testid="lui-delete-node-params"]')
@@ -73,25 +73,25 @@ describe('JS-TEST-APP 3', () => {
           .contains('delete node params')
           .click();
       });
-      cy.expectPathToBe('/home/mynode?%7Eluigi=rocks');
+      cy.expectPathToBe('/home/mynode?%7Eapplaunchpad=rocks');
     });
   });
 
-  describe('LuigiClient add and delete node and search paramstest', () => {
+  describe('AppLaunchpadClient add and delete node and search paramstest', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = cloneDeep(defaultAppLaunchpadConfig);
       newConfig.routing.useHashRouting = false;
       const node = {
         pathSegment: 'mynode',
         label: 'MyNode',
-        viewUrl: '/examples/microfrontends/luigi-client-test.html',
+        viewUrl: '/examples/microfrontends/applaunchpad-client-test.html',
         loadingIndicator: {
           enabled: false
         },
         clientPermissions: {
           urlParameters: {
-            luigi: {
+            applaunchpad: {
               read: true,
               write: true
             },
@@ -109,7 +109,7 @@ describe('JS-TEST-APP 3', () => {
     it('Add and delete search params path routing enabled', localRetries, () => {
       cy.vistTestAppPathRouting('');
       cy.window().then(win => {
-        win.Luigi.setConfig(newConfig);
+        win.AppLaunchpad.setConfig(newConfig);
       });
       cy.get('.fd-side-nav__main-navigation')
         .contains('MyNode')
@@ -124,7 +124,7 @@ describe('JS-TEST-APP 3', () => {
         .click();
 
       cy.location().should(location => {
-        expect(location.pathname + location.search).to.eq('/home/mynode?luigi=rocks&q=test');
+        expect(location.pathname + location.search).to.eq('/home/mynode?applaunchpad=rocks&q=test');
       });
 
       cy.getIframeBodyWithRetries()
@@ -136,7 +136,7 @@ describe('JS-TEST-APP 3', () => {
         .click();
 
       cy.location().should(location => {
-        expect(location.pathname + location.search).to.eq('/home/mynode?luigi=rocks');
+        expect(location.pathname + location.search).to.eq('/home/mynode?applaunchpad=rocks');
       });
     });
   });
@@ -145,29 +145,29 @@ describe('JS-TEST-APP 3', () => {
     it('checks if the text in footer exist, defined by settings', () => {
       cy.window().then(win => {
         //define Footer text as part of the global config
-        const config = win.Luigi.getConfig();
-        config.settings.sideNavFooterText = 'Luigi Footer';
-        win.Luigi.configChanged();
+        const config = win.AppLaunchpad.getConfig();
+        config.settings.sideNavFooterText = 'AppLaunchpad Footer';
+        win.AppLaunchpad.configChanged();
 
         cy.get('[data-testid="lui-side-nav__footer--text"]').should('exist');
-        cy.get('[data-testid="lui-side-nav__footer--text"]').contains('Luigi Footer');
+        cy.get('[data-testid="lui-side-nav__footer--text"]').contains('AppLaunchpad Footer');
       });
     });
 
     it('checks if getNavFooterContainer() working', () => {
       cy.window().then(win => {
         //define Footer text as part of the global config
-        const config = win.Luigi.getConfig();
-        config.settings.sideNavFooterText = 'Luigi Footer';
-        win.Luigi.configChanged();
+        const config = win.AppLaunchpad.getConfig();
+        config.settings.sideNavFooterText = 'AppLaunchpad Footer';
+        win.AppLaunchpad.configChanged();
 
         //Checks if the DOM element required by getNavFooterContainer() exist
         cy.get('[data-testid="lui-side-nav__footer"]').should('exist');
 
-        const FooterContainer = win.Luigi.elements().getNavFooterContainer();
+        const FooterContainer = win.AppLaunchpad.elements().getNavFooterContainer();
 
-        //Checks if Luigi.elements().getNavFooterContainer() reads the appropriate DOM element.
-        cy.get(FooterContainer).contains('Luigi Footer');
+        //Checks if AppLaunchpad.elements().getNavFooterContainer() reads the appropriate DOM element.
+        cy.get(FooterContainer).contains('AppLaunchpad Footer');
       });
     });
   });

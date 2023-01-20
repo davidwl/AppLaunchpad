@@ -6,7 +6,7 @@ class Auth {
    *  - openIdConnect (eg. DEX)
    *  - oAuth2ImplicitGrant
    * custom:
-   *  - idpProvider (if you provide a class to Luigi.config.auth.idpProvider)
+   *  - idpProvider (if you provide a class to AppLaunchpad.config.auth.idpProvider)
    *
    */
   // use = 'mockAuth';
@@ -26,9 +26,9 @@ class Auth {
     userInfoFn: () => {
       return new Promise(resolve => {
         resolve({
-          name: 'Luigi User',
+          name: 'AppLaunchpad User',
           initials: 'LU',
-          email: 'luigi.user@example.com',
+          email: 'applaunchpad.user@example.com',
           //picture: '/assets/favicon-sap.ico',
           description: 'Expert',
           icon: true
@@ -56,12 +56,12 @@ class Auth {
     authorizeMethod: 'GET',
     oAuthData: {
       client_id: 'egDuozijY5SVr0NSIowUP1dT6RVqHnlp',
-      redirect_uri: '/luigi-core/auth/oauth2/callback.html',
+      redirect_uri: '/applaunchpad-core/auth/oauth2/callback.html',
       scope: 'openid profile email groups'
 
       // optional: redirect_uri and response_type are provided by default
       // scope: '',
-      // redirect_uri: '/luigi-core/auth/oauth2/callback.html'
+      // redirect_uri: '/applaunchpad-core/auth/oauth2/callback.html'
       // response_type: 'id_token token',
 
       // all specified values inside oAuthData will be added to the oauth call, i.e display="popup",
@@ -112,7 +112,7 @@ class Auth {
     },
     onAuthExpireSoon: settings => {
       console.info('onAuthExpireSoon ', settings);
-      Luigi.showAlert({
+      AppLaunchpad.showAlert({
         text: 'Token expires soon',
         type: 'warning'
       });

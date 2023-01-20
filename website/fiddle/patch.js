@@ -1,8 +1,8 @@
-console.log('Patching luigi core js');
+console.log('Patching applaunchpad core js');
 
 const replace = require('replace-in-file');
 const options = {
-  files: 'node_modules/@luigi-project/core/luigi.js',
+  files: 'node_modules/@applaunchpad-project/core/applaunchpad.js',
   from: 'import(e)',
   to: 'import(/* webpackIgnore: true */ e)'
 };

@@ -45,11 +45,11 @@ describe('Navigation', () => {
 
     it('Node navigation title attr default.tooltipText text', () => {
       cy.window().then(win => {
-        const config = win.Luigi.getConfig();
+        const config = win.AppLaunchpad.getConfig();
         config.navigation.defaults = {
           tooltipText: 'Defaults tooltipText'
         };
-        win.Luigi.configChanged('settings.navigation');
+        win.AppLaunchpad.configChanged('settings.navigation');
         cy.get('.fd-shellbar')
           .contains('Projects')
           .click();
@@ -65,11 +65,11 @@ describe('Navigation', () => {
 
     it('Node navigation title attr default.tooltipText set false', () => {
       cy.window().then(win => {
-        const config = win.Luigi.getConfig();
+        const config = win.AppLaunchpad.getConfig();
         config.navigation.defaults = {
           tooltipText: false
         };
-        win.Luigi.configChanged('settings.navigation');
+        win.AppLaunchpad.configChanged('settings.navigation');
         cy.get('.fd-shellbar')
           .contains('Projects')
           .click();
@@ -151,8 +151,8 @@ describe('Navigation', () => {
 
       it('Test activated node on moible with keep selected context', () => {
         cy.visit('/projects/tabNav/avengers/captain-america/super-power');
-        cy.get('.luigi__more').should('have.attr', 'aria-selected', 'true');
-        cy.get('.luigi__more').click();
+        cy.get('.applaunchpad__more').should('have.attr', 'aria-selected', 'true');
+        cy.get('.applaunchpad__more').click();
         cy.get('.fd-nested-list__title')
           .contains('Keep Selected Example')
           .parent()
@@ -161,7 +161,7 @@ describe('Navigation', () => {
 
       it('recalc of tab nav by using resizing', () => {
         cy.visit('/projects/tabNav');
-        cy.get('.luigi-tabsContainer').within(() => {
+        cy.get('.applaunchpad-tabsContainer').within(() => {
           cy.get('.fd-tabs__item')
             .contains('User Management')
             .should('be.visible');
@@ -173,7 +173,7 @@ describe('Navigation', () => {
             .should('not.visible');
         });
         cy.viewport(900, 750);
-        cy.get('.luigi-tabsContainer').within(() => {
+        cy.get('.applaunchpad-tabsContainer').within(() => {
           cy.get('.fd-tabs__item')
             .contains('Settings')
             .should('be.visible');
@@ -193,9 +193,9 @@ describe('Navigation', () => {
       it('ResponsiveNavigation Semicollapsed', () => {
         cy.viewport(800, 600);
         cy.window().then(win => {
-          const config = win.Luigi.getConfig();
+          const config = win.AppLaunchpad.getConfig();
           config.settings.responsiveNavigation = 'semiCollapsible';
-          win.Luigi.configChanged('settings');
+          win.AppLaunchpad.configChanged('settings');
           cy.get('[data-testid="mobile-menu"]').click();
 
           cy.get('.fd-popover__body').within(() => {
@@ -219,14 +219,14 @@ describe('Navigation', () => {
   describe('GlobalSearch', () => {
     context('Desktop', () => {
       it('GlobalSearch Desktop', () => {
-        cy.get('.luigi-search__input').should('not.be.visible');
-        cy.get('[data-testid=luigi-search-btn-desktop]').click();
-        cy.get('.luigi-search__input').should('be.visible');
-        cy.get('.luigi-search__input').type('Luigi');
-        cy.get('[data-testid=luigi-search-btn-desktop]').click();
-        cy.get('.luigi-search__input').should('not.be.visible');
-        cy.get('[data-testid=luigi-search-btn-desktop]').click();
-        cy.get('.luigi-search__input').should('not.have.value', 'Luigi');
+        cy.get('.applaunchpad-search__input').should('not.be.visible');
+        cy.get('[data-testid=applaunchpad-search-btn-desktop]').click();
+        cy.get('.applaunchpad-search__input').should('be.visible');
+        cy.get('.applaunchpad-search__input').type('AppLaunchpad');
+        cy.get('[data-testid=applaunchpad-search-btn-desktop]').click();
+        cy.get('.applaunchpad-search__input').should('not.be.visible');
+        cy.get('[data-testid=applaunchpad-search-btn-desktop]').click();
+        cy.get('.applaunchpad-search__input').should('not.have.value', 'AppLaunchpad');
       });
     });
     context('Mobile', () => {
@@ -234,19 +234,22 @@ describe('Navigation', () => {
         cy.viewport('iphone-6');
       });
       it('GlobalSearch Mobile', () => {
-        cy.get('.luigi-search-shell__mobile .luigi-search__input').should('not.be.visible');
+        cy.get('.applaunchpad-search-shell__mobile .applaunchpad-search__input').should('not.be.visible');
         cy.get('[data-testid=mobile-menu]').click();
-        cy.get('[data-testid=luigi-search-btn-mobile]').click();
-        cy.get('.luigi-search-shell__mobile .luigi-search__input').should('be.visible');
-        cy.get('.luigi-search-shell__mobile .luigi-search__input').type('Luigi');
+        cy.get('[data-testid=applaunchpad-search-btn-mobile]').click();
+        cy.get('.applaunchpad-search-shell__mobile .applaunchpad-search__input').should('be.visible');
+        cy.get('.applaunchpad-search-shell__mobile .applaunchpad-search__input').type('AppLaunchpad');
 
         cy.get('[data-testid=mobile-menu]').click();
-        cy.get('[data-testid=luigi-search-btn-mobile]').click();
-        cy.get('.luigi-search-shell__mobile .luigi-search__input').should('not.be.visible');
+        cy.get('[data-testid=applaunchpad-search-btn-mobile]').click();
+        cy.get('.applaunchpad-search-shell__mobile .applaunchpad-search__input').should('not.be.visible');
 
         cy.get('[data-testid=mobile-menu]').click();
-        cy.get('[data-testid=luigi-search-btn-mobile]').click();
-        cy.get('.luigi-search-shell__mobile .luigi-search__input').should('not.have.value', 'Luigi');
+        cy.get('[data-testid=applaunchpad-search-btn-mobile]').click();
+        cy.get('.applaunchpad-search-shell__mobile .applaunchpad-search__input').should(
+          'not.have.value',
+          'AppLaunchpad'
+        );
       });
     });
   });
@@ -255,10 +258,10 @@ describe('Navigation', () => {
     context('Desktop', () => {
       it('not render global side navigation when globalSideNavigation is false', () => {
         cy.window().then(win => {
-          const config = win.Luigi.getConfig();
+          const config = win.AppLaunchpad.getConfig();
           config.settings.globalSideNavigation = false;
           config.settings.experimental = { globalNav: true };
-          win.Luigi.configChanged();
+          win.AppLaunchpad.configChanged();
 
           cy.get('.lui-global-nav-visible').should('not.be.visible');
           cy.get('.lui-globalnav .fd-side-nav').should('not.be.visible');
@@ -267,10 +270,10 @@ describe('Navigation', () => {
 
       it('not render global side navigation when experimental globalNav is false', () => {
         cy.window().then(win => {
-          const config = win.Luigi.getConfig();
+          const config = win.AppLaunchpad.getConfig();
           config.settings.globalSideNavigation = true;
           config.settings.experimental = { globalNav: false };
-          win.Luigi.configChanged();
+          win.AppLaunchpad.configChanged();
 
           cy.get('.lui-global-nav-visible').should('not.be.visible');
           cy.get('.lui-globalnav .fd-side-nav').should('not.be.visible');
@@ -279,10 +282,10 @@ describe('Navigation', () => {
 
       it('render global side navigation', () => {
         cy.window().then(win => {
-          const config = win.Luigi.getConfig();
+          const config = win.AppLaunchpad.getConfig();
           config.settings.globalSideNavigation = true;
           config.settings.experimental = { globalNav: true };
-          win.Luigi.configChanged();
+          win.AppLaunchpad.configChanged();
 
           // render global nav tool bar
           cy.get('.lui-global-nav-visible').should('be.visible');
@@ -312,10 +315,10 @@ describe('Navigation', () => {
       it('Responsive Global Side Navigation', () => {
         cy.viewport(800, 600);
         cy.window().then(win => {
-          const config = win.Luigi.getConfig();
+          const config = win.AppLaunchpad.getConfig();
           config.settings.globalSideNavigation = true;
           config.settings.experimental = { globalNav: true };
-          win.Luigi.configChanged();
+          win.AppLaunchpad.configChanged();
 
           cy.get('.lui-globalnav').should('be.visible');
           cy.get('.lui-globalnav .fd-side-nav__main-navigation .fd-nested-list')
@@ -330,11 +333,11 @@ describe('Navigation', () => {
   describe('Feature toggles', () => {
     it('Node visibility with feature toggles via url', () => {
       cy.window().then(win => {
-        win.Luigi.navigation().navigate('/projects/pr1/settings_ft');
+        win.AppLaunchpad.navigation().navigate('/projects/pr1/settings_ft');
         cy.expectPathToBe('/projects/pr1');
       });
       cy.window().then(win => {
-        win.Luigi.navigation().navigate('/projects/pr1/settings_ft?ft=ft1');
+        win.AppLaunchpad.navigation().navigate('/projects/pr1/settings_ft?ft=ft1');
         cy.expectPathToBe('/projects/pr1/settings_ft');
       });
       cy.get('.fd-app__sidebar').should('contain', 'Project Settings 2');

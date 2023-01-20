@@ -1,4 +1,4 @@
-describe('Luigi client linkManager features', () => {
+describe('AppLaunchpad client linkManager features', () => {
   const localRetries = {
     retries: {
       runMode: 3,

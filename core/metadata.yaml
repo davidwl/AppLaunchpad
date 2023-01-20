@@ -3,12 +3,12 @@
 
 kind: Component
 metadata:
-  displayName: Luigi Core
-  description: Core library for Luigi applications
+  displayName: AppLaunchpad Core
+  description: Core library for AppLaunchpad applications
   labels:
     language: javascript
   tags:
-    - luigi
+    - applaunchpad
     - svelte
 spec:
   type:

@@ -25,7 +25,7 @@ export class DefaultCompoundRenderer {
 }
 
 /**
- * Compound Renderer for custom rendering as defined in luigi config.
+ * Compound Renderer for custom rendering as defined in applaunchpad config.
  */
 export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   constructor(rendererObj) {
@@ -128,7 +128,7 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
  * Returns the compound renderer class for a given config.
  * If no specific one is found, {DefaultCompoundRenderer} is returned.
  *
- * @param {*} rendererConfig the renderer config object defined in luigi config
+ * @param {*} rendererConfig the renderer config object defined in applaunchpad config
  */
 export const resolveRenderer = rendererConfig => {
   const rendererDef = rendererConfig.use;

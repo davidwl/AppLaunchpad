@@ -38,7 +38,7 @@ services:
         [
           {
             "SubjectId":"1",
-            "Username":"Luigi",
+            "Username":"AppLaunchpad",
             "Password":"pwd"
           }
         ]

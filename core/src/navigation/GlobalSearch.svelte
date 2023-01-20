@@ -1,6 +1,6 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
-  import { LuigiI18N } from '../core-api';
+  import { AppLaunchpadI18N } from '../core-api';
   import { GenericHelpers } from '../utilities/helpers';
   import { Routing } from '../services/routing';
   import {
@@ -14,8 +14,8 @@
   export let displaySearchResult;
   export let displayCustomSearchResult;
   export let inputElem;
-  export let luigiCustomSearchRenderer__slot;
-  export let luigiCustomSearchItemRenderer__slotContainer;
+  export let applaunchpadCustomSearchRenderer__slot;
+  export let applaunchpadCustomSearchItemRenderer__slotContainer;
   export let globalSearchConfig;
   const dispatch = createEventDispatcher();
   const searchApiObj = {
@@ -56,12 +56,12 @@
     if (!searchProvider || !searchProvider.inputPlaceholder) {
       return undefined;
     }
-    const currentLocale = LuigiI18N.getCurrentLocale();
+    const currentLocale = AppLaunchpadI18N.getCurrentLocale();
     if (GenericHelpers.isFunction(searchProvider.inputPlaceholder)) {
       return searchProvider.inputPlaceholder();
     }
     if (typeof searchProvider.inputPlaceholder === 'string') {
-      const translated = LuigiI18N.getTranslation(searchProvider.inputPlaceholder);
+      const translated = AppLaunchpadI18N.getTranslation(searchProvider.inputPlaceholder);
       if (!!translated && translated.trim().length > 0) {
         return translated;
       }
@@ -102,9 +102,9 @@
       } else if (keyCode === KEYCODE_ARROW_DOWN) {
         if (displaySearchResult) {
           document
-            .querySelector('.luigi-search-result-item__0')
+            .querySelector('.applaunchpad-search-result-item__0')
             .childNodes[0].setAttribute('aria-selected', 'true');
-          document.querySelector('.luigi-search-result-item__0').focus();
+          document.querySelector('.applaunchpad-search-result-item__0').focus();
         }
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
@@ -115,7 +115,7 @@
   }
 
   function calcSearchResultItemSelected(direction) {
-    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
+    let renderedSearchResultItems = applaunchpadCustomSearchItemRenderer__slotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let { childNodes, nextSibling, previousSibling } = renderedSearchResultItems[
@@ -143,7 +143,7 @@
   }
 
   function clearAriaSelected() {
-    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
+    let renderedSearchResultItems = applaunchpadCustomSearchItemRenderer__slotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let element = renderedSearchResultItems[index];
@@ -212,7 +212,7 @@
     dispatch('toggleSearch', {
       isSearchFieldVisible,
       inputElem,
-      luigiCustomSearchRenderer__slot
+      applaunchpadCustomSearchRenderer__slot
     });
 
     if (search && search.searchProvider && GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
@@ -226,12 +226,12 @@
 <svelte:window on:click={closeSearchResult} on:blur={closeSearchResult} />
 <div
   class="fd-shellbar__action {isSearchFieldVisible
-    ? 'luigi-search-shell__mobile'
+    ? 'applaunchpad-search-shell__mobile'
     : ''}"
 >
   <div class="fd-popover">
     <div
-      class="fd-popover__control luigi-search"
+      class="fd-popover__control applaunchpad-search"
       on:click|stopPropagation={() => {}}
       aria-hidden={!isSearchFieldVisible}
       aria-haspopup="true"
@@ -240,16 +240,16 @@
         {#if search && search.disableInputHandlers}
           <input
             type="text"
-            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
-            data-testid="luigi-search-input__no-handlers"
+            class="fd-input fd-input-group__input fd-shellbar__input-group__input applaunchpad-search__input"
+            data-testid="applaunchpad-search-input__no-handlers"
             autofocus
           />
         {:else}
           <input
             type="text"
             on:keyup={event => onKeyUp(event)}
-            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
-            data-testid="luigi-search-input"
+            class="fd-input fd-input-group__input fd-shellbar__input-group__input applaunchpad-search__input"
+            data-testid="applaunchpad-search-input"
             autofocus
             bind:this={inputElem}
           />
@@ -257,18 +257,18 @@
       </div>
       {#if !isCustomSearchRenderer}
         <div
-          class="fd-popover__body fd-popover__body--right luigi-search-popover__body"
+          class="fd-popover__body fd-popover__body--right applaunchpad-search-popover__body"
           aria-hidden={!displaySearchResult}
         >
           <nav class="fd-menu">
             {#if searchResult}
               <ul
                 class="fd-menu__list fd-menu__list--top"
-                bind:this={luigiCustomSearchItemRenderer__slotContainer}
+                bind:this={applaunchpadCustomSearchItemRenderer__slotContainer}
               >
                 {#each searchResult as result, index}
                   <li
-                    class="fd-menu__item luigi-search-result-item__{index}"
+                    class="fd-menu__item applaunchpad-search-result-item__{index}"
                     on:click={event =>
                       onSearchResultItemSelected(result, event)}
                     on:keyup={event => handleKeydown(result, event)}
@@ -291,7 +291,7 @@
                     {:else}
                       {@html renderCustomSearchItem(
                         result,
-                        luigiCustomSearchItemRenderer__slotContainer,
+                        applaunchpadCustomSearchItemRenderer__slotContainer,
                         index
                       )}
                     {/if}
@@ -302,7 +302,7 @@
           </nav>
         </div>
       {:else}
-        <div bind:this={luigiCustomSearchRenderer__slot} />
+        <div bind:this={applaunchpadCustomSearchRenderer__slot} />
       {/if}
     </div>
   </div>
@@ -314,7 +314,7 @@
       aria-haspopup="true"
       aria-expanded={!isSearchFieldVisible}
       on:click={toggleSearch}
-      data-testid="luigi-search-btn-desktop"
+      data-testid="applaunchpad-search-btn-desktop"
     >
       <i class="sap-icon sap-icon--search" />
     </button>
@@ -323,12 +323,12 @@
 
 <style type="text/scss">
   //remove default browser outline on focus for search results
-  .luigi-search-popover__body {
-    li[class*='luigi-search-result']:focus {
+  .applaunchpad-search-popover__body {
+    li[class*='applaunchpad-search-result']:focus {
       outline: none;
     }
   }
-  .luigi-search {
+  .applaunchpad-search {
     &[aria-hidden='true'] {
       visibility: hidden;
       width: 0;
@@ -365,7 +365,7 @@
 
   //remove arrow from the search popover
   @media screen and (max-width: 1024px) {
-    .luigi-search-shell__mobile {
+    .applaunchpad-search-shell__mobile {
       position: relative;
       height: calc(2.25rem + 2px);
       padding: 0;
@@ -374,7 +374,7 @@
         vertical-align: top;
       }
 
-      .luigi-search {
+      .applaunchpad-search {
         position: absolute;
         top: 0;
         right: 0;

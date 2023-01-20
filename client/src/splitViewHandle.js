@@ -1,16 +1,16 @@
-import { LuigiClientBase } from './baseClass';
+import { AppLaunchpadClientBase } from './baseClass';
 import { helpers } from './helpers';
 
 /**
  * Split view 
-  Allows to open a micro frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`. 
+  Allows to open a micro frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = AppLaunchpadClient.linkManager().openAsSplitView`. 
   At a given time, you can open only one split view. It closes automatically when you navigate to a different route.
   When you call `handle.collapse()`, the split view gets destroyed. It recreates when you use `handle.expand()`.
   `openAsSplitView` returns an instance of the split view handle. The functions, actions, and event handlers listed below allow you to control and manage the split view.
   * @name splitView
   * @since 0.6.0
   */
-export class splitViewHandle extends LuigiClientBase {
+export class splitViewHandle extends AppLaunchpadClientBase {
   /**
    * @private
    */
@@ -32,7 +32,7 @@ export class splitViewHandle extends LuigiClientBase {
     };
 
     this.splitView.listeners = [
-      helpers.addEventListener(`luigi.navigation.splitview.internal`, e => {
+      helpers.addEventListener(`applaunchpad.navigation.splitview.internal`, e => {
         Object.assign(this.splitView, e.data.data);
       })
     ];
@@ -45,8 +45,8 @@ export class splitViewHandle extends LuigiClientBase {
    * @private
    */
   sendSplitViewEvent(action, data) {
-    helpers.sendPostMessageToLuigiCore({
-      msg: `luigi.navigation.splitview.${action}`,
+    helpers.sendPostMessageToAppLaunchpadCore({
+      msg: `applaunchpad.navigation.splitview.${action}`,
       data
     });
   }
@@ -97,7 +97,7 @@ export class splitViewHandle extends LuigiClientBase {
    * Registers a listener for split view events
    * @memberof splitView
    * @param {('expand'|'collapse'|'resize'|'close')} name event name
-   * @param {function} callback gets called when this event gets triggered by Luigi
+   * @param {function} callback gets called when this event gets triggered by AppLaunchpad
    * @returns {string} listener id
    * @since 0.6.0
    * @example
@@ -111,7 +111,7 @@ export class splitViewHandle extends LuigiClientBase {
       console.warn(name + ' is not a valid split view event');
       return false;
     }
-    const id = helpers.addEventListener(`luigi.navigation.splitview.${name}.ok`, e => {
+    const id = helpers.addEventListener(`applaunchpad.navigation.splitview.${name}.ok`, e => {
       const filterParam = typeof e.data.data == 'number' ? e.data.data : undefined;
       callback(filterParam);
     });

@@ -131,7 +131,7 @@ export const projectsNavProviderFn = context =>
            * Use it for dynamic nodes in order to navigate
            * within a specific context (project in this case)
            * Besides navigate and navigateRelative,
-           * LuigiClient provides fromClosestContext().navigate(path)
+           * AppLaunchpadClient provides fromClosestContext().navigate(path)
            * and fromContext(navigationContext).navigate(path) functions
            * which can be used to go upwards multiple context levels
            * eg. /home/:environment/projects/:project/ to go to /home/:environment/settings
@@ -168,6 +168,6 @@ export const navigationPermissionChecker = (nodeToCheckPermissionFor, parentNode
 let mockBadgeCount = 0;
 setInterval(() => {
   mockBadgeCount++;
-  // Luigi.navigation().updateTopNavigation(); // update top navigation with each count update
+  // AppLaunchpad.navigation().updateTopNavigation(); // update top navigation with each count update
 }, 5000);
 export const getMockBadgeCount = () => mockBadgeCount;

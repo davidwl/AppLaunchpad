@@ -1,5 +1,5 @@
 import ResultRender from './resultRender';
-import {algoliaSearcher} from './algoliaSearcher';
+import { algoliaSearcher } from './algoliaSearcher';
 
 class GlobalSearch {
   constructor() {
@@ -7,17 +7,17 @@ class GlobalSearch {
   }
   searchProvider = {
     onInput: () => {
-      let query = Luigi.globalSearch().getSearchString();
-      if (query.length < this.minSearchLength){
+      let query = AppLaunchpad.globalSearch().getSearchString();
+      if (query.length < this.minSearchLength) {
         //to short to be searched, please grow up
-        Luigi.globalSearch().closeSearchResult();
+        AppLaunchpad.globalSearch().closeSearchResult();
         return;
       }
       algoliaSearcher.executeSearch(query);
     },
     onEscape: () => {
-      Luigi.globalSearch().closeSearchResult();
-      Luigi.globalSearch().clearSearchField();
+      AppLaunchpad.globalSearch().closeSearchResult();
+      AppLaunchpad.globalSearch().clearSearchField();
     },
     customSearchResultRenderer: (searchResults, slot, searchApiObj) => {
       const query = searchResults.shift();
@@ -28,8 +28,7 @@ class GlobalSearch {
     disableInputHandlers: {
       type: false
     }
-  }
+  };
 }
 
 export const globalSearch = new GlobalSearch();
-

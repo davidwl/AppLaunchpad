@@ -1,5 +1,5 @@
 // Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
-import { LuigiElements, LuigiConfig } from '../../core-api';
+import { AppLaunchpadElements, AppLaunchpadConfig } from '../../core-api';
 import { replace, get } from 'lodash';
 
 class GenericHelpersClass {
@@ -248,11 +248,13 @@ class GenericHelpersClass {
   }
 
   getInnerHeight /* istanbul ignore next */() {
-    return LuigiElements.isCustomLuigiContainer() ? LuigiElements.getLuigiContainer().clientHeight : window.innerHeight;
+    return AppLaunchpadElements.isCustomAppLaunchpadContainer()
+      ? AppLaunchpadElements.getAppLaunchpadContainer().clientHeight
+      : window.innerHeight;
   }
 
   getContentAreaHeight /* istanbul ignore next */() {
-    return this.getInnerHeight() - LuigiElements.getShellbar().clientHeight;
+    return this.getInnerHeight() - AppLaunchpadElements.getShellbar().clientHeight;
   }
 
   computePxFromPercent(fullPixels, requestedPercent) {
@@ -348,7 +350,7 @@ class GenericHelpersClass {
    * @returns true, if feature enabled, false otherwise.
    */
   requestExperimentalFeature(expFeatureName, showWarn) {
-    const val = Boolean(LuigiConfig.getConfigValue('settings.experimental.' + expFeatureName));
+    const val = Boolean(AppLaunchpadConfig.getConfigValue('settings.experimental.' + expFeatureName));
     if (showWarn && !val) {
       console.warn('Experimental feature not enabled: ', expFeatureName);
     }
@@ -370,13 +372,13 @@ class GenericHelpersClass {
       };
     });
 
-    let luiRP = LuigiConfig._remotePromises;
+    let luiRP = AppLaunchpadConfig._remotePromises;
     if (!luiRP) {
       luiRP = {
         counter: 0,
         promises: []
       };
-      LuigiConfig._remotePromises = luiRP;
+      AppLaunchpadConfig._remotePromises = luiRP;
     }
     prom.id = luiRP.counter++;
     luiRP.promises[prom.id] = prom;
@@ -394,7 +396,7 @@ class GenericHelpersClass {
   }
 
   getRemotePromise(id) {
-    return LuigiConfig._remotePromises ? LuigiConfig._remotePromises.promises[id] : undefined;
+    return AppLaunchpadConfig._remotePromises ? AppLaunchpadConfig._remotePromises.promises[id] : undefined;
   }
 
   isString(value) {

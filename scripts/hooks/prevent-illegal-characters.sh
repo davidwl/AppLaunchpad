@@ -5,7 +5,7 @@
 #   OR if (`window.addEventListener` is used 
 #           in other files other than EventListenerHelper class)
 # conflict_markers = ['<<<<<<<','=======','>>>>>>>']
-# Run this script only from Luigi root folder, else not all files will be checked
+# Run this script only from AppLaunchpad root folder, else not all files will be checked
 # ./scripts/hooks/prevent-illegal-characters.sh
 
 

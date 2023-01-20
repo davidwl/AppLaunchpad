@@ -4,7 +4,7 @@
  * @private
  * @abstract
  */
-export class LuigiCoreAPIBase {
+export class AppLaunchpadCoreAPIBase {
   /**
    * @private
    */

@@ -1,5 +1,5 @@
 import App from './App.svelte';
-import { LuigiConfig, LuigiI18N, LuigiElements } from './core-api';
+import { AppLaunchpadConfig, AppLaunchpadI18N, AppLaunchpadElements } from './core-api';
 import { writable, readable } from 'svelte/store';
 import { AuthLayerSvc } from './services';
 /* istanbul ignore file */
@@ -32,68 +32,68 @@ const createConfigStore = () => {
 
 export const store = createConfigStore();
 export const getTranslation = readable((key, interpolations, locale) => {
-  return LuigiI18N.getTranslation(key, interpolations, locale);
+  return AppLaunchpadI18N.getTranslation(key, interpolations, locale);
 });
 
-Luigi._store = store;
+AppLaunchpad._store = store;
 
 const configReadyCallback = () => {
   return new Promise(resolve => {
-    LuigiI18N._init();
+    AppLaunchpadI18N._init();
 
     AuthLayerSvc.init().then(() => {
-      // setTimeout needed so that luigi container is rendered when we retrieve it
+      // setTimeout needed so that applaunchpad container is rendered when we retrieve it
       setTimeout(() => {
         let app;
 
-        if (LuigiElements.isCustomLuigiContainer()) {
-          document.getElementsByTagName('html')[0].classList.add('luigi-app-in-custom-container');
+        if (AppLaunchpadElements.isCustomAppLaunchpadContainer()) {
+          document.getElementsByTagName('html')[0].classList.add('applaunchpad-app-in-custom-container');
         }
 
         app = new App({
-          target: LuigiElements.getLuigiContainer(),
+          target: AppLaunchpadElements.getAppLaunchpadContainer(),
           props: {
             store,
             getTranslation
           }
         });
 
-        Luigi.showAlert = settings => {
+        AppLaunchpad.showAlert = settings => {
           return app.$$.ctx.showAlert(settings);
         };
 
-        Luigi.showConfirmationModal = settings => {
+        AppLaunchpad.showConfirmationModal = settings => {
           return app.$$.ctx.showModal(settings);
         };
 
-        Luigi.closeSearchField = () => {
+        AppLaunchpad.closeSearchField = () => {
           return app.$$.ctx.closeSearchField();
         };
-        Luigi.openSearchField = () => {
+        AppLaunchpad.openSearchField = () => {
           return app.$$.ctx.openSearchField();
         };
 
-        Luigi.getGlobalSearchString = () => {
+        AppLaunchpad.getGlobalSearchString = () => {
           return app.$$.ctx.getGlobalSearchString();
         };
 
-        Luigi.setGlobalSearchString = searchString => {
+        AppLaunchpad.setGlobalSearchString = searchString => {
           app.$$.ctx.setGlobalSearchString(searchString);
         };
 
-        Luigi.showSearchResult = arr => {
+        AppLaunchpad.showSearchResult = arr => {
           return app.$$.ctx.showSearchResult(arr);
         };
 
-        Luigi.closeSearchResult = () => {
+        AppLaunchpad.closeSearchResult = () => {
           app.$$.ctx.closeSearchResult();
         };
 
-        Luigi.clearSearchField = () => {
+        AppLaunchpad.clearSearchField = () => {
           app.$$.ctx.clearSearchField();
         };
 
-        Luigi.splitView = {
+        AppLaunchpad.splitView = {
           splitViewHandle: {
             close: () => app.$$.ctx.closeSplitView(),
             collapse: () => app.$$.ctx.collapseSplitView(),
@@ -104,19 +104,19 @@ const configReadyCallback = () => {
           }
         };
 
-        Luigi.pathExists = path => {
+        AppLaunchpad.pathExists = path => {
           return app.$$.ctx.pathExists(path);
         };
 
-        Luigi.hasBack = () => {
+        AppLaunchpad.hasBack = () => {
           return app.$$.ctx.hasBack();
         };
 
-        Luigi.openUserSettings = () => {
+        AppLaunchpad.openUserSettings = () => {
           app.$$.ctx.openUserSettings();
         };
 
-        Luigi.closeUserSettings = () => {
+        AppLaunchpad.closeUserSettings = () => {
           app.$$.ctx.closeUserSettings();
         };
 
@@ -126,4 +126,4 @@ const configReadyCallback = () => {
   });
 };
 
-LuigiConfig.setConfigCallbacks(configReadyCallback);
+AppLaunchpadConfig.setConfigCallbacks(configReadyCallback);

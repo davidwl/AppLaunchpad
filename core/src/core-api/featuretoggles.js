@@ -1,10 +1,10 @@
 import { get, writable } from 'svelte/store';
 import { GenericHelpers } from '../utilities/helpers';
 /**
- * Functions to use feature toggles in Luigi
+ * Functions to use feature toggles in AppLaunchpad
  * @name FeatureToggles
  */
-class LuigiFeatureToggles {
+class AppLaunchpadFeatureToggles {
   constructor() {
     this.featureToggleList = writable([]);
   }
@@ -13,7 +13,7 @@ class LuigiFeatureToggles {
    * @memberof FeatureToggles
    * @param {string} featureToggleName the name of the feature toggle
    * @since 1.4.0
-   * @example Luigi.featureToggles().setFeatureToggle('featureToggleName');
+   * @example AppLaunchpad.featureToggles().setFeatureToggle('featureToggleName');
    */
   setFeatureToggle(featureToggleName, fromUrlQuery = false) {
     if (!this.isValid(featureToggleName)) return;
@@ -27,7 +27,7 @@ class LuigiFeatureToggles {
    * Remove a feature toggle from the list
    * @memberof FeatureToggles
    * @since 1.4.0
-   * @example Luigi.featureToggles().unsetFeatureToggle('featureToggleName');
+   * @example AppLaunchpad.featureToggles().unsetFeatureToggle('featureToggleName');
    */
   unsetFeatureToggle(featureToggleName) {
     if (!this.isValid(featureToggleName)) return;
@@ -45,7 +45,7 @@ class LuigiFeatureToggles {
    * @memberof FeatureToggles
    * @since 1.4.0
    * @return {Array} of active feature toggles
-   * @example Luigi.featureToggles().getActiveFeatureToggleList();
+   * @example AppLaunchpad.featureToggles().getActiveFeatureToggleList();
    */
   getActiveFeatureToggleList() {
     return [...get(this.featureToggleList)].filter(ft => !ft.startsWith('!'));
@@ -57,7 +57,7 @@ class LuigiFeatureToggles {
    * @memberof FeatureToggles
    * @param {string} featureToggleName
    * @return {boolean} of valid feature toggle name
-   * @example Luigi.featureToggles().isValid('foo');
+   * @example AppLaunchpad.featureToggles().isValid('foo');
    */
   isValid(featureToggleName) {
     if (GenericHelpers.isString(featureToggleName)) return true;
@@ -72,7 +72,7 @@ class LuigiFeatureToggles {
    * @memberof FeatureToggles
    * @param {string} featureToggleName
    * @return {boolean} of valid feature toggle name
-   * @example Luigi.featureToggles().isDuplicateOrDisabled('foo');
+   * @example AppLaunchpad.featureToggles().isDuplicateOrDisabled('foo');
    */
   isDuplicatedOrDisabled(featureToggleName) {
     if (get(this.featureToggleList).includes(featureToggleName)) {
@@ -87,4 +87,4 @@ class LuigiFeatureToggles {
     return false;
   }
 }
-export const featureToggles = new LuigiFeatureToggles();
+export const featureToggles = new AppLaunchpadFeatureToggles();

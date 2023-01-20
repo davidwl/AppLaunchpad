@@ -1,4 +1,3 @@
-
 export const projectsNavProviderFn = context =>
   new Promise(resolve => {
     getAllProjects().then(function(result) {
@@ -10,7 +9,7 @@ export const projectsNavProviderFn = context =>
            * Use it for dynamic nodes in order to navigate
            * within a specific context (project in this case)
            * Besides navigate and navigateRelative,
-           * LuigiClient provides fromClosestContext().navigate(path)
+           * AppLaunchpadClient provides fromClosestContext().navigate(path)
            * and fromContext(navigationContext).navigate(path) functions
            * which can be used to go upwards multiple context levels
            * eg. /home/:environment/projects/:project/ to go to /home/:environment/settings

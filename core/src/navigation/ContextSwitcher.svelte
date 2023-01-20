@@ -2,7 +2,7 @@
   import { createEventDispatcher, onMount, getContext, beforeUpdate } from 'svelte';
   import { ContextSwitcherHelpers } from './services/context-switcher';
   import ContextSwitcherNav from './ContextSwitcherNav.svelte';
-  import { LuigiConfig } from '../core-api';
+  import { AppLaunchpadConfig } from '../core-api';
   import { Routing } from '../services/routing';
   import {
     IframeHelpers,
@@ -47,7 +47,7 @@
     StateHelpers.doOnStoreChange(
       store,
       async () => {
-        const contextSwitcherConfig = LuigiConfig.getConfigValue(
+        const contextSwitcherConfig = AppLaunchpadConfig.getConfigValue(
           'navigation.contextSwitcher'
         );
         contextSwitcherEnabled = !!contextSwitcherConfig;
@@ -70,7 +70,7 @@
         options = undefined;
         if (contextSwitcherConfig) {
           alwaysShowDropdown = contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
-          actions = await LuigiConfig.getConfigValueAsync(
+          actions = await AppLaunchpadConfig.getConfigValueAsync(
             'navigation.contextSwitcher.actions'
           );
           const currentPath = Routing.getCurrentPath();
@@ -100,7 +100,7 @@
 
     EventListenerHelpers.addEventListener('message', e => {
       if (!IframeHelpers.getValidMessageSource(e)) return;
-      if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
+      if (e.data && e.data.msg === 'applaunchpad.refresh-context-switcher') {
         options = null;
         fetchOptions();
       }
@@ -250,7 +250,7 @@
                 if (renderAsDropdown) toggleDropdownState();
               }}
               aria-disabled={!renderAsDropdown}
-              data-testid="luigi-contextswitcher-button"
+              data-testid="applaunchpad-contextswitcher-button"
             >
               {#if selectedOption && customSelectedOptionRenderer}
                 {@html customSelectedOptionRenderer(selectedOption)}
@@ -273,7 +273,7 @@
                 if (renderAsDropdown) toggleDropdownState();
               }}
               aria-disabled={!renderAsDropdown}
-              data-testid="luigi-contextswitcher-button"
+              data-testid="applaunchpad-contextswitcher-button"
             >
               {#if selectedOption && customSelectedOptionRenderer}
                 {@html customSelectedOptionRenderer(selectedOption)}
@@ -289,7 +289,7 @@
           class="fd-popover__body fd-popover__body--right"
           aria-hidden={!(dropDownStates.contextSwitcherPopover || false)}
           id="contextSwitcherPopover"
-          data-testid="luigi-contextswitcher-popover"
+          data-testid="applaunchpad-contextswitcher-popover"
         >
           <ContextSwitcherNav
             {actions}

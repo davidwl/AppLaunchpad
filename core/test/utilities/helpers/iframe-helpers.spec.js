@@ -7,7 +7,12 @@ const { JSDOM } = jsdom;
 import { afterEach } from 'mocha';
 
 import { IframeHelpers, GenericHelpers } from '../../../src/utilities/helpers';
-import { LuigiConfig, LuigiI18N, LuigiTheming, LuigiFeatureToggles } from '../../../src/core-api';
+import {
+  AppLaunchpadConfig,
+  AppLaunchpadI18N,
+  AppLaunchpadTheming,
+  AppLaunchpadFeatureToggles
+} from '../../../src/core-api';
 import { ViewUrlDecorator } from '../../../src/services';
 
 describe('Iframe-helpers', () => {
@@ -41,20 +46,20 @@ describe('Iframe-helpers', () => {
 
   describe('createIframe', () => {
     it('createIframe', () => {
-      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
-      assert.equal(iframe.src, 'http://luigi.url.com/');
+      const iframe = IframeHelpers.createIframe('http://applaunchpad.url.com/');
+      assert.equal(iframe.src, 'http://applaunchpad.url.com/');
       sinon.assert.notCalled(ViewUrlDecorator.applyDecorators);
     });
 
     it('createIframe with view group', () => {
-      const iframe = IframeHelpers.createIframe('http://luigi.url.de/', 'ananas');
-      assert.equal(iframe.src, 'http://luigi.url.de/');
+      const iframe = IframeHelpers.createIframe('http://applaunchpad.url.de/', 'ananas');
+      assert.equal(iframe.src, 'http://applaunchpad.url.de/');
       assert.equal(iframe.vg, 'ananas');
     });
 
     it('createIframe with customrules', () => {
-      sinon.stub(LuigiConfig, 'getConfigValue').returns(customSandboxRules);
-      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue').returns(customSandboxRules);
+      const iframe = IframeHelpers.createIframe('http://applaunchpad.url.com/');
       assert.equal(
         iframe.sandbox,
         'allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts rules1 rules2'
@@ -62,14 +67,14 @@ describe('Iframe-helpers', () => {
     });
 
     it('createIframe with allowrules', () => {
-      sinon.stub(LuigiConfig, 'getConfigValue').returns(allowRules);
-      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue').returns(allowRules);
+      const iframe = IframeHelpers.createIframe('http://applaunchpad.url.com/');
       assert.equal(iframe.allow, 'microphone; geolocation;');
     });
 
     it('createIframe with workarounds for allowrules', () => {
-      sinon.stub(LuigiConfig, 'getConfigValue').returns(allowRulesWorkAround);
-      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue').returns(allowRulesWorkAround);
+      const iframe = IframeHelpers.createIframe('http://applaunchpad.url.com/');
       assert.equal(iframe.allow, 'microphone; geolocation;');
     });
 
@@ -77,17 +82,17 @@ describe('Iframe-helpers', () => {
       const icf = () => {};
       const interceptor = sinon.spy(icf);
       sinon
-        .stub(LuigiConfig, 'getConfigValue')
+        .stub(AppLaunchpadConfig, 'getConfigValue')
         .withArgs('settings.iframeCreationInterceptor')
         .returns(interceptor);
       const node = {
         pathSegment: 'tets'
       };
-      const iframe = IframeHelpers.createIframe('http://luigi.url.com/', 'vg1', node, 'main');
+      const iframe = IframeHelpers.createIframe('http://applaunchpad.url.com/', 'vg1', node, 'main');
       assert(interceptor.calledWith(iframe, 'vg1', node, 'main'));
     });
     it('createIframe with viewUrlDecorator', () => {
-      const mockUrl = 'http://luigi.url.com/';
+      const mockUrl = 'http://applaunchpad.url.com/';
       ViewUrlDecorator.hasDecorators.returns(true);
 
       const iframe = IframeHelpers.createIframe(mockUrl);
@@ -99,7 +104,7 @@ describe('Iframe-helpers', () => {
     });
 
     it('createIframe with viewUrlDecorator and decode url', () => {
-      const mockUrl = 'http://luigi.url.com/';
+      const mockUrl = 'http://applaunchpad.url.com/';
       ViewUrlDecorator.hasDecorators.returns(true);
 
       const iframe = IframeHelpers.createIframe(mockUrl, undefined, { decodeViewUrl: true });
@@ -123,24 +128,24 @@ describe('Iframe-helpers', () => {
 
   describe('ie fix for domain check', () => {
     const sb = sinon.createSandbox();
-    const href = 'https://luigi.url.com/sdf/sdf';
+    const href = 'https://applaunchpad.url.com/sdf/sdf';
 
     afterEach(() => {
       sb.restore();
     });
 
     it('urlMatchesTheDomain', () => {
-      let domain = 'https://luigi.url.com/fd';
+      let domain = 'https://applaunchpad.url.com/fd';
       assert.isTrue(IframeHelpers.urlMatchesTheDomain(href, domain));
     });
 
     it('!urlMatchesTheDomain', () => {
-      let domain = 'http://luigi.url.com/fd';
+      let domain = 'http://applaunchpad.url.com/fd';
       assert.isFalse(IframeHelpers.urlMatchesTheDomain(href, domain));
     });
 
     it('ie11 urlMatchesTheDomain', () => {
-      let domain = 'https://luigi.url.com/bla/bli';
+      let domain = 'https://applaunchpad.url.com/bla/bli';
       let a1 = document.createElement('a');
       let a2 = document.createElement('a');
       sb.stub(document, 'createElement')
@@ -166,8 +171,8 @@ describe('Iframe-helpers', () => {
         return a2.protocol === 'https:' ? a2.hostname + ':443' + a2.port : a2.hostname;
       });
       assert.isTrue(IframeHelpers.urlMatchesTheDomain(href, domain));
-      expect(a1.host).to.equal('luigi.url.com:443');
-      expect(a2.host).to.equal('luigi.url.com:443');
+      expect(a1.host).to.equal('applaunchpad.url.com:443');
+      expect(a2.host).to.equal('applaunchpad.url.com:443');
     });
   });
 
@@ -179,7 +184,7 @@ describe('Iframe-helpers', () => {
     };
 
     it('getLocation', () => {
-      const url = 'http://.luigi.url.com';
+      const url = 'http://.applaunchpad.url.com';
       const iframeOrigin = IframeHelpers.getLocation(url);
       assert.equal(iframeOrigin, url);
     });
@@ -303,7 +308,7 @@ describe('Iframe-helpers', () => {
   describe('getMicrofrontendsInDom', () => {
     it('gets list of visible mfs', () => {
       const mockContainer = id => ({
-        luigi: { id }
+        applaunchpad: { id }
       });
       sinon
         .stub(document, 'querySelectorAll')
@@ -320,7 +325,7 @@ describe('Iframe-helpers', () => {
 
       GenericHelpers.isElementVisible.callsFake(container => {
         // second container is not active
-        return container.luigi.id !== 'main_2';
+        return container.applaunchpad.id !== 'main_2';
       });
       const iframes = IframeHelpers.getMicrofrontendsInDom();
       assert.equal(iframes.length, 6, 'total iframes');
@@ -337,22 +342,22 @@ describe('Iframe-helpers', () => {
   });
   describe('applyCoreStateData', () => {
     it('applyCoreStateData', () => {
-      sinon.stub(LuigiTheming, 'getCurrentTheme').returns('any');
-      sinon.stub(LuigiFeatureToggles, 'getActiveFeatureToggleList').returns(['featureToggle']);
+      sinon.stub(AppLaunchpadTheming, 'getCurrentTheme').returns('any');
+      sinon.stub(AppLaunchpadFeatureToggles, 'getActiveFeatureToggleList').returns(['featureToggle']);
       sinon
-        .stub(LuigiI18N, 'getCurrentLocale')
-        .returns({ currentLocaleStorageKey: 'luigi.currentluigi', defaultLocale: 'luigi' });
-      const internalData = { context: 'luigi' };
+        .stub(AppLaunchpadI18N, 'getCurrentLocale')
+        .returns({ currentLocaleStorageKey: 'applaunchpad.currentapplaunchpad', defaultLocale: 'applaunchpad' });
+      const internalData = { context: 'applaunchpad' };
       const expected = {
         activeFeatureToggleList: ['featureToggle'],
         currentLocale: {
-          currentLocaleStorageKey: 'luigi.currentluigi',
-          defaultLocale: 'luigi'
+          currentLocaleStorageKey: 'applaunchpad.currentapplaunchpad',
+          defaultLocale: 'applaunchpad'
         },
         currentTheme: 'any'
       };
       assert.deepEqual(IframeHelpers.applyCoreStateData(internalData), {
-        context: 'luigi',
+        context: 'applaunchpad',
         ...expected
       });
       assert.deepEqual(IframeHelpers.applyCoreStateData(undefined), expected);

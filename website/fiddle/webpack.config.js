@@ -51,10 +51,10 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: './node_modules/@luigi-project/core', to: 'vendor/luigi-core' },
-        { from: './node_modules/@luigi-project/client', to: 'vendor/luigi-client' },
-        { from: './node_modules/@luigi-project/plugin-auth-oauth2', to: 'vendor/plugin-auth-oauth2' },
-        { from: './node_modules/@luigi-project/plugin-auth-oidc', to: 'vendor/plugin-auth-oidc' },
+        { from: './node_modules/@applaunchpad-project/core', to: 'vendor/applaunchpad-core' },
+        { from: './node_modules/@applaunchpad-project/client', to: 'vendor/applaunchpad-client' },
+        { from: './node_modules/@applaunchpad-project/plugin-auth-oauth2', to: 'vendor/plugin-auth-oauth2' },
+        { from: './node_modules/@applaunchpad-project/plugin-auth-oidc', to: 'vendor/plugin-auth-oidc' },
         { from: './node_modules/fundamental-styles', to: 'vendor/fundamental-styles' },
         { from: './node_modules/@sap-theming/theming-base-content', to: 'vendor/theming-base-content' },
         ...['ace.js', 'mode-javascript.js', 'worker-javascript.js'].map(f => ({
@@ -71,7 +71,7 @@ module.exports = {
     minimize: true,
     minimizer: [
       new TerserPlugin({
-        // TODO: Remove when renaming luigi.svete.map.js to .map filetype
+        // TODO: Remove when renaming applaunchpad.svete.map.js to .map filetype
         exclude: /\.svelte\.map\.js$/
       })
     ]

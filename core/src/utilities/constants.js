@@ -11,9 +11,9 @@ export const MICROFRONTEND_TYPES = [
 ];
 
 export const CUSTOM_LUIGI_CONTAINER = {
-  cssSelector: '[luigi-app-root]'
+  cssSelector: '[applaunchpad-app-root]'
 };
 
 export const APP_LOADING_INDICATOR = {
-  cssSelector: '[luigi-app-loading-indicator]'
+  cssSelector: '[applaunchpad-app-loading-indicator]'
 };

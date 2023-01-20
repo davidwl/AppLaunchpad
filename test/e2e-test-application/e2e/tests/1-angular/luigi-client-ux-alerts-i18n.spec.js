@@ -1,4 +1,4 @@
-describe('Luigi Client UX Alerts + Localization', () => {
+describe('AppLaunchpad Client UX Alerts + Localization', () => {
   let $iframeBody;
   beforeEach(() => {
     //"clear" variables to make sure they are not reused and throw error in case something goes wrong
@@ -10,67 +10,67 @@ describe('Luigi Client UX Alerts + Localization', () => {
     });
   });
 
-  describe('Luigi Client generic alert', () => {
+  describe('AppLaunchpad Client generic alert', () => {
     it('success and info alerts with dismiss button', () => {
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-testid=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-alert-type]')
+        .find('[data-testid=applaunchpad-alert-type]')
         .select('success');
       cy.wrap($iframeBody)
-        .find('[data-testid=show-luigi-alert]')
+        .find('[data-testid=show-applaunchpad-alert]')
         .click();
 
-      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--success');
+      cy.get('[data-testid=applaunchpad-alert]').should('have.class', 'fd-message-strip--success');
 
-      cy.get('[data-testid=luigi-alert-dismiss]').click();
-      cy.get('[data-testid=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=applaunchpad-alert-dismiss]').click();
+      cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-alert-result]')
+        .find('[data-testid=applaunchpad-alert-result]')
         .contains('has been dismissed');
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-alert-type]')
+        .find('[data-testid=applaunchpad-alert-type]')
         .select('info');
       cy.wrap($iframeBody)
-        .find('[data-testid=show-luigi-alert]')
+        .find('[data-testid=show-applaunchpad-alert]')
         .click();
 
-      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
+      cy.get('[data-testid=applaunchpad-alert]').should('have.class', 'fd-message-strip--information');
     });
     it('hides Alert after specified time', () => {
       const closeAfter = 500;
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-testid=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-alert-close-after]')
+        .find('[data-testid=applaunchpad-alert-close-after]')
         .type(closeAfter);
 
       cy.wrap($iframeBody)
-        .find('[data-testid=show-luigi-alert]')
+        .find('[data-testid=show-applaunchpad-alert]')
         .click();
 
       cy.wait(closeAfter - 100); //the time may not be one-millisecond perfect so give it some 'flexibility'
-      cy.get('[data-testid=luigi-alert]').should('exist');
+      cy.get('[data-testid=applaunchpad-alert]').should('exist');
 
       cy.wait(101); //desired time + 1 ms = the alert shouldn't exist anymore
-      cy.get('[data-testid=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
     });
 
     it('hides Alert and returns dismissKey ', () => {
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-testid=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-alert-type]')
+        .find('[data-testid=applaunchpad-alert-type]')
         .select('success');
       cy.wrap($iframeBody)
-        .find('[data-testid=show-luigi-alert]')
+        .find('[data-testid=show-applaunchpad-alert]')
         .click();
 
       cy.wrap($iframeBody)
@@ -78,14 +78,14 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .click();
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-alert-result]')
+        .find('[data-testid=applaunchpad-alert-result]')
         .contains('has been dismissed');
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-dismissKey-result]')
+        .find('[data-testid=applaunchpad-dismissKey-result]')
         .contains('has been returned');
 
-      cy.get('[data-testid=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
     });
 
     it('can queue Alerts', () => {
@@ -93,20 +93,20 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-testid=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
 
       for (let i = 0; i < numberOfAlerts; i++) {
         //click "Show alert" few times
         cy.wrap($iframeBody)
-          .find('[data-testid=show-luigi-alert]')
+          .find('[data-testid=show-applaunchpad-alert]')
           .click();
       }
 
-      cy.get('[data-testid=luigi-alert]').should('have.length', numberOfAlerts);
+      cy.get('[data-testid=applaunchpad-alert]').should('have.length', numberOfAlerts);
 
       for (let i = 0; i < numberOfAlerts; i++) {
         //clean up. click({multiple: true}) desn't work here.
-        cy.get('[data-testid=luigi-alert-dismiss]')
+        cy.get('[data-testid=applaunchpad-alert-dismiss]')
           .first()
           .click();
       }
@@ -115,31 +115,31 @@ describe('Luigi Client UX Alerts + Localization', () => {
     it('warning alert with links and unsaved changes', () => {
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-testid=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-alert-type]')
+        .find('[data-testid=applaunchpad-alert-type]')
         .select('warning');
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-alert-links]')
+        .find('[data-testid=applaunchpad-alert-links]')
         .check({ force: true });
       cy.wrap($iframeBody)
-        .find('[data-testid=show-luigi-alert]')
+        .find('[data-testid=show-applaunchpad-alert]')
         .click();
       cy.wrap($iframeBody)
         .find('[data-testid=toggle-dirty-state]')
-        .click({force: true});
+        .click({ force: true });
 
-      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--warning');
+      cy.get('[data-testid=applaunchpad-alert]').should('have.class', 'fd-message-strip--warning');
 
       cy.get('*[id$=_link_relativePath]').click();
       cy.expectPathToBe('/projects/pr1');
-      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
-      cy.get('[data-testid=luigi-modal-dismiss]').click();
+      cy.get('[data-testid=applaunchpad-confirmation-modal]').should('be.visible');
+      cy.get('[data-testid=applaunchpad-modal-dismiss]').click();
       cy.expectPathToBe('/projects/pr1');
       cy.get('*[id$=_link_relativePath]').click();
-      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
-      cy.get('[data-testid=luigi-modal-confirm]').click();
+      cy.get('[data-testid=applaunchpad-confirmation-modal]').should('be.visible');
+      cy.get('[data-testid=applaunchpad-modal-confirm]').click();
       cy.expectPathToBe('/projects/pr1/hideSideNav');
 
       cy.get('*[id$=_link_goToOtherProject]')
@@ -154,23 +154,23 @@ describe('Luigi Client UX Alerts + Localization', () => {
     it('error alert without links and protected against XSS', () => {
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-testid=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-alert-type]')
+        .find('[data-testid=applaunchpad-alert-type]')
         .select('error');
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-alert-links]')
+        .find('[data-testid=applaunchpad-alert-links]')
         .uncheck({ force: true });
       cy.wrap($iframeBody)
-        .find('[data-testid=show-luigi-alert]')
+        .find('[data-testid=show-applaunchpad-alert]')
         .click();
 
-      cy.get('[data-testid=luigi-alert]')
+      cy.get('[data-testid=applaunchpad-alert]')
         .should('have.class', 'fd-message-strip--error')
         .should('contain', "<b onmouseover=alert('Wufff!')>click me!</b>");
 
-      cy.get('[data-testid=luigi-alert]')
+      cy.get('[data-testid=applaunchpad-alert]')
         .find('a')
         .should('not.exist');
     });
@@ -178,29 +178,29 @@ describe('Luigi Client UX Alerts + Localization', () => {
     it('alert is not displayed if it does not have any text', () => {
       cy.goToUxManagerMethods($iframeBody);
 
-      cy.get('[data-testid=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-alert-text]')
+        .find('[data-testid=applaunchpad-alert-text]')
         .uncheck({ force: true });
       cy.wrap($iframeBody)
-        .find('[data-testid=show-luigi-alert]')
+        .find('[data-testid=show-applaunchpad-alert]')
         .click();
 
-      cy.get('[data-testid=luigi-alert]').should('not.exist');
+      cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
     });
   });
 
-  describe('Luigi Client Localization', () => {
+  describe('AppLaunchpad Client Localization', () => {
     it('set localization in client', () => {
       cy.goToUxManagerMethods($iframeBody);
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-current-locale]')
+        .find('[data-testid=applaunchpad-current-locale]')
         .should('contain', "'en'");
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-input-locale]')
+        .find('[data-testid=applaunchpad-input-locale]')
         .type('pl_PL');
 
       cy.wrap($iframeBody)
@@ -208,7 +208,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .click();
 
       cy.wrap($iframeBody)
-        .find('[data-testid=luigi-current-locale]')
+        .find('[data-testid=applaunchpad-current-locale]')
         .should('contain', "'pl_PL'");
     });
 
@@ -217,7 +217,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .getIframeBody()
         .then(body => {
           cy.wrap(body)
-            .find('[data-testid=luigi-input-locale]')
+            .find('[data-testid=applaunchpad-input-locale]')
             .should('be.disabled');
 
           cy.wrap(body)

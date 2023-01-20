@@ -1,0 +1,10 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/public/applaunchpad-client
+/public/applaunchpad-core
+/public/fundamental-styles
+/public/fonts
+/public/applaunchpad-config.js
+/dist

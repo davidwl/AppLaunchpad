@@ -5,7 +5,7 @@ import {
   addContextUpdateListener,
   removeContextUpdateListener,
   removeInitListener
-} from '@luigi-project/client';
+} from '@applaunchpad-project/client';
 
 export default class Home extends Component {
   constructor(props) {
@@ -20,12 +20,12 @@ export default class Home extends Component {
   componentDidMount() {
     this.initListener = addInitListener(initialContext => {
       this.setState({
-        message: 'Luigi Client initialized.'
+        message: 'AppLaunchpad Client initialized.'
       });
     });
     this.contextUpdateListener = addContextUpdateListener(updatedContext => {
       this.setState({
-        message: 'Luigi Client updated.'
+        message: 'AppLaunchpad Client updated.'
       });
     });
   }

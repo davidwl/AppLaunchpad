@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { linkManager, uxManager, sendCustomMessage, addCustomMessageListener } from '@luigi-project/client';
+import { linkManager, uxManager, sendCustomMessage, addCustomMessageListener } from '@applaunchpad-project/client';
 
 @Component({
   selector: 'app-overview',
@@ -9,7 +9,7 @@ import { linkManager, uxManager, sendCustomMessage, addCustomMessageListener } f
 export class OverviewComponent implements OnInit {
   public linkManager = linkManager;
 
-  public luigiClientItems: any[] = [
+  public applaunchpadClientItems: any[] = [
     {
       clickHandler: () => {
         this.linkManager().navigate('/projects/pr1');
@@ -37,7 +37,7 @@ export class OverviewComponent implements OnInit {
       },
       text: 'sendCustomMessage()',
       description:
-        'send a custom message that will execute some logic on the Luigi Core app if that app is properly configured for that'
+        'send a custom message that will execute some logic on the AppLaunchpad Core app if that app is properly configured for that'
     },
     {
       clickHandler: () => {
@@ -48,7 +48,7 @@ export class OverviewComponent implements OnInit {
     }
   ];
 
-  public luigiCoreLinks: any[] = [
+  public applaunchpadCoreLinks: any[] = [
     {
       link: '/projects/pr1/dps',
       text: 'defaultChildNode',
@@ -85,7 +85,7 @@ export class OverviewComponent implements OnInit {
   public isDirty = false;
 
   ngOnInit() {
-    addCustomMessageListener('luigi.my-custom-message-for-client', (customMessage, listenerId) => {
+    addCustomMessageListener('applaunchpad.my-custom-message-for-client', (customMessage, listenerId) => {
       console.info('Received Custom Message', customMessage, listenerId);
     });
   }

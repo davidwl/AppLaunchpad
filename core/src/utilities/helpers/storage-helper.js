@@ -73,7 +73,7 @@ class StorageHelperClass {
   }
 
   buildPrefix(hostname) {
-    return 'Luigi#' + hostname + '#';
+    return 'AppLaunchpad#' + hostname + '#';
   }
 
   removeItem(hostname, params) {

@@ -1,11 +1,11 @@
 {
-  "name": "luigi-external-mf",
+  "name": "applaunchpad-external-mf",
   "version": "0.1.0",
   "description": "",
   "main": "index.html",
   "license": "MIT",
   "dependencies": {
-    "@luigi-project/client": "^1.1.0",
+    "@applaunchpad-project/client": "^1.1.0",
     "fundamental-styles": "^0.17.0"
   }
 }

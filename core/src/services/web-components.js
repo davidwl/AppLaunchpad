@@ -3,7 +3,7 @@ import {
   resolveRenderer,
   registerEventListeners
 } from '../utilities/helpers/web-component-helpers';
-import { LuigiConfig } from '../core-api';
+import { AppLaunchpadConfig } from '../core-api';
 import { RoutingHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
@@ -11,9 +11,9 @@ class WebComponentSvcClass {
   constructor() {}
 
   dynamicImport(viewUrl) {
-    /** __luigi_dyn_import() is replaced by import() after webpack is done,
+    /** __applaunchpad_dyn_import() is replaced by import() after webpack is done,
      *    because webpack can't let his hands off imports ;) */
-    return __luigi_dyn_import(viewUrl);
+    return __applaunchpad_dyn_import(viewUrl);
   }
 
   /** Creates a web component with tagname wc_id and adds it to wcItemContainer,
@@ -34,16 +34,16 @@ class WebComponentSvcClass {
 
   initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId) {
     const clientAPI = {
-      linkManager: window.Luigi.navigation,
-      uxManager: window.Luigi.ux,
-      getCurrentLocale: () => window.Luigi.i18n().getCurrentLocale(),
+      linkManager: window.AppLaunchpad.navigation,
+      uxManager: window.AppLaunchpad.ux,
+      getCurrentLocale: () => window.AppLaunchpad.i18n().getCurrentLocale(),
       publishEvent: ev => {
         if (eventBusElement.eventBus) {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
       },
-      getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
-      getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList()
+      getActiveFeatureToggleList: () => window.AppLaunchpad.featureToggles().getActiveFeatureToggleList(),
+      getActiveFeatureToggles: () => window.AppLaunchpad.featureToggles().getActiveFeatureToggleList()
     };
 
     if (wc.__postProcess) {
@@ -54,7 +54,7 @@ class WebComponentSvcClass {
       wc.__postProcess(ctx, clientAPI, url.origin + url.pathname);
     } else {
       wc.context = ctx;
-      wc.LuigiClient = clientAPI;
+      wc.AppLaunchpadClient = clientAPI;
     }
   }
 
@@ -67,7 +67,7 @@ class WebComponentSvcClass {
     for (let i = 0; i < viewUrl.length; i++) {
       charRep += viewUrl.charCodeAt(i).toString(16);
     }
-    return 'luigi-wc-' + charRep;
+    return 'applaunchpad-wc-' + charRep;
   }
 
   /** Does a module import from viewUrl and defines a new web component
@@ -109,7 +109,7 @@ class WebComponentSvcClass {
 
   /**
    * Handles the import of self registered web component bundles, i.e. the web component
-   * is added to the customElements registry by the bundle code rather than by luigi.
+   * is added to the customElements registry by the bundle code rather than by applaunchpad.
    *
    * @param {*} node the corresponding navigation node
    * @param {*} viewUrl the source of the wc bundle
@@ -117,9 +117,9 @@ class WebComponentSvcClass {
    */
   includeSelfRegisteredWCFromUrl(node, viewUrl, onload) {
     if (this.checkWCUrl(viewUrl)) {
-      /** Append reg function to luigi object if not present */
-      if (!window.Luigi._registerWebcomponent) {
-        window.Luigi._registerWebcomponent = (srcString, el) => {
+      /** Append reg function to applaunchpad object if not present */
+      if (!window.AppLaunchpad._registerWebcomponent) {
+        window.AppLaunchpad._registerWebcomponent = (srcString, el) => {
           window.customElements.define(this.generateWCId(srcString), el);
         };
       }
@@ -140,7 +140,7 @@ class WebComponentSvcClass {
   }
 
   /**
-   * Checks if a url is allowed to be included, based on 'navigation.validWebcomponentUrls' in luigi config.
+   * Checks if a url is allowed to be included, based on 'navigation.validWebcomponentUrls' in applaunchpad config.
    * Returns true, if allowed.
    *
    * @param {*} url the url string to check
@@ -152,7 +152,7 @@ class WebComponentSvcClass {
         return true; // same host is okay
       }
 
-      const valids = LuigiConfig.getConfigValue('navigation.validWebcomponentUrls');
+      const valids = AppLaunchpadConfig.getConfigValue('navigation.validWebcomponentUrls');
       if (valids && valids.length > 0) {
         for (let el of valids) {
           try {
@@ -179,14 +179,14 @@ class WebComponentSvcClass {
       node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
     wc_container.appendChild(wcItemPlaceholder);
-    wc_container._luigi_node = node;
+    wc_container._applaunchpad_node = node;
 
     if (window.customElements.get(wc_id)) {
       this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
     } else {
       /** Custom import function, if defined */
-      if (window.luigiWCFn) {
-        window.luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
+      if (window.applaunchpadWCFn) {
+        window.applaunchpadWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
@@ -232,7 +232,7 @@ class WebComponentSvcClass {
    *
    * @param {*} navNode the navigation node defining the compound
    * @param {*} wc_container the web component container dom element
-   * @param {*} context the luigi node context
+   * @param {*} context the applaunchpad node context
    */
   renderWebComponentCompound(navNode, wc_container, context) {
     let renderer;

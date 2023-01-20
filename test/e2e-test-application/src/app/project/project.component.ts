@@ -8,8 +8,8 @@ import {
   addContextUpdateListener,
   removeContextUpdateListener,
   storageManager
-} from '@luigi-project/client';
-import { IContextMessage, LuigiContextService } from '../services/luigi-context.service';
+} from '@applaunchpad-project/client';
+import { IContextMessage, AppLaunchpadContextService } from '../services/applaunchpad-context.service';
 import { NgForm } from '@angular/forms';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { delay, timeout } from 'rxjs/operators';
@@ -20,8 +20,8 @@ import { delay, timeout } from 'rxjs/operators';
   styleUrls: ['./project.component.scss']
 })
 export class ProjectComponent implements OnInit, OnDestroy {
-  @ViewChild('luigiAlertForm') luigiAlertForm: NgForm;
-  @ViewChild('luigiLocalizationForm') luigiLocalizationForm: NgForm;
+  @ViewChild('applaunchpadAlertForm') applaunchpadAlertForm: NgForm;
+  @ViewChild('applaunchpadLocalizationForm') applaunchpadLocalizationForm: NgForm;
   public linkManager = linkManager;
   public uxManager = uxManager;
   public projectId: string;
@@ -45,7 +45,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public constructor(
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private luigiService: LuigiContextService
+    private applaunchpadService: AppLaunchpadContextService
   ) {
     this.pathExists = {
       formValue: '/projects/pr2',
@@ -85,15 +85,15 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
+    // We suggest to use a centralized approach of AppLaunchpadClient.addContextUpdateListener
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
-    this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
+    this.lcSubscription = this.applaunchpadService.getContext().subscribe((ctx: IContextMessage) => {
       if (ctx.contextType === 'init' || ctx.contextType === 'update') {
         this.projectId = ctx.context.currentProject;
         this.preservedViewCallbackContext = ctx.context.goBackContext;
         this.currentLocale = uxManager().getCurrentLocale();
         this.canChangeLocale = getClientPermissions().changeCurrentLocale;
-        // Since Luigi runs outside of Zone.js, changes need
+        // Since AppLaunchpad runs outside of Zone.js, changes need
         // to be updated manually
         // Be sure to check for destroyed ChangeDetectorRef,
         // else you get runtime Errors
@@ -107,7 +107,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       this.projectId = params['projectId'];
     });
 
-    // Decentralized approach, using LuigiClient listeners directly
+    // Decentralized approach, using AppLaunchpadClient listeners directly
     //
     this.cudListener = addContextUpdateListener(updatedContext => {
       // this.projectId = updatedContext.currentProject;
@@ -133,7 +133,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   showConfirmationModal() {
     this.confirmationModalResult = '';
     const settings = {
-      // header: 'Modal Header - Luigi modal',
+      // header: 'Modal Header - AppLaunchpad modal',
       type: 'confirmation',
       body: `Lorem <i>tipsum</i> dolor sit amet, <b>consectetur adipisicing elit</b>, sed do eiusmod tempor incididunt ut labore et dolore magna
         aliqua. Ut enim ad minim veniam, <br/><br/>quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -179,7 +179,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   showAlert() {
-    const { type, links, text, closeAfter } = this.luigiAlertForm.value;
+    const { type, links, text, closeAfter } = this.applaunchpadAlertForm.value;
     this.alertDismissed = text ? false : undefined;
     this.alertDismissKey = text ? false : undefined;
 
@@ -219,7 +219,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   setCurrentLocale() {
-    uxManager().setCurrentLocale(this.luigiLocalizationForm.value.locale);
+    uxManager().setCurrentLocale(this.applaunchpadLocalizationForm.value.locale);
   }
 
   checkIfPathExists() {

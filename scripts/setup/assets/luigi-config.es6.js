@@ -1,5 +1,5 @@
 // You can now use ES6 syntax here
-Luigi.setConfig({
+AppLaunchpad.setConfig({
   navigation: {
     nodes: () => [
       {

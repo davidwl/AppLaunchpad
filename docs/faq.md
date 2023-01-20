@@ -14,12 +14,12 @@
 }
 meta -->
 
-# Frequently asked questions about Luigi
+# Frequently asked questions about AppLaunchpad
 
 <!-- add-attribute:class:success -->
->**TIP:** You can go to our [GitHub Discussions page](https://github.com/SAP/luigi/discussions) to find the answers to more questions not listed here.
+>**TIP:** You can go to our [GitHub Discussions page](https://github.com/davidwl/applaunchpad/discussions) to find the answers to more questions not listed here.
 
-This page contains FAQs about Luigi in the following categories:
+This page contains FAQs about AppLaunchpad in the following categories:
 - [Basics](#basic-questions)
 - [User interface/appearance](#ui-questions)
 - [Navigation and routing](#navigation-and-routing-questions)
@@ -29,71 +29,71 @@ This page contains FAQs about Luigi in the following categories:
 
 <!-- accordion:start -->
 
-### What is Luigi?
+### What is AppLaunchpad?
 
-Luigi is a micro frontend framework that helps you build modularizable, extensible, scalable and consistent UIs and web applications (for administrators and business users).
+AppLaunchpad is a micro frontend framework that helps you build modularizable, extensible, scalable and consistent UIs and web applications (for administrators and business users).
 
-You can watch this video of a Luigi use case to understand its functions better:
+You can watch this video of a AppLaunchpad use case to understand its functions better:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/fRYESd-YDhA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### What are micro frontends?
 
 The term "micro frontends" extends the concepts of micro services to the frontend. It's an architectural style where big frontend monoliths are decomposed into smaller and simpler chunks to be developed, tested, deployed and maintained independently and rapidly (by many distributed teams), while still appearing to the customer as a one cohesive product.
 
-This video which explains the basics of micro frontend architecture and how it can be implemented with Luigi:
+This video which explains the basics of micro frontend architecture and how it can be implemented with AppLaunchpad:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Bjp1_yvtR4Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-### Does Luigi deliver micro frontends?
+### Does AppLaunchpad deliver micro frontends?
 
-No, Luigi itself does not deliver any micro frontends. It is a framework that helps you develop micro frontends and connect them to web applications.
+No, AppLaunchpad itself does not deliver any micro frontends. It is a framework that helps you develop micro frontends and connect them to web applications.
 
-### Is Luigi only useful in the context of SAP or very large corporate applications?
+### Is AppLaunchpad only useful in the context of SAP or very large corporate applications?
 
-No, Luigi can be used independently of SAP for a variety of purposes. You can find one example in [this article](https://medium.com/swlh/luigi-micro-fronteds-orchestrator-8c0eca710151) which describes how to create a small hobby project using Luigi.
+No, AppLaunchpad can be used independently of SAP for a variety of purposes. You can find one example in [this article](https://medium.com/swlh/applaunchpad-micro-fronteds-orchestrator-8c0eca710151) which describes how to create a small hobby project using AppLaunchpad.
 
-### What is the difference between Luigi and SAPUI5/OpenUI5?
+### What is the difference between AppLaunchpad and SAPUI5/OpenUI5?
 
-You can find a detailed response to this question [here](https://github.com/SAP/luigi/discussions/2809#discussioncomment-3137780).
+You can find a detailed response to this question [here](https://github.com/davidwl/applaunchpad/discussions/2809#discussioncomment-3137780).
 
-### Where can I download Luigi?
+### Where can I download AppLaunchpad?
 
-The Luigi project can be found on [GitHub](https://github.com/SAP/luigi). Depending on the UI framework you use, there are different setups for Luigi. You can find more information here: [application setup](application-setup.md).
+The AppLaunchpad project can be found on [GitHub](https://github.com/davidwl/applaunchpad). Depending on the UI framework you use, there are different setups for AppLaunchpad. You can find more information here: [application setup](application-setup.md).
 
-### Does Luigi provide micro frontend to micro frontend communication?
+### Does AppLaunchpad provide micro frontend to micro frontend communication?
 
-Yes. The simplest way to configure this type of communication is unidirectional via [linkmanager.navigate](luigi-client-api.md#linkmanager) where you can send additional data to the target micro frontend via [withParams](luigi-client-api.md#withparams).
+Yes. The simplest way to configure this type of communication is unidirectional via [linkmanager.navigate](applaunchpad-client-api.md#linkmanager) where you can send additional data to the target micro frontend via [withParams](applaunchpad-client-api.md#withparams).
 
-Another possibility is to call [linkmanager.navigate](luigi-client-api.md#linkmanager) with the [preserveView](luigi-client-api.md#navigate) option set to `true`. This allows you to get a "return value" from the target micro frontend if it uses the [goBack](luigi-client-api.md#goback) function. Lastly, you can use custom events to model your own communication functionality.
+Another possibility is to call [linkmanager.navigate](applaunchpad-client-api.md#linkmanager) with the [preserveView](applaunchpad-client-api.md#navigate) option set to `true`. This allows you to get a "return value" from the target micro frontend if it uses the [goBack](applaunchpad-client-api.md#goback) function. Lastly, you can use custom events to model your own communication functionality.
 
-Of course, Luigi also allows you to communicate between the core application (Luigi Core) and the micro frontend (Luigi Client). See [custom messages](communication.md) for more info.
+Of course, AppLaunchpad also allows you to communicate between the core application (AppLaunchpad Core) and the micro frontend (AppLaunchpad Client). See [custom messages](communication.md) for more info.
 
-### The distributed development possibilities seem like a big advantage; is that just an additional benefit from using Luigi, or was that a main factor behind it?
+### The distributed development possibilities seem like a big advantage; is that just an additional benefit from using AppLaunchpad, or was that a main factor behind it?
 
-Development scalability was one of the main goals right from the beginning. There is a nice article on [martinfowler.com](https://martinfowler.com/articles/micro-frontends.html) explaining the benefits of a micro frontend architecture in general. All the disadvantages of the iframe approach mentioned in the article are solved with Luigi.
+Development scalability was one of the main goals right from the beginning. There is a nice article on [martinfowler.com](https://martinfowler.com/articles/micro-frontends.html) explaining the benefits of a micro frontend architecture in general. All the disadvantages of the iframe approach mentioned in the article are solved with AppLaunchpad.
 
 ### One of the potential issues with a micro frontend architecture is styling. You suggest to use the CSS elements of Fundamentals to solve that issue. Is that correct?
 
-It is crucial that all micro frontends in a solution follow the same design guidelines. Luigi's default UI styling is based on [Fundamentals](https://sap.github.io/fundamental-styles/) but it can be customised. If you don’t want to use Fundamentals, but Bootstrap, Material, or something else instead, you need to re-style the Luigi view components according to your design guidelines or replace them with your own components completely.
+It is crucial that all micro frontends in a solution follow the same design guidelines. AppLaunchpad's default UI styling is based on [Fundamentals](https://sap.github.io/fundamental-styles/) but it can be customised. If you don’t want to use Fundamentals, but Bootstrap, Material, or something else instead, you need to re-style the AppLaunchpad view components according to your design guidelines or replace them with your own components completely.
 
-### Luigi claims to be ‘technology agnostic’. Are you referring to the UI framework that can be used, or to some other technology?
+### AppLaunchpad claims to be ‘technology agnostic’. Are you referring to the UI framework that can be used, or to some other technology?
 
 The main point is that you can choose any base frontend technology you prefer, such as UI5, Angular, React, or Vue. You can even mix them in one solution. One micro frontend can use UI5, while another is written in Angular and Fundamentals. The only thing that matters is that HTML/JavaScript/CSS resources are provided and served via HTTPS in the end. The fact that a micro frontend is its own web application also means that you have full freedom regarding your development toolchain and CI/CD solutions, and the web server you want to use (such as Nginx, Apache, Tomcat, or Github Pages).
 
-Last but not least, "technology agnostic" also means that there are no conflicts regarding any additional libraries you use, such as D3.js, Chart.js, or others. You can also avoid conflicts between different versions of the same library. Imagine a monolithic web application where a lot of teams are contributing and there has been a decision that Chart.js is the data visualization framework of choice, and then there is a need for updating the version, which potentially has breaking changes. In that case, all the teams have to be approached and asked if they use it, if their code is affected by the version update and, if so, when they can deliver the necessary changes. With Luigi, you don‘t have this management overhead at all.
+Last but not least, "technology agnostic" also means that there are no conflicts regarding any additional libraries you use, such as D3.js, Chart.js, or others. You can also avoid conflicts between different versions of the same library. Imagine a monolithic web application where a lot of teams are contributing and there has been a decision that Chart.js is the data visualization framework of choice, and then there is a need for updating the version, which potentially has breaking changes. In that case, all the teams have to be approached and asked if they use it, if their code is affected by the version update and, if so, when they can deliver the necessary changes. With AppLaunchpad, you don‘t have this management overhead at all.
 
-### Are there any equivalents of Luigi?
+### Are there any equivalents of AppLaunchpad?
 
-Yes, there are several. Here are some of the most popular: [Mosaic](https://www.mosaic9.org/), [Single-spa](https://github.com/CanopyTax/single-spa), [OpenComponents](https://opencomponents.github.io/), [Piral](https://www.piral.io). Note that they are not 100% equivalents of Luigi!
+Yes, there are several. Here are some of the most popular: [Mosaic](https://www.mosaic9.org/), [Single-spa](https://github.com/CanopyTax/single-spa), [OpenComponents](https://opencomponents.github.io/), [Piral](https://www.piral.io). Note that they are not 100% equivalents of AppLaunchpad!
 
 <!--
-### In what way is Luigi different from these mentioned framework/products?
+### In what way is AppLaunchpad different from these mentioned framework/products?
 
 TBD
 -->
 
-### Is Luigi already being used within any products, or is it still too new?
+### Is AppLaunchpad already being used within any products, or is it still too new?
 
-Yes, it is already being used in production and close-to-production within SAP. For example in Kyma, SAP C/4HANA Cockpit, Context Driven Services, Konduit and Varkes. Outside of SAP, SAAS AG (partner) uses Luigi. Additionally, there are some POCs going on and we're supporting a few other customers and partners who want to start using Luigi soon.
+Yes, it is already being used in production and close-to-production within SAP. For example in Kyma, SAP C/4HANA Cockpit, Context Driven Services, Konduit and Varkes. Outside of SAP, SAAS AG (partner) uses AppLaunchpad. Additionally, there are some POCs going on and we're supporting a few other customers and partners who want to start using AppLaunchpad soon.
 
 <!-- accordion:end -->
 
@@ -101,24 +101,24 @@ Yes, it is already being used in production and close-to-production within SAP. 
 
 <!-- accordion:start -->
 
-### I don't want to use the default Fiori Fundamentals style. How can I style Luigi differently? How can I change the look of Luigi's UI?
+### I don't want to use the default Fiori Fundamentals style. How can I style AppLaunchpad differently? How can I change the look of AppLaunchpad's UI?
 
 There are a few options to do that at the moment:
 - Use the Fundamental Styles theming capabilities which already allow you to achieve a lot by customizing the CSS variables. Find more info [here](https://github.com/SAP/theming-base-content).
-- Manually overwrite the styles where needed. The documentation page you are on right now can be used as an example, as it was developed with Luigi.
-- Turn off Luigi view components completely via the [hideNavigation](general-settings.md#hidenavigation) parameter in the `settings:` section of your Luigi configuration. Then you can implement your own view components for header and navigation and use the [Luigi Core API](luigi-core-api.md) to set them up with Luigi.
+- Manually overwrite the styles where needed. The documentation page you are on right now can be used as an example, as it was developed with AppLaunchpad.
+- Turn off AppLaunchpad view components completely via the [hideNavigation](general-settings.md#hidenavigation) parameter in the `settings:` section of your AppLaunchpad configuration. Then you can implement your own view components for header and navigation and use the [AppLaunchpad Core API](applaunchpad-core-api.md) to set them up with AppLaunchpad.
 - You can use this simple example with a completely customized shell as a starting point:
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Luigi Custom UI</title>
+    <title>AppLaunchpad Custom UI</title>
     <link
       rel="stylesheet"
-      href="https://unpkg.com/@luigi-project/core/luigi.css"
+      href="https://unpkg.com/@applaunchpad-project/core/applaunchpad.css"
     />
-    <script src="https://unpkg.com/@luigi-project/core/luigi.js"></script>
+    <script src="https://unpkg.com/@applaunchpad-project/core/applaunchpad.js"></script>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -136,17 +136,17 @@ There are a few options to do that at the moment:
        */
       function init() {
         // react on route changes
-        window.onhashchange = updateNav; // there will be an abstraction on luigi side in the future, independend from routing strategy
+        window.onhashchange = updateNav; // there will be an abstraction on applaunchpad side in the future, independend from routing strategy
 
         // building up static root nodes in header
         window.linkEl = document.querySelector(".links");
-        Luigi.getConfigValueAsync("navigation.nodes").then((data) => {
+        AppLaunchpad.getConfigValueAsync("navigation.nodes").then((data) => {
           data.forEach((element) => {
             var anc = document.createElement("a");
-            anc.innerHTML = Luigi.i18n().getTranslation(element.label);
+            anc.innerHTML = AppLaunchpad.i18n().getTranslation(element.label);
             anc.pathSegment = element.pathSegment;
             anc.addEventListener("click", () => {
-              Luigi.navigation().navigate("/" + element.pathSegment);
+              AppLaunchpad.navigation().navigate("/" + element.pathSegment);
             });
             linkEl.appendChild(anc);
           });
@@ -156,10 +156,10 @@ There are a few options to do that at the moment:
 ​
       /**
        * returns the currently selected branch in the navigation tree as an array, starting from root to leaf
-       * (currently this has to be done manually here, but we plan to expose that as part of luigi core api)
+       * (currently this has to be done manually here, but we plan to expose that as part of applaunchpad core api)
        */
       function getNodeBranch() {
-        let nodeTree = Luigi.getConfigValue("navigation.nodes");
+        let nodeTree = AppLaunchpad.getConfigValue("navigation.nodes");
         let segments = window.location.hash.split("/");
         console.log(segments);
         let nodes = [];
@@ -203,7 +203,7 @@ There are a few options to do that at the moment:
               }
             } else {
               console.log("nav to ", path);
-              Luigi.navigation().navigate(path);
+              AppLaunchpad.navigation().navigate(path);
             }
           };
           nodeCnt.appendChild(label);
@@ -303,7 +303,7 @@ There are a few options to do that at the moment:
         background: white;
       }
 ​
-      html.luigi-app-in-custom-container [luigi-app-root] {
+      html.applaunchpad-app-in-custom-container [applaunchpad-app-root] {
         position: absolute;
         top: 50px;
         bottom: 0;
@@ -315,7 +315,7 @@ There are a few options to do that at the moment:
         display: none;
       }
 ​
-      html.luigi-app-in-custom-container .leftNavHidden [luigi-app-root] {
+      html.applaunchpad-app-in-custom-container .leftNavHidden [applaunchpad-app-root] {
         left: 0;
       }
 ​
@@ -353,7 +353,7 @@ There are a few options to do that at the moment:
 ​
     <!-- LUIGI CONFIG -->
     <script>
-      Luigi.setConfig({
+      AppLaunchpad.setConfig({
         navigation: {
           nodes: [
             {
@@ -366,11 +366,11 @@ There are a few options to do that at the moment:
                   label: "Overview",
                   icon: "home",
                   viewUrl:
-                    "https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html",
+                    "https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html",
                   context: {
-                    title: "Welcome to Luigi Fiddle!",
+                    title: "Welcome to AppLaunchpad Fiddle!",
                     content:
-                      'Click on "Modify Config" at the bottom right and play around with your Luigi configuration',
+                      'Click on "Modify Config" at the bottom right and play around with your AppLaunchpad configuration',
                   },
                   children: [
                     {
@@ -378,7 +378,7 @@ There are a few options to do that at the moment:
                       label: "L1",
                       icon: "home",
                       viewUrl:
-                        "https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html",
+                        "https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html",
                       context: {
                         title: "L1",
                         content: "",
@@ -389,7 +389,7 @@ There are a few options to do that at the moment:
                           label: "L2",
                           icon: "home",
                           viewUrl:
-                            "https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html",
+                            "https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html",
                           context: {
                             title: "L2",
                             content: "",
@@ -407,7 +407,7 @@ There are a few options to do that at the moment:
                             enabled: false,
                           },
                           viewUrl:
-                            "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/empty-demo-page.html",
+                            "https://fiddle.applaunchpad-project.io/examples/microfrontends/fundamental/empty-demo-page.html",
                         },
                       ],
                     },
@@ -423,7 +423,7 @@ There are a few options to do that at the moment:
                         enabled: false,
                       },
                       viewUrl:
-                        "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/empty-demo-page.html",
+                        "https://fiddle.applaunchpad-project.io/examples/microfrontends/fundamental/empty-demo-page.html",
                     },
                   ],
                 },
@@ -439,7 +439,7 @@ There are a few options to do that at the moment:
                     enabled: false,
                   },
                   viewUrl:
-                    "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/empty-demo-page.html",
+                    "https://fiddle.applaunchpad-project.io/examples/microfrontends/fundamental/empty-demo-page.html",
                 },
                 {
                   pathSegment: "table",
@@ -449,7 +449,7 @@ There are a few options to do that at the moment:
                     enabled: false,
                   },
                   viewUrl:
-                    "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html",
+                    "https://fiddle.applaunchpad-project.io/examples/microfrontends/fundamental/table-demo-page.html",
                 },
                 {
                   pathSegment: "tree",
@@ -459,7 +459,7 @@ There are a few options to do that at the moment:
                     enabled: false,
                   },
                   viewUrl:
-                    "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/tree-demo-page.html",
+                    "https://fiddle.applaunchpad-project.io/examples/microfrontends/fundamental/tree-demo-page.html",
                 },
                 {
                   pathSegment: "ui5qs",
@@ -470,7 +470,7 @@ There are a few options to do that at the moment:
                     collapsible: true,
                   },
                   viewUrl:
-                    "https://fiddle.luigi-project.io/examples/microfrontends/ui5qs/",
+                    "https://fiddle.applaunchpad-project.io/examples/microfrontends/ui5qs/",
                 },
                 {
                   pathSegment: "ui5sc",
@@ -490,7 +490,7 @@ There are a few options to do that at the moment:
               label: "Some Action",
               icon: "favorite-list",
               viewUrl:
-                "https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html",
+                "https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html",
               hideSideNav: true,
               context: {
                 title: "Left navigation hidden",
@@ -503,7 +503,7 @@ There are a few options to do that at the moment:
               label: "Help",
               icon: "sys-help",
               viewUrl:
-                "https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html",
+                "https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html",
               context: {
                 title: "Help Section",
                 content: "Find some useful links on the left",
@@ -515,9 +515,9 @@ There are a few options to do that at the moment:
                   icon: "nav-back",
                 },
                 {
-                  label: "Luigi Github Page",
+                  label: "AppLaunchpad Github Page",
                   externalLink: {
-                    url: "https://github.com/SAP/luigi",
+                    url: "https://github.com/davidwl/applaunchpad",
                   },
                 },
                 {
@@ -542,10 +542,10 @@ There are a few options to do that at the moment:
           useHashRouting: true,
         },
         settings: {
-          hideNavigation: true /* IMPORTANT, hides luigi shell */,
+          hideNavigation: true /* IMPORTANT, hides applaunchpad shell */,
         },
         lifecycleHooks: {
-          luigiAfterInit: () => {
+          applaunchpadAfterInit: () => {
             init(); /* IMPORTANT, calls init from custom app logic */
           },
         },
@@ -557,14 +557,14 @@ There are a few options to do that at the moment:
     <!-- HTML -->
 ​
     <div class="myHeader">
-      <img src="https://fiddle.luigi-project.io/img/luigi.png" />
+      <img src="https://fiddle.applaunchpad-project.io/img/applaunchpad.png" />
       <span>ACME Corp</span>
       <div class="links"></div>
     </div>
 ​
     <div class="myLeftSideNav"></div>
 ​
-    <div luigi-app-root></div>
+    <div applaunchpad-app-root></div>
     <!-- IMPORTANT -->
 ​
     <!-- HTML -->
@@ -572,13 +572,13 @@ There are a few options to do that at the moment:
 </html>
 ```
 
-### How do I disable the Luigi loading indicator? / My micro frontend page is stuck on a loading screen.
+### How do I disable the AppLaunchpad loading indicator? / My micro frontend page is stuck on a loading screen.
 
-If you include micro frontends in Luigi which don't use Luigi Client, Luigi Core won't know when they are ready because there is no handshake. This can cause the page to remain loading indefinitely. In that case, you should disable the loading indicator using the [loadingIndicator.enabled](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=loadingindicatorenabled) parameter in your configuration file.
+If you include micro frontends in AppLaunchpad which don't use AppLaunchpad Client, AppLaunchpad Core won't know when they are ready because there is no handshake. This can cause the page to remain loading indefinitely. In that case, you should disable the loading indicator using the [loadingIndicator.enabled](https://docs.applaunchpad-project.io/docs/navigation-parameters-reference/?section=loadingindicatorenabled) parameter in your configuration file.
 
-### Can I hide the Luigi default side/top navigation panel?
+### Can I hide the AppLaunchpad default side/top navigation panel?
 
-To hide Luigi side navigation, use the [hideSideNav](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=hidesidenav) parameter.
+To hide AppLaunchpad side navigation, use the [hideSideNav](https://docs.applaunchpad-project.io/docs/navigation-parameters-reference/?section=hidesidenav) parameter.
 
 To hide the top navigation, you can use custom CSS, for example:
 
@@ -591,9 +591,9 @@ To hide the top navigation, you can use custom CSS, for example:
 }
 ```
 
-### Can I have more than 2 levels in the Luigi side navigation?/Can navigation nodes have grandchildren?
+### Can I have more than 2 levels in the AppLaunchpad side navigation?/Can navigation nodes have grandchildren?
 
-Curerntly, it is not possible for Luigi navigation nodes to have more than one level of children. However, the [tab navigation](https://docs.luigi-project.io/docs/navigation-advanced?section=tab-navigation) can be used to place additional nodes on the page.
+Curerntly, it is not possible for AppLaunchpad navigation nodes to have more than one level of children. However, the [tab navigation](https://docs.applaunchpad-project.io/docs/navigation-advanced?section=tab-navigation) can be used to place additional nodes on the page.
 
 <!-- accordion:end -->
 
@@ -601,13 +601,13 @@ Curerntly, it is not possible for Luigi navigation nodes to have more than one l
 
 <!-- accordion:start -->
 
-### What is the proper way for Luigi Core to react to navigation from Luigi Client?
+### What is the proper way for AppLaunchpad Core to react to navigation from AppLaunchpad Client?
 
-You can use the [nodeChangeHook](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=nodechangehook) function to react to navigation inside Luigi Core.
+You can use the [nodeChangeHook](https://docs.applaunchpad-project.io/docs/navigation-parameters-reference/?section=nodechangehook) function to react to navigation inside AppLaunchpad Core.
 
-### How can I deactivate Luigi routing?
+### How can I deactivate AppLaunchpad routing?
 
-You can do that by using the [skipRoutingForUrlPatterns](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=skiproutingforurlpatterns) parameter and setting it to `*`.
+You can do that by using the [skipRoutingForUrlPatterns](https://docs.applaunchpad-project.io/docs/navigation-parameters-reference/?section=skiproutingforurlpatterns) parameter and setting it to `*`.
 
 <!-- accordion:end -->
 
@@ -617,23 +617,23 @@ You can do that by using the [skipRoutingForUrlPatterns](https://docs.luigi-proj
 
 ### Is it possible to have more than one micro frontend on the same page?
 
-Yes, currently this is possible via [splitView](https://docs.luigi-project.io/docs/luigi-client-api/?section=splitview) or [Web Components](https://docs.luigi-project.io/docs/web-component).
+Yes, currently this is possible via [splitView](https://docs.applaunchpad-project.io/docs/applaunchpad-client-api/?section=splitview) or [Web Components](https://docs.applaunchpad-project.io/docs/web-component).
 
 ### Can I place a micro frontend within another micro frontend?
 
-Yes, Luigi's [Web Component](https://docs.luigi-project.io/docs/web-component) feature allows you to create [compound micro frontends](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=webcomponent).
+Yes, AppLaunchpad's [Web Component](https://docs.applaunchpad-project.io/docs/web-component) feature allows you to create [compound micro frontends](https://docs.applaunchpad-project.io/docs/navigation-parameters-reference/?section=webcomponent).
 
-### How can I implement a custom home page or login page for Luigi?
+### How can I implement a custom home page or login page for AppLaunchpad?
 
-One way would be to bind the Luigi app root to a specific [dom element](https://docs.luigi-project.io/docs/luigi-ux-features?section=rendering-of-luigi-application-in-the-dom). With a second dom element containing your home page views, you could control visibility of the two based on login status. For example:
+One way would be to bind the AppLaunchpad app root to a specific [dom element](https://docs.applaunchpad-project.io/docs/applaunchpad-ux-features?section=rendering-of-applaunchpad-application-in-the-dom). With a second dom element containing your home page views, you could control visibility of the two based on login status. For example:
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Hello Luigi</title>
-    <link rel='stylesheet' href='https://unpkg.com/@luigi-project/core@1.7.0/luigi.css'>
-    <script src='https://unpkg.com/@luigi-project/core@1.7.0/luigi.js'></script>
+	<title>Hello AppLaunchpad</title>
+    <link rel='stylesheet' href='https://unpkg.com/@applaunchpad-project/core@1.7.0/applaunchpad.css'>
+    <script src='https://unpkg.com/@applaunchpad-project/core@1.7.0/applaunchpad.js'></script>
     <meta charset="utf-8">
 </head>
 <body>
@@ -648,14 +648,14 @@ One way would be to bind the Luigi app root to a specific [dom element](https://
             width: 100%;
             height: 100%;
         }
-        .luigi-container {
+        .applaunchpad-container {
             width: 100%;
             height: 100%;
         }
         .homepage .homepage-container {
             display: block;
         }
-        .homepage .luigi-container {
+        .homepage .applaunchpad-container {
             display: none;
         }
     </style>
@@ -663,13 +663,13 @@ One way would be to bind the Luigi app root to a specific [dom element](https://
         <h1>HOMEPAGE</h1>
         <button onclick="window.loggedIn=true; checkLogin()">Login</button>
     </div>
-    <div class="luigi-container" luigi-app-root></div>
+    <div class="applaunchpad-container" applaunchpad-app-root></div>
     <script>
         function checkLogin() {
             document.body.classList.toggle('homepage', !window.loggedIn);
         }
         checkLogin();
-        Luigi.setConfig({
+        AppLaunchpad.setConfig({
         navigation: {
             nodes: [{
                 pathSegment: 'home',
@@ -679,10 +679,10 @@ One way would be to bind the Luigi app root to a specific [dom element](https://
                     pathSegment: 'overview',
                     label: 'Overview',
                     icon: 'home',
-                    viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+                    viewUrl: 'https://fiddle.applaunchpad-project.io/examples/microfrontends/multipurpose.html',
                     context: {
-                        title: 'Welcome to Luigi Fiddle!',
-                        content: 'Click on "Modify Config" at the bottom right and play around with your Luigi configuration'
+                        title: 'Welcome to AppLaunchpad Fiddle!',
+                        content: 'Click on "Modify Config" at the bottom right and play around with your AppLaunchpad configuration'
                     }
                 }]
             }]
@@ -693,7 +693,7 @@ One way would be to bind the Luigi app root to a specific [dom element](https://
         settings: {
             responsiveNavigation: 'semiCollapsible',
             header: {
-                title: 'Luigi Example'
+                title: 'AppLaunchpad Example'
             }
         }
     });
@@ -702,8 +702,8 @@ One way would be to bind the Luigi app root to a specific [dom element](https://
 </html>
 ```
 
-### Where can I find the source code for Luigi Fiddle?
+### Where can I find the source code for AppLaunchpad Fiddle?
 
-Luigi is an open-source project. You can find the source code on our [GitHub repository](https://github.com/SAP/luigi/tree/master/website/fiddle).
+AppLaunchpad is an open-source project. You can find the source code on our [GitHub repository](https://github.com/davidwl/applaunchpad/tree/master/website/fiddle).
 
 <!-- accordion:end -->

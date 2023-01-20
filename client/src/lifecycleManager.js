@@ -1,15 +1,15 @@
-import { LuigiClientBase } from './baseClass';
+import { AppLaunchpadClientBase } from './baseClass';
 import { helpers } from './helpers';
 
 /**
  * Use the functions and parameters to define the Lifecycle of listeners, navigation nodes, and Event data.
  * @name Lifecycle
  */
-class LifecycleManager extends LuigiClientBase {
+class LifecycleManager extends AppLaunchpadClientBase {
   /** @private */
   constructor() {
     super();
-    this.luigiInitialized = false;
+    this.applaunchpadInitialized = false;
     this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
     this.setCurrentContext(
       this.defaultContextKeys.reduce(function(acc, key) {
@@ -24,41 +24,41 @@ class LifecycleManager extends LuigiClientBase {
     this.authData = {};
 
     if (!this._isDeferInitDefined()) {
-      this.luigiClientInit();
+      this.applaunchpadClientInit();
     }
   }
 
   /**
-   * Check if the html head element contains the attribute "defer-luigi-init"
+   * Check if the html head element contains the attribute "defer-applaunchpad-init"
    * @private
    * @memberof Lifecycle
    */
   _isDeferInitDefined() {
-    return window.document.head.hasAttribute('defer-luigi-init');
+    return window.document.head.hasAttribute('defer-applaunchpad-init');
   }
 
   /**
-   * Check if LuigiClient is initialized
+   * Check if AppLaunchpadClient is initialized
    * @returns {boolean} client initialized state
    * @since 1.12.0
    * @memberof Lifecycle
    * @example
-   * const init = LuigiClient.isLuigiClientInitialized()
+   * const init = AppLaunchpadClient.isAppLaunchpadClientInitialized()
    */
-  isLuigiClientInitialized() {
-    return this.luigiInitialized;
+  isAppLaunchpadClientInitialized() {
+    return this.applaunchpadInitialized;
   }
 
   /**
-   * Starts the handshake with Luigi Core and thereafter results in initialization of Luigi Client. It is always ran by default when importing the Luigi Client package in your micro frontend. Note that when using `defer-luigi-init` to defer default initialization, you will need to initialize the handshake using this function manually wherever needed.
+   * Starts the handshake with AppLaunchpad Core and thereafter results in initialization of AppLaunchpad Client. It is always ran by default when importing the AppLaunchpad Client package in your micro frontend. Note that when using `defer-applaunchpad-init` to defer default initialization, you will need to initialize the handshake using this function manually wherever needed.
    * @since 1.12.0
    * @memberof Lifecycle
    * @example
-   * LuigiClient.luigiClientInit()
+   * AppLaunchpadClient.applaunchpadClientInit()
    */
-  luigiClientInit() {
-    if (this.luigiInitialized) {
-      console.warn('Luigi Client has been already initialized');
+  applaunchpadClientInit() {
+    if (this.applaunchpadInitialized) {
+      console.warn('AppLaunchpad Client has been already initialized');
       return;
     }
     /**
@@ -73,7 +73,7 @@ class LifecycleManager extends LuigiClientBase {
             rawData[key] = JSON.parse(rawData[key]);
           }
         } catch (e) {
-          console.info('unable to parse luigi context data for', key, rawData[key], e);
+          console.info('unable to parse applaunchpad context data for', key, rawData[key], e);
         }
       }
       this.setCurrentContext(rawData);
@@ -85,29 +85,29 @@ class LifecycleManager extends LuigiClientBase {
       }
     };
 
-    helpers.addEventListener('luigi.init', e => {
+    helpers.addEventListener('applaunchpad.init', e => {
       setContext(e.data);
       setAuthData(e.data.authData);
-      helpers.setLuigiCoreDomain(e.origin);
-      this.luigiInitialized = true;
+      helpers.setAppLaunchpadCoreDomain(e.origin);
+      this.applaunchpadInitialized = true;
       this._notifyInit(e.origin);
-      helpers.sendPostMessageToLuigiCore({ msg: 'luigi.init.ok' });
+      helpers.sendPostMessageToAppLaunchpadCore({ msg: 'applaunchpad.init.ok' });
     });
 
-    helpers.addEventListener('luigi-client.inactive-microfrontend', e => {
+    helpers.addEventListener('applaunchpad-client.inactive-microfrontend', e => {
       this._notifyInactive(e.origin);
     });
 
-    helpers.addEventListener('luigi.auth.tokenIssued', e => {
+    helpers.addEventListener('applaunchpad.auth.tokenIssued', e => {
       setAuthData(e.data.authData);
     });
 
-    helpers.addEventListener('luigi.navigate', e => {
+    helpers.addEventListener('applaunchpad.navigate', e => {
       setContext(e.data);
       if (!this.currentContext.internal.isNavigateBack && !this.currentContext.withoutSync) {
         const previousHash = window.location.hash;
-        history.replaceState({ luigiInduced: true }, '', e.data.viewUrl);
-        window.dispatchEvent(new PopStateEvent('popstate', { state: 'luiginavigation' }));
+        history.replaceState({ applaunchpadInduced: true }, '', e.data.viewUrl);
+        window.dispatchEvent(new PopStateEvent('popstate', { state: 'applaunchpadnavigation' }));
         if (window.location.hash !== previousHash) {
           window.dispatchEvent(new HashChangeEvent('hashchange'));
         }
@@ -121,7 +121,7 @@ class LifecycleManager extends LuigiClientBase {
       }
       // execute the context change listener if set by the micro frontend
       this._notifyUpdate();
-      helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
+      helpers.sendPostMessageToAppLaunchpadCore({ msg: 'applaunchpad.navigate.ok' });
     });
 
     /**
@@ -130,7 +130,7 @@ class LifecycleManager extends LuigiClientBase {
      */
     window.parent.postMessage(
       {
-        msg: 'luigi.get-context',
+        msg: 'applaunchpad.get-context',
         clientVersion: require('../public/package.json').version
       },
       '*'
@@ -141,32 +141,32 @@ class LifecycleManager extends LuigiClientBase {
   _tpcCheck() {
     let tpc = 'enabled';
     let cookies = document.cookie;
-    let luigiCookie;
-    let luigiCookieKey;
+    let applaunchpadCookie;
+    let applaunchpadCookieKey;
     if (cookies) {
-      luigiCookie = cookies
+      applaunchpadCookie = cookies
         .split(';')
         .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+        .find(cookie => cookie == 'applaunchpadCookie=true');
     }
-    if (luigiCookie === 'luigiCookie=true') {
-      luigiCookieKey = luigiCookie.split('=')[0];
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+    if (applaunchpadCookie === 'applaunchpadCookie=true') {
+      applaunchpadCookieKey = applaunchpadCookie.split('=')[0];
+      document.cookie = applaunchpadCookieKey + '=; Max-Age=-99999999;';
     }
-    document.cookie = 'luigiCookie=true; SameSite=None; Secure';
+    document.cookie = 'applaunchpadCookie=true; SameSite=None; Secure';
     cookies = document.cookie;
     if (cookies) {
-      luigiCookie = cookies
+      applaunchpadCookie = cookies
         .split(';')
         .map(cookie => cookie.trim())
-        .find(cookie => cookie == 'luigiCookie=true');
+        .find(cookie => cookie == 'applaunchpadCookie=true');
     }
-    if (luigiCookie === 'luigiCookie=true') {
-      window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+    if (applaunchpadCookie === 'applaunchpadCookie=true') {
+      window.parent.postMessage({ msg: 'applaunchpad.third-party-cookie', tpc }, '*');
+      document.cookie = applaunchpadCookieKey + '=; Max-Age=-99999999;';
     } else {
       tpc = 'disabled';
-      window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
+      window.parent.postMessage({ msg: 'applaunchpad.third-party-cookie', tpc }, '*');
       console.warn('Third party cookies are not supported!');
     }
   }
@@ -221,17 +221,17 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
-   * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
+   * Registers a listener called with the context object and the AppLaunchpad Core domain as soon as AppLaunchpad is instantiated. Defer your application bootstrap if you depend on authentication data coming from AppLaunchpad.
+   * @param {Lifecycle~initListenerCallback} initFn the function that is called once AppLaunchpad is initialized, receives current context and origin as parameters
    * @memberof Lifecycle
    * @example
-   * const initListenerId = LuigiClient.addInitListener((context) => storeContextToMF(context))
+   * const initListenerId = AppLaunchpadClient.addInitListener((context) => storeContextToMF(context))
    */
   addInitListener(initFn) {
     const id = helpers.getRandomId();
     this._onInitFns[id] = initFn;
-    if (this.luigiInitialized && helpers.isFunction(initFn)) {
-      initFn(this.currentContext.context, helpers.getLuigiCoreDomain());
+    if (this.applaunchpadInitialized && helpers.isFunction(initFn)) {
+      initFn(this.currentContext.context, helpers.getAppLaunchpadCoreDomain());
     }
     return id;
   }
@@ -240,14 +240,14 @@ class LifecycleManager extends LuigiClientBase {
    * Callback of the addInitListener
    * @callback Lifecycle~initListenerCallback
    * @param {Object} context current context data
-   * @param {string} origin Luigi Core URL
+   * @param {string} origin AppLaunchpad Core URL
    */
   /**
    * Removes an init listener.
    * @param {string} id the id that was returned by the `addInitListener` function.
    * @memberof Lifecycle
    * @example
-   * LuigiClient.removeInitListener(initListenerId)
+   * AppLaunchpadClient.removeInitListener(initListenerId)
    */
   removeInitListener(id) {
     if (this._onInitFns[id]) {
@@ -259,15 +259,15 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Registers a listener called with the context object when the URL is changed. For example, you can use this when changing environments in a context switcher in order for the micro frontend to do an API call to the environment picked.
-   * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
+   * @param {function} contextUpdatedFn the listener function called each time AppLaunchpad context changes
    * @memberof Lifecycle
    * @example
-   * const updateListenerId = LuigiClient.addContextUpdateListener((context) => storeContextToMF(context))
+   * const updateListenerId = AppLaunchpadClient.addContextUpdateListener((context) => storeContextToMF(context))
    */
   addContextUpdateListener(contextUpdatedFn) {
     const id = helpers.getRandomId();
     this._onContextUpdatedFns[id] = contextUpdatedFn;
-    if (this.luigiInitialized && helpers.isFunction(contextUpdatedFn)) {
+    if (this.applaunchpadInitialized && helpers.isFunction(contextUpdatedFn)) {
       contextUpdatedFn(this.currentContext.context);
     }
     return id;
@@ -278,7 +278,7 @@ class LifecycleManager extends LuigiClientBase {
    * @param {string} id the id that was returned by the `addContextUpdateListener` function
    * @memberof Lifecycle
    * @example
-   * LuigiClient.removeContextUpdateListener(updateListenerId)
+   * AppLaunchpadClient.removeContextUpdateListener(updateListenerId)
    */
   removeContextUpdateListener(id) {
     if (this._onContextUpdatedFns[id]) {
@@ -299,8 +299,8 @@ class LifecycleManager extends LuigiClientBase {
    * @param {function} inactiveFn the listener function called each time a micro frontend turns into an inactive state
    * @memberof Lifecycle
    * @example
-   * LuigiClient.addInactiveListener(() => mfIsInactive = true)
-   * const inactiveListenerId = LuigiClient.addInactiveListener(() => mfIsInactive = true)
+   * AppLaunchpadClient.addInactiveListener(() => mfIsInactive = true)
+   * const inactiveListenerId = AppLaunchpadClient.addInactiveListener(() => mfIsInactive = true)
    */
   addInactiveListener(inactiveFn) {
     const id = helpers.getRandomId();
@@ -313,7 +313,7 @@ class LifecycleManager extends LuigiClientBase {
    * @param {string} id the id that was returned by the `addInactiveListener` function
    * @memberof Lifecycle
    * @example
-   * LuigiClient.removeInactiveListener(inactiveListenerId)
+   * AppLaunchpadClient.removeInactiveListener(inactiveListenerId)
    */
   removeInactiveListener(id) {
     if (this._onInactiveFns[id]) {
@@ -330,7 +330,7 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    * @since 0.6.2
    * @example
-   * const customMsgId = LuigiClient.addCustomMessageListener('myapp.project-updated', (data) => doSomething(data))
+   * const customMsgId = AppLaunchpadClient.addCustomMessageListener('myapp.project-updated', (data) => doSomething(data))
    */
   addCustomMessageListener(customMessageId, customMessageListener) {
     return helpers.addEventListener(customMessageId, (customMessage, listenerId) => {
@@ -351,7 +351,7 @@ class LifecycleManager extends LuigiClientBase {
    * @param {string} id the id that was returned by the `addInitListener` function
    * @memberof Lifecycle
    * @since 0.6.2
-   * LuigiClient.removeCustomMessageListener(customMsgId)
+   * AppLaunchpadClient.removeCustomMessageListener(customMsgId)
    */
   removeCustomMessageListener(id) {
     return helpers.removeEventListener(id);
@@ -362,7 +362,7 @@ class LifecycleManager extends LuigiClientBase {
    * @returns {string} current access token
    * @memberof Lifecycle
    * @example
-   * const accessToken = LuigiClient.getToken()
+   * const accessToken = AppLaunchpadClient.getToken()
    */
   getToken() {
     return this.authData.accessToken;
@@ -373,7 +373,7 @@ class LifecycleManager extends LuigiClientBase {
    * @returns {Object} current context data
    * @memberof Lifecycle
    * @example
-   * const context = LuigiClient.getContext()
+   * const context = AppLaunchpadClient.getContext()
    */
   getContext() {
     return this.getEventData();
@@ -395,24 +395,24 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    * @since 1.4.0
    * @example
-   * const activeFeatureToggleList = LuigiClient.getActiveFeatureToggles()
+   * const activeFeatureToggleList = AppLaunchpadClient.getActiveFeatureToggles()
    */
   getActiveFeatureToggles() {
     return this.currentContext.internal.activeFeatureToggleList;
   }
 
   /**
-   * Sets node parameters in Luigi Core. The parameters will be added to the URL.
+   * Sets node parameters in AppLaunchpad Core. The parameters will be added to the URL.
    * @param {Object} params
    * @param {boolean} keepBrowserHistory
    * @memberof Lifecycle
    * @example
-   * LuigiClient.addNodeParams({luigi:'rocks'}, true);
+   * AppLaunchpadClient.addNodeParams({applaunchpad:'rocks'}, true);
    */
   addNodeParams(params, keepBrowserHistory = true) {
     if (params) {
-      helpers.sendPostMessageToLuigiCore({
-        msg: 'luigi.addNodeParams',
+      helpers.sendPostMessageToAppLaunchpadCore({
+        msg: 'applaunchpad.addNodeParams',
         data: params,
         keepBrowserHistory
       });
@@ -421,15 +421,15 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Returns the node parameters of the active URL.
-   * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
+   * Node parameters are defined like URL query parameters but with a specific prefix allowing AppLaunchpad to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.applaunchpad.app/home/products?~sort=asc&~page=3`.
    * <!-- add-attribute:class:warning -->
    * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
    * @param {boolean} shouldDesanitise defines whether the specially encoded characters should be desanitised
    * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
    * @memberof Lifecycle
    * @example
-   * const nodeParams = LuigiClient.getNodeParams()
-   * const nodeParams = LuigiClient.getNodeParams(true)
+   * const nodeParams = AppLaunchpadClient.getNodeParams()
+   * const nodeParams = AppLaunchpadClient.getNodeParams(true)
    */
   getNodeParams(shouldDesanitise = false) {
     return shouldDesanitise
@@ -446,36 +446,36 @@ class LifecycleManager extends LuigiClientBase {
    * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
    * @memberof Lifecycle
    * @example
-   * const pathParams = LuigiClient.getPathParams()
+   * const pathParams = AppLaunchpadClient.getPathParams()
    */
   getPathParams() {
     return this.currentContext.pathParams;
   }
 
   /**
-   * Read search query parameters which are sent from Luigi Core
+   * Read search query parameters which are sent from AppLaunchpad Core
    * @memberof Lifecycle
    * @returns Core search query parameters
    * @example
-   * LuigiClient.getCoreSearchParams();
+   * AppLaunchpadClient.getCoreSearchParams();
    */
   getCoreSearchParams() {
     return this.currentContext.searchParams || {};
   }
 
   /**
-   * Sends search query parameters to Luigi Core. The search parameters will be added to the URL if they are first allowed on a node level using {@link navigation-parameters-reference.md#clientpermissionsurlparameters clientPermissions.urlParameters}.
+   * Sends search query parameters to AppLaunchpad Core. The search parameters will be added to the URL if they are first allowed on a node level using {@link navigation-parameters-reference.md#clientpermissionsurlparameters clientPermissions.urlParameters}.
 
    * @param {Object} searchParams
    * @param {boolean} keepBrowserHistory
    * @memberof Lifecycle
    * @example
-   * LuigiClient.addCoreSearchParams({luigi:'rocks'}, false);
+   * AppLaunchpadClient.addCoreSearchParams({applaunchpad:'rocks'}, false);
    */
   addCoreSearchParams(searchParams, keepBrowserHistory = true) {
     if (searchParams) {
-      helpers.sendPostMessageToLuigiCore({
-        msg: 'luigi.addSearchParams',
+      helpers.sendPostMessageToAppLaunchpadCore({
+        msg: 'applaunchpad.addSearchParams',
         data: searchParams,
         keepBrowserHistory
       });
@@ -487,38 +487,38 @@ class LifecycleManager extends LuigiClientBase {
    * @returns {Object} client permissions as specified in the navigation node
    * @memberof Lifecycle
    * @example
-   * const permissions = LuigiClient.getClientPermissions()
+   * const permissions = AppLaunchpadClient.getClientPermissions()
    */
   getClientPermissions() {
     return this.currentContext.internal.clientPermissions || {};
   }
 
   /**
-   * When the micro frontend is not embedded in the Luigi Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by Luigi Client. Typically used only in custom micro-frontend frameworks that are compatible with LuigiClient API.
+   * When the micro frontend is not embedded in the AppLaunchpad Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by AppLaunchpad Client. Typically used only in custom micro-frontend frameworks that are compatible with AppLaunchpadClient API.
    * @param {string} origin target origin
    * @memberof Lifecycle
    * @since 0.7.3
    * @example
-   * LuigiClient.setTargetOrigin(window.location.origin)
+   * AppLaunchpadClient.setTargetOrigin(window.location.origin)
    */
   setTargetOrigin(origin) {
     helpers.setTargetOrigin(origin);
   }
 
   /**
-   * Sends a custom message to the Luigi Core application.
-   * @param {Object} message an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side
+   * Sends a custom message to the AppLaunchpad Core application.
+   * @param {Object} message an object containing data to be sent to the AppLaunchpad Core to process it further. This object is set as an input parameter of the custom message listener on the AppLaunchpad Core side
    * @param {string} message.id a string containing the message id
    * @param {*} message.MY_DATA_FIELD any other message data field
    * @example
-   * LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
-   * LuigiClient.sendCustomMessage({id: 'environment.created', data: environmentDataObj})
+   * AppLaunchpadClient.sendCustomMessage({id: 'environment.created', production: false})
+   * AppLaunchpadClient.sendCustomMessage({id: 'environment.created', data: environmentDataObj})
    * @memberof Lifecycle
    * @since 0.6.2
    */
   sendCustomMessage(message) {
     const customMessageInternal = helpers.convertCustomMessageUserToInternal(message);
-    helpers.sendPostMessageToLuigiCore(customMessageInternal);
+    helpers.sendPostMessageToAppLaunchpadCore(customMessageInternal);
   }
 
   /**
@@ -527,7 +527,7 @@ class LifecycleManager extends LuigiClientBase {
    * @since 1.7.1
    * @memberof Lifecycle
    * @example
-   * const userSettings = LuigiClient.getUserSettings()
+   * const userSettings = AppLaunchpadClient.getUserSettings()
    */
   getUserSettings() {
     return this.currentContext.internal.userSettings;
@@ -539,23 +539,23 @@ class LifecycleManager extends LuigiClientBase {
    * @since 1.21.0
    * @returns anchor of URL
    * @example
-   * LuigiClient.getAnchor();
+   * AppLaunchpadClient.getAnchor();
    */
   getAnchor() {
     return this.currentContext.internal.anchor || '';
   }
 
   /**
-   * Sends anchor to Luigi Core. The anchor will be added to the URL.
+   * Sends anchor to AppLaunchpad Core. The anchor will be added to the URL.
    * @param {string} anchor
    * @since 1.21.0
    * @memberof Lifecycle
    * @example
-   * LuigiClient.setAnchor('luigi');
+   * AppLaunchpadClient.setAnchor('applaunchpad');
    */
   setAnchor(anchor) {
-    helpers.sendPostMessageToLuigiCore({
-      msg: 'luigi.setAnchor',
+    helpers.sendPostMessageToAppLaunchpadCore({
+      msg: 'applaunchpad.setAnchor',
       anchor
     });
   }

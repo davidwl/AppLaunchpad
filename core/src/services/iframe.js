@@ -1,7 +1,7 @@
 // Methods related to managing the view in the iframe.
 // Please consider adding any new methods to 'iframe-helpers' if they don't require anything from this file.
 import { GenericHelpers, IframeHelpers, RoutingHelpers, NavigationHelpers } from '../utilities/helpers';
-import { LuigiConfig, LuigiI18N } from '../core-api';
+import { AppLaunchpadConfig, AppLaunchpadI18N } from '../core-api';
 
 class IframeClass {
   constructor() {
@@ -48,7 +48,7 @@ class IframeClass {
   }
 
   getAllViewGroupSettings() {
-    return LuigiConfig.getConfigValue('navigation.viewGroupSettings');
+    return AppLaunchpadConfig.getConfigValue('navigation.viewGroupSettings');
   }
 
   getViewGroupSettings(viewGroup) {
@@ -67,12 +67,12 @@ class IframeClass {
 
   notifyInactiveIframes() {
     const message = {
-      msg: 'luigi-client.inactive-microfrontend',
+      msg: 'applaunchpad-client.inactive-microfrontend',
       context: JSON.stringify({}),
       nodeParams: JSON.stringify({}),
       pathParams: JSON.stringify({}),
       internal: JSON.stringify({
-        currentLocale: LuigiI18N.getCurrentLocale()
+        currentLocale: AppLaunchpadI18N.getCurrentLocale()
       })
     };
     IframeHelpers.sendMessageToVisibleIframes(message);
@@ -98,13 +98,13 @@ class IframeClass {
 
             if (vgSettings.preloadUrl) {
               const message = {
-                msg: 'luigi.navigate',
+                msg: 'applaunchpad.navigate',
                 viewUrl: vgSettings.preloadUrl,
                 context: JSON.stringify({}),
                 nodeParams: JSON.stringify({}),
                 pathParams: JSON.stringify({}),
                 internal: JSON.stringify({
-                  currentLocale: LuigiI18N.getCurrentLocale()
+                  currentLocale: AppLaunchpadI18N.getCurrentLocale()
                 })
               };
               IframeHelpers.sendMessageToIframe(child, message);
@@ -127,7 +127,7 @@ class IframeClass {
 
   setOkResponseHandler(config, component, node) {
     /**
-     * check if luigi responded
+     * check if applaunchpad responded
      * if not, callback again to replace the iframe
      */
     this.timeoutHandle = setTimeout(async () => {
@@ -137,7 +137,7 @@ class IframeClass {
         IframeHelpers.removeIframe(config.iframe, node);
         config.iframe = undefined;
         config.isFallbackFrame = true;
-        console.info('navigate: luigi-client did not respond, using fallback by replacing iframe');
+        console.info('navigate: applaunchpad-client did not respond, using fallback by replacing iframe');
         await this.navigateIframe(config, component, node);
       }
     }, this.iframeNavFallbackTimeout);
@@ -164,11 +164,11 @@ class IframeClass {
    * @since: 1.2.2
    */
   initHandshakeFailed(config) {
-    if (!(config && config.iframe && config.iframe.luigi)) {
+    if (!(config && config.iframe && config.iframe.applaunchpad)) {
       return true;
     }
-    const clientVersion = config.iframe.luigi.clientVersion;
-    if (config.iframe.luigi.initOk === undefined) {
+    const clientVersion = config.iframe.applaunchpad.clientVersion;
+    if (config.iframe.applaunchpad.initOk === undefined) {
       // initial get-context request was not received
       return true;
     } else if (
@@ -178,7 +178,7 @@ class IframeClass {
     ) {
       return false;
     }
-    return !config.iframe.luigi.initOk;
+    return !config.iframe.applaunchpad.initOk;
   }
 
   async navigateIframe(config, component, node) {
@@ -301,19 +301,19 @@ class IframeClass {
       component.set({ showLoadingIndicator: false });
       const goBackContext = component.get().goBackContext;
       config.iframe.style.display = 'block';
-      config.iframe.luigi.nextViewUrl = viewUrl;
-      config.iframe.luigi.nextClientPermissions = component.get().currentNode.clientPermissions;
+      config.iframe.applaunchpad.nextViewUrl = viewUrl;
+      config.iframe.applaunchpad.nextClientPermissions = component.get().currentNode.clientPermissions;
       config.iframe['vg'] = this.canCache(componentData.viewGroup) ? componentData.viewGroup : undefined;
-      config.iframe.luigi.currentNode = componentData.currentNode;
+      config.iframe.applaunchpad.currentNode = componentData.currentNode;
       const internalData = await component.prepareInternalData(config);
       const message = {
-        msg: 'luigi.navigate',
+        msg: 'applaunchpad.navigate',
         viewUrl: viewUrl,
         context: JSON.stringify(Object.assign({}, componentData.context, { goBackContext })),
         nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
         searchParams: JSON.stringify(
-          Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
+          Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.applaunchpad.currentNode))
         ),
         internal: JSON.stringify(internalData)
       };
@@ -323,25 +323,25 @@ class IframeClass {
         IframeHelpers.getVisibleIframes().forEach(iframe => {
           if (iframe !== config.iframe) {
             if (iframe.userSettingsGroup) {
-              Luigi.readUserSettings().then(storedUserSettings => {
+              AppLaunchpad.readUserSettings().then(storedUserSettings => {
                 IframeHelpers.sendMessageToIframe(iframe, {
-                  msg: 'luigi.navigate',
+                  msg: 'applaunchpad.navigate',
                   context: {
                     userSettingsData: storedUserSettings[iframe.userSettingsGroup]
                   },
-                  internal: IframeHelpers.applyCoreStateData(iframe.luigi._lastUpdatedMessage.internal)
+                  internal: IframeHelpers.applyCoreStateData(iframe.applaunchpad._lastUpdatedMessage.internal)
                 });
               });
             } else {
               IframeHelpers.sendMessageToIframe(iframe, {
-                msg: 'luigi.navigate',
-                context: iframe.luigi._lastUpdatedMessage.context,
-                nodeParams: iframe.luigi._lastUpdatedMessage.nodeParams,
-                pathParams: JSON.stringify(Object.assign({}, iframe.luigi.pathParams)),
+                msg: 'applaunchpad.navigate',
+                context: iframe.applaunchpad._lastUpdatedMessage.context,
+                nodeParams: iframe.applaunchpad._lastUpdatedMessage.nodeParams,
+                pathParams: JSON.stringify(Object.assign({}, iframe.applaunchpad.pathParams)),
                 searchParams: JSON.stringify(
-                  Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
+                  Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.applaunchpad.currentNode))
                 ),
-                internal: IframeHelpers.applyCoreStateData(iframe.luigi._lastUpdatedMessage.internal)
+                internal: IframeHelpers.applyCoreStateData(iframe.applaunchpad._lastUpdatedMessage.internal)
               });
             }
           }

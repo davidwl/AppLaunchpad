@@ -1,17 +1,17 @@
-import { LuigiUX, LuigiConfig } from './../core-api';
+import { AppLaunchpadUX, AppLaunchpadConfig } from './../core-api';
 
-class LuigiLifecycleHooks {
-  luigiAfterInit() {
-    const shouldHideAppLoadingIndicator = LuigiConfig.getConfigBooleanValue(
+class AppLaunchpadLifecycleHooks {
+  applaunchpadAfterInit() {
+    const shouldHideAppLoadingIndicator = AppLaunchpadConfig.getConfigBooleanValue(
       'settings.appLoadingIndicator.hideAutomatically'
     );
     if (shouldHideAppLoadingIndicator) {
       // Settimeout needed, otherwise app loading indicator might not present yet and when displayed will not be hidden
       setTimeout(() => {
-        LuigiUX.hideAppLoadingIndicator();
+        AppLaunchpadUX.hideAppLoadingIndicator();
       }, 0);
     }
   }
 }
 
-export const LifecycleHooks = new LuigiLifecycleHooks();
+export const LifecycleHooks = new AppLaunchpadLifecycleHooks();

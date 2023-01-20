@@ -207,15 +207,15 @@
   });
 
   const onMessage = async (e) => {
-    if ('luigi.show-loading-indicator' === e.data.msg) {
+    if ('applaunchpad.show-loading-indicator' === e.data.msg) {
       showLoadingIndicator = true;
     }
 
-    if ('luigi.hide-loading-indicator' === e.data.msg) {
+    if ('applaunchpad.hide-loading-indicator' === e.data.msg) {
       showLoadingIndicator = false;
     }
 
-    if ('luigi.get-context' === e.data.msg) {
+    if ('applaunchpad.get-context' === e.data.msg) {
       const loadingIndicatorAutoHideEnabled =
         !nodeObject ||
         !nodeObject.loadingIndicator ||
@@ -225,11 +225,11 @@
       }
     }
 
-    if ('luigi.close-modal' === e.data.msg) {
+    if ('applaunchpad.close-modal' === e.data.msg) {
       dispatch('close', { type: 'modal' });
     }
 
-    if ('luigi.navigation.updateModalSettings' === e.data.msg) {
+    if ('applaunchpad.navigation.updateModalSettings' === e.data.msg) {
       if (
         e.data.updatedModalSettings.title ||
         e.data.updatedModalSettings.title === ''
@@ -333,7 +333,7 @@
           class="fd-busy-indicator--m"
           aria-hidden="false"
           aria-label="Loading"
-          data-testid="luigi-loading-spinner"
+          data-testid="applaunchpad-loading-spinner"
         >
           <div class="fd-busy-indicator--circle-0" />
           <div class="fd-busy-indicator--circle-1" />
@@ -347,7 +347,7 @@
 <style type="text/scss">
   @import 'styles/variables';
   :global(.lui-breadcrumb) .drawer-dialog {
-    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+    top: calc(#{$topNavHeight} + var(--applaunchpad__breadcrumb--height));
   }
 
   .drawer-dialog {
@@ -372,7 +372,7 @@
   }
 
   :global(.lui-breadcrumb) .drawer__backdrop {
-    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+    top: calc(#{$topNavHeight} + var(--applaunchpad__breadcrumb--height));
   }
 
   .drawer__backdrop {

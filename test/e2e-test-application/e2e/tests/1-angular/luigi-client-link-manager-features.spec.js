@@ -1,4 +1,4 @@
-describe('Luigi client linkManager', () => {
+describe('AppLaunchpad client linkManager', () => {
   const localRetries = {
     retries: {
       runMode: 3,
@@ -113,8 +113,11 @@ describe('Luigi client linkManager', () => {
         const wcContent = root.querySelector('p').innerText;
         expect(wcContent).to.equal('Hello WebComponent!');
         root.querySelector('button').click();
-        cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
-        cy.get('[data-testid=luigi-alert]').should('contain', 'Hello from uxManager in Web Component, Language:en');
+        cy.get('[data-testid=applaunchpad-alert]').should('have.class', 'fd-message-strip--information');
+        cy.get('[data-testid=applaunchpad-alert]').should(
+          'contain',
+          'Hello from uxManager in Web Component, Language:en'
+        );
       });
     });
 
@@ -130,8 +133,8 @@ describe('Luigi client linkManager', () => {
         const wcContent = root.querySelector('p').innerText;
         expect(wcContent).to.equal('Hello WebComponent!');
         root.querySelector('button').click();
-        cy.get('[data-testid=luigi-alert]').should('contain', 'Active feature toggles list: ft1');
-        cy.get('[data-testid=luigi-alert]').should('contain', 'Active feature toggles: ft1');
+        cy.get('[data-testid=applaunchpad-alert]').should('contain', 'Active feature toggles list: ft1');
+        cy.get('[data-testid=applaunchpad-alert]').should('contain', 'Active feature toggles: ft1');
       });
     });
 

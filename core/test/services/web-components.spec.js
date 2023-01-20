@@ -4,10 +4,10 @@ const expect = chai.expect;
 const assert = chai.assert;
 
 import { WebComponentService } from '../../src/services/web-components';
-import { LuigiConfig } from '../../src/core-api';
-import { LuigiI18N } from '../../src/core-api';
+import { AppLaunchpadConfig } from '../../src/core-api';
+import { AppLaunchpadI18N } from '../../src/core-api';
 import { DefaultCompoundRenderer } from '../../src/utilities/helpers/web-component-helpers';
-import { LuigiElement } from '../../../client/src/luigi-element';
+import { AppLaunchpadElement } from '../../../client/src/applaunchpad-element';
 import { fail } from 'sinon/lib/sinon/mock-expectation';
 
 describe('WebComponentService', function() {
@@ -34,10 +34,10 @@ describe('WebComponentService', function() {
     const ctx = { someValue: true };
 
     before(() => {
-      window.Luigi = {
+      window.AppLaunchpad = {
         navigation: 'mock1',
         ux: 'mock2',
-        i18n: () => LuigiI18N
+        i18n: () => AppLaunchpadI18N
       };
     });
 
@@ -62,22 +62,22 @@ describe('WebComponentService', function() {
 
       const expectedCmp = container.children[0];
       expect(expectedCmp.context).to.equal(ctx);
-      expect(expectedCmp.LuigiClient.linkManager).to.equal(window.Luigi.navigation);
-      expect(expectedCmp.LuigiClient.uxManager).to.equal(window.Luigi.ux);
-      expect(expectedCmp.LuigiClient.getCurrentLocale()).to.equal(window.Luigi.i18n().getCurrentLocale());
-      expect(expectedCmp.LuigiClient.getCurrentLocale).to.be.a('function');
-      expect(expectedCmp.LuigiClient.publishEvent).to.be.a('function');
+      expect(expectedCmp.AppLaunchpadClient.linkManager).to.equal(window.AppLaunchpad.navigation);
+      expect(expectedCmp.AppLaunchpadClient.uxManager).to.equal(window.AppLaunchpad.ux);
+      expect(expectedCmp.AppLaunchpadClient.getCurrentLocale()).to.equal(window.AppLaunchpad.i18n().getCurrentLocale());
+      expect(expectedCmp.AppLaunchpadClient.getCurrentLocale).to.be.a('function');
+      expect(expectedCmp.AppLaunchpadClient.publishEvent).to.be.a('function');
     });
 
     it('check post-processing', () => {
       const wc_id = 'my-wc';
-      var MyLuigiElement = class extends LuigiElement {
+      var MyAppLaunchpadElement = class extends AppLaunchpadElement {
         render(ctx) {
           return '<div></div>';
         }
       };
 
-      var myEl = Object.create(MyLuigiElement.prototype, {});
+      var myEl = Object.create(MyAppLaunchpadElement.prototype, {});
       sb.stub(myEl, '__postProcess').callsFake(() => {});
       sb.stub(document, 'createElement')
         .callThrough()
@@ -149,7 +149,7 @@ describe('WebComponentService', function() {
     });
 
     it('check reject due to not-allowed url', done => {
-      WebComponentService.registerWCFromUrl('http://luigi-project.io/mfe.js', 'id')
+      WebComponentService.registerWCFromUrl('http://applaunchpad-project.io/mfe.js', 'id')
         .then(() => {
           assert(false, 'should not be here');
           done();
@@ -168,11 +168,11 @@ describe('WebComponentService', function() {
     const node = {};
 
     before(() => {
-      window.Luigi = { mario: 'luigi', luigi: window.luigi };
+      window.AppLaunchpad = { mario: 'applaunchpad', applaunchpad: window.applaunchpad };
     });
 
     after(() => {
-      window.Luigi = window.Luigi.luigi;
+      window.AppLaunchpad = window.AppLaunchpad.applaunchpad;
     });
 
     beforeEach(() => {
@@ -185,7 +185,7 @@ describe('WebComponentService', function() {
 
     afterEach(() => {
       sb.restore();
-      delete window.luigiWCFn;
+      delete window.applaunchpadWCFn;
     });
 
     it('check attachment of already existing wc', done => {
@@ -233,7 +233,7 @@ describe('WebComponentService', function() {
         done();
       });
 
-      window.luigiWCFn = (viewUrl, wc_id, wc_container, cb) => {
+      window.applaunchpadWCFn = (viewUrl, wc_id, wc_container, cb) => {
         cb();
       };
 
@@ -288,19 +288,19 @@ describe('WebComponentService', function() {
     });
 
     it('check permission and denial for urls based on config', () => {
-      sb.stub(LuigiConfig, 'getConfigValue').returns([
-        'https://fiddle.luigi-project.io/.?',
-        'https://docs.luigi-project.io/.?'
+      sb.stub(AppLaunchpadConfig, 'getConfigValue').returns([
+        'https://fiddle.applaunchpad-project.io/.?',
+        'https://docs.applaunchpad-project.io/.?'
       ]);
 
-      let valid1 = WebComponentService.checkWCUrl('https://fiddle.luigi-project.io/folder/sth.js');
+      let valid1 = WebComponentService.checkWCUrl('https://fiddle.applaunchpad-project.io/folder/sth.js');
       expect(valid1).to.be.true;
-      let valid2 = WebComponentService.checkWCUrl('https://docs.luigi-project.io/folder/sth.js');
+      let valid2 = WebComponentService.checkWCUrl('https://docs.applaunchpad-project.io/folder/sth.js');
       expect(valid2).to.be.true;
 
-      let invalid1 = WebComponentService.checkWCUrl('http://fiddle.luigi-project.io/folder/sth.js');
+      let invalid1 = WebComponentService.checkWCUrl('http://fiddle.applaunchpad-project.io/folder/sth.js');
       expect(invalid1).to.be.false;
-      let invalid2 = WebComponentService.checkWCUrl('https://slack.luigi-project.io/folder/sth.js');
+      let invalid2 = WebComponentService.checkWCUrl('https://slack.applaunchpad-project.io/folder/sth.js');
       expect(invalid2).to.be.false;
     });
   });
@@ -314,11 +314,11 @@ describe('WebComponentService', function() {
     };
 
     before(() => {
-      window.Luigi = { mario: 'luigi', luigi: window.luigi };
+      window.AppLaunchpad = { mario: 'applaunchpad', applaunchpad: window.applaunchpad };
     });
 
     after(() => {
-      window.Luigi = window.Luigi.luigi;
+      window.AppLaunchpad = window.AppLaunchpad.applaunchpad;
     });
 
     afterEach(() => {
@@ -337,7 +337,7 @@ describe('WebComponentService', function() {
 
     it('check if script tag is not added for untrusted url', () => {
       sb.spy(document.body, 'appendChild');
-      WebComponentService.includeSelfRegisteredWCFromUrl(node, 'https://luigi-project.io/mfe.js', () => {});
+      WebComponentService.includeSelfRegisteredWCFromUrl(node, 'https://applaunchpad-project.io/mfe.js', () => {});
       assert(document.body.appendChild.notCalled);
     });
   });
@@ -388,7 +388,7 @@ describe('WebComponentService', function() {
   describe('check renderWebComponentCompound', function() {
     const sb = sinon.createSandbox();
 
-    const context = { key: 'value', mario: 'luigi' };
+    const context = { key: 'value', mario: 'applaunchpad' };
 
     const eventEmitter = 'emitterId';
     const eventName = 'emitterId';
@@ -439,11 +439,11 @@ describe('WebComponentService', function() {
     };
 
     before(() => {
-      window.Luigi = { mario: 'luigi', luigi: window.luigi };
+      window.AppLaunchpad = { mario: 'applaunchpad', applaunchpad: window.applaunchpad };
     });
 
     after(() => {
-      window.Luigi = window.Luigi.luigi;
+      window.AppLaunchpad = window.AppLaunchpad.applaunchpad;
     });
 
     afterEach(() => {

@@ -3,7 +3,7 @@
   "node": {
     "label": "General settings",
     "category": {
-      "label": "Luigi Core",
+      "label": "AppLaunchpad Core",
       "collapsible": true
     },
     "metaData": {
@@ -17,9 +17,9 @@ meta -->
 # General settings
 
 <!-- add-attribute:class:success -->
->**TIP:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
+>**TIP:** For learning and testing purposes, use the [AppLaunchpad Fiddle](https://fiddle.applaunchpad-project.io) page where you can configure a sample AppLaunchpad application.
 
-The configuration file contains a section called **Settings** where you can configure additional Luigi options.
+The configuration file contains a section called **Settings** where you can configure additional AppLaunchpad options.
 
 <!-- accordion:start -->
 ### Settings code example
@@ -32,7 +32,7 @@ settings: {
   backdropDisabled : false,
   header: {  object / function / Promise
     logo: 'path/to/image.png',
-    title: 'Luigi Demo',
+    title: 'AppLaunchpad Demo',
     favicon: 'path/to/favicon.ico'
   },
   featureToggles : {
@@ -59,7 +59,7 @@ settings: {
         text: 'Third Party Cookies are not enabled. Please check your browser settings.',
         type: 'warning'
       };
-      Luigi.ux().showAlert(alert);
+      AppLaunchpad.ux().showAlert(alert);
     }
   },
   theming = {
@@ -73,7 +73,7 @@ settings: {
 ```
 <!-- accordion:end -->
 
-Below is a list of the parameters you can use in the `settings:` Luigi configuration section.
+Below is a list of the parameters you can use in the `settings:` AppLaunchpad configuration section.
 * [General parameters](#general-parameters)
 * [Third-party cookies support check](#third-party-cookies-support-check)
 
@@ -98,7 +98,7 @@ burgerTooltip = {
 
 ### customSandboxRules
 - **type**: array
-- **description**: an array of custom rules for the content in the iframe. You can extend the [Luigi default sandbox rules](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140) by adding further rules.
+- **description**: an array of custom rules for the content in the iframe. You can extend the [AppLaunchpad default sandbox rules](https://github.com/davidwl/applaunchpad/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140) by adding further rules.
 
 ### customTranslationImplementation
 - **type**: object/function returning an object
@@ -112,12 +112,12 @@ burgerTooltip = {
 ```
 Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 <!-- add-attribute:class:warning -->
-> **NOTE:** You can translate Luigi internal messages by providing translation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
+> **NOTE:** You can translate AppLaunchpad internal messages by providing translation for [these keys](../core/src/utilities/defaultAppLaunchpadTranslationTable.js).
 
 
 ### hideNavigation
 - **type**: boolean
-- **description**: disables Luigi's default out-of-the-box navigation when set to `true`. This means that top, side, and tab navigation is no longer visible and you can implement your own navigation UI.
+- **description**: disables AppLaunchpad's default out-of-the-box navigation when set to `true`. This means that top, side, and tab navigation is no longer visible and you can implement your own navigation UI.
 - **default**: by default, the parameter is set to `false`, which means the navigation is enabled.
 
 ### header.logo
@@ -147,7 +147,7 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 - **example**: 
 ```
  header: {  object / function / Promise
-    title: 'Luigi Demo'
+    title: 'AppLaunchpad Demo'
   },
 ```
 
@@ -174,7 +174,7 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 
 ### header.disabled
 - **type**: boolean
-- **description**: disables Luigi's default out-of-the-box top navigation when set to `true`. This means that top navigation is hidden and only the left-side navigation is visible.
+- **description**: disables AppLaunchpad's default out-of-the-box top navigation when set to `true`. This means that top navigation is hidden and only the left-side navigation is visible.
 - **default**: by default, the parameter is set to `false`, which means the navigation is enabled.
 
 ### responsiveNavigation
@@ -226,7 +226,7 @@ For example, to allow 'fullscreen' for non-modal iframes:
 - **description**: an array of rules for the content in the iframe, managed by the HTML **allow** attribute. You can use one or more rules by adding them to the array, for example `allowRules: ['microphone', 'camera']`. Be aware that this mechanism requires the browser to support [Feature Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
 
 ### appLoadingIndicator.hideAutomatically
-- **description**: allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
+- **description**: allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](applaunchpad-ux-features.md#app-loading-indicator) section on how to use this feature.
 
 ### featureToggles.queryStringParam
 - **description**: allows you to set the query parameter name for the feature toggles. This parameter is then used when setting feature toggles via appending to the URL like `?ft=name`. You will need this value set before using the feature toggle functionality.
@@ -235,7 +235,7 @@ For example, to allow 'fullscreen' for non-modal iframes:
 - **description**: a configuration element that allows you to specify a list of themes that are available on the website. The children elements are:
     * **themes** (mandatory) is an array of available themes, for example `themes: ['light', 'dark']`.
     * **defaultTheme** (mandatory) the default theme used by the application.
-    * **nodeViewURLDecorator** (optional) you can add an internal Luigi View URL decorator (an example is below). This object adds a query parameter where you can add a current theme used by the application when micro-frontends are loaded.
+    * **nodeViewURLDecorator** (optional) you can add an internal AppLaunchpad View URL decorator (an example is below). This object adds a query parameter where you can add a current theme used by the application when micro-frontends are loaded.
 - **example**:
 ```javascript
 theming : {
@@ -258,10 +258,10 @@ theming : {
 
 ### customAlertHandler
 - **type**: function
-- **description**: with this function, Luigi alerts will be disabled and you can implement your own alerts. This function gets `settings` and `openFromClient` as parameters. It must either return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which gets resolved when the alert is dismissed, or `false` if the default Luigi alert should be shown.
+- **description**: with this function, AppLaunchpad alerts will be disabled and you can implement your own alerts. This function gets `settings` and `openFromClient` as parameters. It must either return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which gets resolved when the alert is dismissed, or `false` if the default AppLaunchpad alert should be shown.
 - **example**:
 ```javascript
-Luigi.setConfig({
+AppLaunchpad.setConfig({
   ...,
   settings: {
     customAlertHandler: ()=>{
@@ -275,19 +275,19 @@ Luigi.setConfig({
 
 ## Third-party cookies support check
 
-You can check whether the user's browser supports third-party cookies by defining a **thirdPartyCookieCheck** object which expects a function called **thirdPartyCookieErrorHandling** and an optional **thirdPartyCookiesScriptLocation** parameter. When **thirdPartyCookiesScriptLocation** is set, the Luigi Core application checks third-party cookie support only once and not on every micro frontend call. If it is *not* set, the Luigi Core application checks third-party cookie support whenever a micro frontend is loaded.
+You can check whether the user's browser supports third-party cookies by defining a **thirdPartyCookieCheck** object which expects a function called **thirdPartyCookieErrorHandling** and an optional **thirdPartyCookiesScriptLocation** parameter. When **thirdPartyCookiesScriptLocation** is set, the AppLaunchpad Core application checks third-party cookie support only once and not on every micro frontend call. If it is *not* set, the AppLaunchpad Core application checks third-party cookie support whenever a micro frontend is loaded.
 
-To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/SAP/luigi/tree/master/core/third-party-cookies) catalog. Deploy this file on a domain different from your main application's and set **thirdPartyCookieScriptLocation** to the `init.html` file. During initialization, Luigi detects cookies support and produces an alert if cookies are disabled in the user's browser.
+To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/davidwl/applaunchpad/tree/master/core/third-party-cookies) catalog. Deploy this file on a domain different from your main application's and set **thirdPartyCookieScriptLocation** to the `init.html` file. During initialization, AppLaunchpad detects cookies support and produces an alert if cookies are disabled in the user's browser.
 
 ### Parameters
 
 #### thirdPartyCookieCheck
 - **type**: object
-- **description**: object defined in the general settings part of the Luigi configuration file, containing the **thirdPartyCookieErrorHandling** function and an optional **thirdPartyCookiesScriptLocation** parameter.
+- **description**: object defined in the general settings part of the AppLaunchpad configuration file, containing the **thirdPartyCookieErrorHandling** function and an optional **thirdPartyCookiesScriptLocation** parameter.
 
 #### thirdPartyCookieErrorHandling
 - **type**: function
-- **description**: a function where you could call an alert like `Luigi.ux().showAlert({})`.
+- **description**: a function where you could call an alert like `AppLaunchpad.ux().showAlert({})`.
 
 #### thirdPartyCookieScriptLocation**
 - **type**: string

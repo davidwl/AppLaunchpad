@@ -1,4 +1,4 @@
-import { LuigiConfig, LuigiElements } from '../core-api';
+import { AppLaunchpadConfig, AppLaunchpadElements } from '../core-api';
 import { Navigation } from '../navigation/services/navigation';
 import { GenericHelpers, IframeHelpers, RoutingHelpers } from '../utilities/helpers';
 import { WebComponentService } from './web-components';
@@ -58,7 +58,10 @@ class SplitViewSvcClass {
 
   async prepareSplitViewData(component, path) {
     const pathUrlRaw = path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-    const pathData = await Navigation.getNavigationPath(LuigiConfig.getConfigValueAsync('navigation.nodes'), path);
+    const pathData = await Navigation.getNavigationPath(
+      AppLaunchpadConfig.getConfigValueAsync('navigation.nodes'),
+      path
+    );
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
     const lastNode = RoutingHelpers.getLastNodeObject(pathData);
@@ -168,7 +171,7 @@ class SplitViewSvcClass {
   calculateAndSetSplitViewValues(percentBottom, values) {
     const newBottom =
       parseInt(GenericHelpers.computePxFromPercent(values.rightContentHeight, 100 - percentBottom)) +
-      LuigiElements.getShellbar().clientHeight;
+      AppLaunchpadElements.getShellbar().clientHeight;
 
     this.splitViewValues = this.enforceTresholds(newBottom, values.innerHeight - newBottom, values);
   }
@@ -280,7 +283,7 @@ class SplitViewSvcClass {
 
   sendMessageToClients(name, data) {
     IframeHelpers.sendMessageToVisibleIframes({
-      msg: `luigi.navigation.splitview.${name}`,
+      msg: `applaunchpad.navigation.splitview.${name}`,
       data
     });
   }

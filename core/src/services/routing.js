@@ -2,9 +2,9 @@
 // Please consider adding any new methods to 'routing-helpers' if they don't require anything from this file.
 import { Navigation } from '../navigation/services/navigation';
 import { GenericHelpers, IframeHelpers, NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
-import { LuigiConfig, LuigiNavigation } from '../core-api';
+import { AppLaunchpadConfig, AppLaunchpadNavigation } from '../core-api';
 import { Iframe } from './';
-import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
+import { NAVIGATION_DEFAULTS } from './../utilities/applaunchpad-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
 import { WebComponentService } from './web-components';
 
@@ -62,8 +62,8 @@ class RoutingClass {
     if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
       return;
     }
-    const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
-    const preserveQueryParams = LuigiConfig.getConfigValue('routing.preserveQueryParams');
+    const hashRouting = AppLaunchpadConfig.getConfigValue('routing.useHashRouting');
+    const preserveQueryParams = AppLaunchpadConfig.getConfigValue('routing.preserveQueryParams');
     let url = new URL(location.href);
     route = preserveQueryParams ? RoutingHelpers.composeSearchParamsToRoute(route) : route;
     if (hashRouting) {
@@ -71,7 +71,9 @@ class RoutingClass {
     }
 
     const chosenHistoryMethod = keepBrowserHistory ? 'pushState' : 'replaceState';
-    const method = LuigiConfig.getConfigValue('routing.disableBrowserHistory') ? 'replaceState' : chosenHistoryMethod;
+    const method = AppLaunchpadConfig.getConfigValue('routing.disableBrowserHistory')
+      ? 'replaceState'
+      : chosenHistoryMethod;
     window.history[method](
       {
         path: hashRouting ? url.hash : route
@@ -100,7 +102,7 @@ class RoutingClass {
   }
 
   getWindowPath() {
-    return LuigiConfig.getConfigValue('routing.useHashRouting')
+    return AppLaunchpadConfig.getConfigValue('routing.useHashRouting')
       ? GenericHelpers.getPathWithoutHash(window.location.hash)
       : window.location.pathname.concat(window.location.search);
   }
@@ -153,14 +155,14 @@ class RoutingClass {
       const intentPath = RoutingHelpers.getIntentPath(hash);
       // if intent faulty or illegal then skip
       if (intentPath) {
-        const isReplaceRouteActivated = Luigi.getConfigValue('routing.replaceIntentRoute');
+        const isReplaceRouteActivated = AppLaunchpad.getConfigValue('routing.replaceIntentRoute');
         if (isReplaceRouteActivated) {
           history.replaceState(window.state, '', intentPath);
         }
         return intentPath;
       }
     }
-    return LuigiConfig.getConfigValue('routing.useHashRouting')
+    return AppLaunchpadConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
       ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
@@ -172,7 +174,7 @@ class RoutingClass {
    * @param {string} path used for retrieving and appending the path parameters
    */
   setFeatureToggle(path) {
-    const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam');
+    const featureToggleProperty = AppLaunchpadConfig.getConfigValue('settings.featureToggles.queryStringParam');
     featureToggleProperty && typeof path === 'string' && RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
   }
 
@@ -182,7 +184,7 @@ class RoutingClass {
    */
   shouldSkipRoutingForUrlPatterns() {
     const defaultPattern = [/access_token=/, /id_token=/];
-    const patterns = LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') || defaultPattern;
+    const patterns = AppLaunchpadConfig.getConfigValue('routing.skipRoutingForUrlPatterns') || defaultPattern;
 
     return patterns.filter(p => location.href.match(p)).length !== 0;
   }
@@ -235,7 +237,7 @@ class RoutingClass {
    * If `showModalPathInUrl` is provided, bookmarkable modal path will be triggered.
    */
   async shouldShowModalPathInUrl() {
-    if (LuigiConfig.getConfigValue('routing.showModalPathInUrl')) {
+    if (AppLaunchpadConfig.getConfigValue('routing.showModalPathInUrl')) {
       await this.handleBookmarkableModalPath();
     }
   }
@@ -265,7 +267,7 @@ class RoutingClass {
         )
       ) {
         const rootPathData = await Navigation.getNavigationPath(
-          LuigiConfig.getConfigValueAsync('navigation.nodes'),
+          AppLaunchpadConfig.getConfigValueAsync('navigation.nodes'),
           '/'
         );
         const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
@@ -316,7 +318,7 @@ class RoutingClass {
         //ERROR  404
         //the path is unrecognized at all and cannot be fitted to any known one
         const rootPathData = await Navigation.getNavigationPath(
-          LuigiConfig.getConfigValueAsync('navigation.nodes'),
+          AppLaunchpadConfig.getConfigValueAsync('navigation.nodes'),
           '/'
         );
         const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
@@ -353,8 +355,8 @@ class RoutingClass {
     this.setFeatureToggle(path);
     if (this.shouldSkipRoutingForUrlPatterns()) return;
 
-    if (window.Luigi.preventLoadingModalData) {
-      window.Luigi.preventLoadingModalData = false;
+    if (window.AppLaunchpad.preventLoadingModalData) {
+      window.AppLaunchpad.preventLoadingModalData = false;
       return;
     }
 
@@ -376,7 +378,7 @@ class RoutingClass {
       if (await this.handleViewUrlMisconfigured(nodeObject, viewUrl, previousCompData, pathUrlRaw, component)) return;
       if (await this.handlePageNotFound(nodeObject, viewUrl, pathData, path, component, pathUrlRaw, config)) return;
 
-      const hideNav = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+      const hideNav = AppLaunchpadConfig.getConfigBooleanValue('settings.hideNavigation');
       const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
       const nodeParams = RoutingHelpers.getNodeParams(params);
       const viewGroup = RoutingHelpers.findViewGroup(nodeObject);
@@ -483,13 +485,13 @@ class RoutingClass {
             const internalData = await component.prepareInternalData(config);
             // send a message to the iFrame to trigger a context update listener when withoutSync enabled
             IframeHelpers.sendMessageToIframe(config.iframe, {
-              msg: 'luigi.navigate',
+              msg: 'applaunchpad.navigate',
               viewUrl: viewUrl,
               context: JSON.stringify(componentData.context),
               nodeParams: JSON.stringify(componentData.nodeParams),
               pathParams: JSON.stringify(componentData.pathParams),
               searchParams: JSON.stringify(
-                RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)
+                RoutingHelpers.prepareSearchParamsForClient(config.iframe.applaunchpad.currentNode)
               ),
               internal: JSON.stringify(internalData),
               withoutSync: true
@@ -509,7 +511,7 @@ class RoutingClass {
     if (additionalModalPath) {
       const modalParams = RoutingHelpers.getModalParamsFromPath();
       const { nodeObject } = await Navigation.extractDataFromPath(additionalModalPath);
-      LuigiNavigation.openAsModal(additionalModalPath, nodeObject.openNodeInModal || modalParams);
+      AppLaunchpadNavigation.openAsModal(additionalModalPath, nodeObject.openNodeInModal || modalParams);
     }
   }
 
@@ -655,7 +657,7 @@ class RoutingClass {
       params[`${modalParamName}Params`] = JSON.stringify(modalParams);
     }
     const url = new URL(location.href);
-    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    const hashRoutingActive = AppLaunchpadConfig.getConfigBooleanValue('routing.useHashRouting');
     if (hashRoutingActive) {
       const queryParamIndex = location.hash.indexOf(queryParamSeparator);
       if (queryParamIndex !== -1) {
@@ -685,7 +687,7 @@ class RoutingClass {
     const modalParamName = RoutingHelpers.getModalViewParamName();
     const prevModalPath = params[modalParamName];
     const url = new URL(location.href);
-    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    const hashRoutingActive = AppLaunchpadConfig.getConfigBooleanValue('routing.useHashRouting');
     let historyState = history.state;
     let pathWithoutModalData;
     let urlWithoutModalData;
@@ -743,7 +745,7 @@ class RoutingClass {
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
     let url = new URL(location.href);
-    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    const hashRoutingActive = AppLaunchpadConfig.getConfigBooleanValue('routing.useHashRouting');
     if (hashRoutingActive) {
       let modalParamsObj = {};
       if (params[modalParamName]) {
@@ -800,7 +802,7 @@ class RoutingClass {
           history.go(-historyMaxBack);
           //flag to prevent to run handleRouteChange when url has modalData in path
           //otherwise modal will be opened again
-          window.Luigi.preventLoadingModalData = true;
+          window.AppLaunchpad.preventLoadingModalData = true;
         } else {
           const modalHistoryLength = history.state.modalHistoryLength;
           history.go(-modalHistoryLength);

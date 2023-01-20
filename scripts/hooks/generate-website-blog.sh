@@ -2,7 +2,7 @@
 
 # Checks if there are changes in blog or website folder
 # and generates website if necessary
-# Run this script only from Luigi root folder, else git adding won't work.
+# Run this script only from AppLaunchpad root folder, else git adding won't work.
 # ./scripts/hooks/generate-website-blog.sh
 
 function check_and_generate_website() {

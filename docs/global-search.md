@@ -25,22 +25,22 @@ Example:
 ```javascript
 searchProvider = {
   onInput: () => {
-    let searchString = Luigi.globalSearch().getSearchString();
+    let searchString = AppLaunchpad.globalSearch().getSearchString();
     //searchProvider does a search
   },
   onEnter: () => {
-    Luigi.globalSearch().showSearchResult(searchResults)
+    AppLaunchpad.globalSearch().showSearchResult(searchResults)
   },
   onEscape: () => {
-    Luigi.globalSearch().closeSearchResult();
-    Luigi.globalSearch().clearSearchField();
+    AppLaunchpad.globalSearch().closeSearchResult();
+    AppLaunchpad.globalSearch().clearSearchField();
   },
   customSearchResultRenderer: (searchResults, slot, searchApiObj) => {
     //If this function is implemented, the default search result popover will not be displayed.
     let div = document.createElement('div');
     div.setAttribute(
       'class',
-      'fd-popover__body fd-popover__body--right luigi-search__popover__body'
+      'fd-popover__body fd-popover__body--right applaunchpad-search__popover__body'
     );
     let nav = document.createElement('nav');
     nav.setAttribute('class', 'fd-menu');
@@ -79,7 +79,7 @@ searchProvider = {
     slot.appendChild(a);
   },
   onSearchResultItemSelected: searchResultItem => {
-    Luigi.navigation().withParams(searchResultItem.pathObject.params).navigate(searchResultItem.pathObject.link);
+    AppLaunchpad.navigation().withParams(searchResultItem.pathObject.params).navigate(searchResultItem.pathObject.link);
   }
 }
 ```

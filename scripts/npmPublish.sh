@@ -8,8 +8,8 @@ BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 source $BASE_DIR/shared/bashHelpers.sh
 
-# @luigi-project npm token
-function setLuigiNpmToken {
+# @applaunchpad-project npm token
+function setAppLaunchpadNpmToken {
   if [ "$TRAVIS" = "true" ]; then
     if [ "$NPM_LUI_AUTH_TOKEN" = "" ]; then
      echoe "NPM_LUI_AUTH_TOKEN is not set, skipping publishing."
@@ -17,7 +17,7 @@ function setLuigiNpmToken {
     fi
 
     # setup token when running in travis
-    echo "setLuigiNpmToken"
+    echo "setAppLaunchpadNpmToken"
     echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
     npm whoami
   fi
@@ -110,49 +110,49 @@ function checkRequiredFiles {
 
 
 
-setLuigiNpmToken
+setAppLaunchpadNpmToken
 
 
 if [ "$1" = "cra-release" ]; then
   echo "$PWD"
-  checkRequiredFiles  "cra-template/template/public" "index.html" "luigi-config.js"
+  checkRequiredFiles  "cra-template/template/public" "index.html" "applaunchpad-config.js"
   publishPackage "cra-template" "cra-template"
 else
-  # Luigi Client & Core
+  # AppLaunchpad Client & Core
   prepublishChecks
-  checkRequiredFiles "core/public" "luigi.js" "luigi.css" "README.md"
+  checkRequiredFiles "core/public" "applaunchpad.js" "applaunchpad.css" "README.md"
   publishPackage "core" "core/public"
 
-  checkRequiredFiles "client/public" "luigi-client.d.ts" "luigi-client.js" "README.md"
+  checkRequiredFiles "client/public" "applaunchpad-client.d.ts" "applaunchpad-client.js" "README.md"
   publishPackage "client" "client/public"
 
-  checkRequiredFiles "core/public-ie11" "luigi-ie11.js" "luigi-ie11.css" "README.md"
+  checkRequiredFiles "core/public-ie11" "applaunchpad-ie11.js" "applaunchpad-ie11.css" "README.md"
   publishPackage "core" "core/public-ie11"
 
-  checkRequiredFiles "client/public-ie11" "luigi-client-ie11.d.ts" "luigi-client-ie11.js" "README.md"
+  checkRequiredFiles "client/public-ie11" "applaunchpad-client-ie11.d.ts" "applaunchpad-client-ie11.js" "README.md"
   publishPackage "client" "client/public-ie11"
 
-  # Luigi OAuth Plugin
+  # AppLaunchpad OAuth Plugin
   if ( prepublishCheck "plugins/auth/public/auth-oauth2" ); then
     checkRequiredFiles "plugins/auth/public/auth-oauth2" "plugin.js" "plugin-ie11.js" "README.md"
     publishPackage "plugins" "plugins/auth/public/auth-oauth2"
   fi
 
-  # Luigi Oidc Plugin
+  # AppLaunchpad Oidc Plugin
   if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
     checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "plugin-ie11.js" "README.md"
     publishPackage "plugins" "plugins/auth/public/auth-oidc"
   fi
 
-  # Luigi Client Support Anguar
+  # AppLaunchpad Client Support Anguar
   if ( prepublishCheck "client-frameworks-support/client-support-angular/dist/client-support-angular"); then
     checkRequiredFiles "client-frameworks-support/client-support-angular/dist/client-support-angular" "public-api.d.ts" "README.md"
     publishPackage "client-frameworks-support/client-support-angular" "client-frameworks-support/client-support-angular/dist/client-support-angular"
   fi
 
-  # Luigi Testing Utilities
+  # AppLaunchpad Testing Utilities
   if ( prepublishCheck "client-frameworks-support/testing-utilities/dist"); then
-    checkRequiredFiles "client-frameworks-support/testing-utilities/dist" "luigi-mock-util.d.ts" "index.d.ts" "README.md"
+    checkRequiredFiles "client-frameworks-support/testing-utilities/dist" "applaunchpad-mock-util.d.ts" "index.d.ts" "README.md"
     publishPackage "client-frameworks-support/testing-utilities" "client-frameworks-support/testing-utilities/dist"
   fi
 fi

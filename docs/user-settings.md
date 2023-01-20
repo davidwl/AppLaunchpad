@@ -18,9 +18,9 @@ meta -->
 
 <!-- add-attribute:class:warning -->
 
-> **NOTE:** User Settings functionality was first introduced in Luigi 1.8.0, so it is not available for older versions.
+> **NOTE:** User Settings functionality was first introduced in AppLaunchpad 1.8.0, so it is not available for older versions.
 
-This document explains how to configure a User Settings dialog in the top navigation of Luigi.
+This document explains how to configure a User Settings dialog in the top navigation of AppLaunchpad.
 
   - [Overview](#overview)
   - [Example](#example)
@@ -33,7 +33,7 @@ This document explains how to configure a User Settings dialog in the top naviga
 
 ![User settings dialog](assets/usersettingsdialog.png)
 
-Luigi allows you to display a user settings dialog and to manage user data, through defining a user settings schema. The schema is defined in a `userSettingGroups` object.
+AppLaunchpad allows you to display a user settings dialog and to manage user data, through defining a user settings schema. The schema is defined in a `userSettingGroups` object.
 
 <!-- add-attribute:class:warning -->
 
@@ -121,7 +121,7 @@ These parameters used in the example above allow you to configure the items in t
 #### viewURL
 
 - **type** string (optional)
-- **description** points to a custom micro frontend. It is possible to not use Luigi's user settings editor. Instead, you can [write your own](#write-a-custom-editor) editor micro frontend.
+- **description** points to a custom micro frontend. It is possible to not use AppLaunchpad's user settings editor. Instead, you can [write your own](#write-a-custom-editor) editor micro frontend.
   In that case, the micro frontend will be displayed in the editor area.
 
 #### settings
@@ -159,19 +159,19 @@ language: {
 
 This user setting group will be displayed by the default editor, under the form of a user setting dialog.
 It is possible to write a custom editor using a custom micro frontend. In that case, the `userSettingGroup` needs a `viewUrl` property with an URL to the micro frontend.
-The micro frontend has to register the `addInitListener` from the Luigi Client. The stored user settings data object is part of the context object which comes with the init and update listener (`context.userSettingsData`).
+The micro frontend has to register the `addInitListener` from the AppLaunchpad Client. The stored user settings data object is part of the context object which comes with the init and update listener (`context.userSettingsData`).
 The micro frontend gets only the stored data object which belongs to its `userSettingGroup`.
-To update the user settings data (not store!) a special custom message has to be send to the Luigi Core.
-The custom message sends the `userSettingsData` object with the reserved `id: 'luigi.updateUserSettings'`, for example:
+To update the user settings data (not store!) a special custom message has to be send to the AppLaunchpad Core.
+The custom message sends the `userSettingsData` object with the reserved `id: 'applaunchpad.updateUserSettings'`, for example:
 
 ```javascript
-let luigiContext={};
-window.LuigiClient.addInitListener((context, origin) => {
-    luigiContext=context;
+let applaunchpadContext={};
+window.AppLaunchpadClient.addInitListener((context, origin) => {
+    applaunchpadContext=context;
 )};
 function onThemeChange(value){
-    luigiContext.userSettingsData.theme = value;
-    window.LuigiClient.sendCustomMessage({ id: 'luigi.updateUserSettings', data: luigiContext.userSettingsData });
+    applaunchpadContext.userSettingsData.theme = value;
+    window.AppLaunchpadClient.sendCustomMessage({ id: 'applaunchpad.updateUserSettings', data: applaunchpadContext.userSettingsData });
 };
 ```
 
@@ -179,7 +179,7 @@ function onThemeChange(value){
 
 ## Customize the user settings dialog
 
-These parameters can be used to configure the appearance of the user settings menu in Luigi. You may also want to take a look at the [Luigi Core API](luigi-core-api.md) for additional options.
+These parameters can be used to configure the appearance of the user settings menu in AppLaunchpad. You may also want to take a look at the [AppLaunchpad Core API](applaunchpad-core-api.md) for additional options.
 
 - **userSettingsProfileMenuEntry.label** defines the profile navigation entry. By default it is `Settings`.
 - **userSettingsProfileMenuEntry.icon** defines the profile navigation entry icon. By default it is SAP icon `settings`.
@@ -212,7 +212,7 @@ userSettings:{
           buttonConfirm: "Yes",
           buttonDismiss: "No"
         }
-        Luigi
+        AppLaunchpad
           .ux()
           .showConfirmationModal(settings).then(() => {
             sessionStorage.setItem('myUserSettings', JSON.stringify(obj));

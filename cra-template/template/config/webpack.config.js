@@ -500,8 +500,8 @@ module.exports = function(webpackEnv) {
             from: 'index.html'
           },
           {
-            context: 'node_modules/@luigi-project/core',
-            to: './luigi-core',
+            context: 'node_modules/@applaunchpad-project/core',
+            to: './applaunchpad-core',
             from: {
               glob: '**',
               dot: true

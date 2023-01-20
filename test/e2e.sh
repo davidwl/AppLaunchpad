@@ -28,7 +28,7 @@ echo ""
 echo "Angular App"
 cd $NG_EXAMPLE
 killWebserver 4200
-runWebserver 4200 dist /luigi-core/luigi.js
+runWebserver 4200 dist /applaunchpad-core/applaunchpad.js
 WS_NG_PID=$PID
 
 echo ""

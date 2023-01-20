@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 import { ContextSwitcherHelpers as CSHelpers } from '../src/navigation/services/context-switcher';
 import { GenericHelpers } from '../src/utilities/helpers';
-import { LuigiConfig } from '../src/core-api';
+import { AppLaunchpadConfig } from '../src/core-api';
 import { Routing } from '../src/services/routing';
 
 describe('Context-switcher', function() {
@@ -76,7 +76,7 @@ describe('Context-switcher', function() {
 
   describe('getFallbackLabel', () => {
     beforeEach(() => {
-      sinon.stub(LuigiConfig, 'getConfigBooleanValue').returns(false);
+      sinon.stub(AppLaunchpadConfig, 'getConfigBooleanValue').returns(false);
     });
 
     it('works without fallback resolver', async () => {
@@ -89,13 +89,13 @@ describe('Context-switcher', function() {
       assert.equal(result, '##some_id##');
 
       sinon.assert.calledWithExactly(
-        LuigiConfig.getConfigBooleanValue,
+        AppLaunchpadConfig.getConfigBooleanValue,
         'navigation.contextSwitcher.useFallbackLabelCache'
       );
     });
 
     it('works with fallback resolver cached', async () => {
-      LuigiConfig.getConfigBooleanValue.returns(true);
+      AppLaunchpadConfig.getConfigBooleanValue.returns(true);
 
       const result = await CSHelpers.getFallbackLabel(myResolverFn, 'some_id');
       assert.equal(result, '##some_id##');
@@ -136,9 +136,9 @@ describe('Context-switcher', function() {
     let mockConfig;
     beforeEach(() => {
       mockConfig = getMockConfig();
-      sinon.stub(LuigiConfig, 'getConfigValueAsync');
+      sinon.stub(AppLaunchpadConfig, 'getConfigValueAsync');
       sinon.stub(CSHelpers, 'generateSwitcherNav');
-      sinon.stub(LuigiConfig, 'getConfigValue').returns(mockConfig);
+      sinon.stub(AppLaunchpadConfig, 'getConfigValue').returns(mockConfig);
     });
 
     it('lazyLoad off, existing options get returned', async () => {
@@ -147,25 +147,19 @@ describe('Context-switcher', function() {
 
       const result = await CSHelpers.fetchOptions(opts);
       assert.equal(result, opts);
-      assert.isFalse(
-        LuigiConfig.getConfigValueAsync.called,
-        'getConfigValueAsync not called'
-      );
+      assert.isFalse(AppLaunchpadConfig.getConfigValueAsync.called, 'getConfigValueAsync not called');
     });
 
     it('lazyLoad off, non-existing options fetches options', async () => {
       mockConfig.lazyloadOptions = false;
       const opts = ['a', 'b', 'c'];
       const expectedResult = 'works';
-      LuigiConfig.getConfigValueAsync.returns(opts);
+      AppLaunchpadConfig.getConfigValueAsync.returns(opts);
       CSHelpers.generateSwitcherNav.returns(expectedResult);
 
       const result = await CSHelpers.fetchOptions();
 
-      sinon.assert.calledWithExactly(
-        LuigiConfig.getConfigValueAsync,
-        'navigation.contextSwitcher.options'
-      );
+      sinon.assert.calledWithExactly(AppLaunchpadConfig.getConfigValueAsync, 'navigation.contextSwitcher.options');
       sinon.assert.calledWith(CSHelpers.generateSwitcherNav, mockConfig, opts);
       assert.equal(result, expectedResult, 'return value');
     });
@@ -174,33 +168,25 @@ describe('Context-switcher', function() {
       mockConfig.lazyloadOptions = true;
       const opts = ['a', 'b', 'c'];
       const expectedResult = 'works';
-      LuigiConfig.getConfigValueAsync.returns(opts);
+      AppLaunchpadConfig.getConfigValueAsync.returns(opts);
       CSHelpers.generateSwitcherNav.returns(expectedResult);
 
       const result = await CSHelpers.fetchOptions();
       await CSHelpers.fetchOptions();
       await CSHelpers.fetchOptions();
 
-      sinon.assert.calledWithExactly(
-        LuigiConfig.getConfigValueAsync,
-        'navigation.contextSwitcher.options'
-      );
+      sinon.assert.calledWithExactly(AppLaunchpadConfig.getConfigValueAsync, 'navigation.contextSwitcher.options');
       sinon.assert.calledWith(CSHelpers.generateSwitcherNav, mockConfig, opts);
       assert.equal(result, expectedResult, 'return value');
-      sinon.assert.callCount(
-        CSHelpers.generateSwitcherNav,
-        3,
-        'called N times'
-      );
+      sinon.assert.callCount(CSHelpers.generateSwitcherNav, 3, 'called N times');
     });
   });
 
   describe('generateSwitcherNav', () => {
     it('composes proper values with ParentNodePath', async () => {
-      const result = await CSHelpers.generateSwitcherNav(
-        { parentNodePath: '/environment' },
-        [{ label: 'Env 1', pathValue: 'env1' }]
-      );
+      const result = await CSHelpers.generateSwitcherNav({ parentNodePath: '/environment' }, [
+        { label: 'Env 1', pathValue: 'env1' }
+      ]);
       assert.equal(
         JSON.stringify(result),
         JSON.stringify([
@@ -214,9 +200,7 @@ describe('Context-switcher', function() {
     });
 
     it('composes proper values without ParentNodePath', async () => {
-      const result = await CSHelpers.generateSwitcherNav({}, [
-        { label: 'Env 1', pathValue: 'env1' }
-      ]);
+      const result = await CSHelpers.generateSwitcherNav({}, [{ label: 'Env 1', pathValue: 'env1' }]);
       assert.equal(
         JSON.stringify(result),
         JSON.stringify([
@@ -272,45 +256,30 @@ describe('Context-switcher', function() {
 
     it('returns false if parent node path is falsy', () => {
       parentNodePath = undefined;
-      const actual = CSHelpers.isContextSwitcherDetailsView(
-        currentPath,
-        parentNodePath
-      );
+      const actual = CSHelpers.isContextSwitcherDetailsView(currentPath, parentNodePath);
       assert.isFalse(actual);
     });
 
     it('returns false if parent node path is not included in current path', () => {
       parentNodePath = '/home/nomatch';
-      const actual = CSHelpers.isContextSwitcherDetailsView(
-        currentPath,
-        parentNodePath
-      );
+      const actual = CSHelpers.isContextSwitcherDetailsView(currentPath, parentNodePath);
       assert.isFalse(actual);
     });
 
     it('returns false if last path segment from parent node is not a full match in currentPath', () => {
       currentPath = '/home/projectsandmore/pr1';
-      const actual = CSHelpers.isContextSwitcherDetailsView(
-        currentPath,
-        parentNodePath
-      );
+      const actual = CSHelpers.isContextSwitcherDetailsView(currentPath, parentNodePath);
       assert.isFalse(actual);
     });
 
     it('returns false if current path has no content after parent node path', () => {
       currentPath = '/home/projects';
-      const actual = CSHelpers.isContextSwitcherDetailsView(
-        currentPath,
-        parentNodePath
-      );
+      const actual = CSHelpers.isContextSwitcherDetailsView(currentPath, parentNodePath);
       assert.isFalse(actual);
     });
 
     it('returns true if current path has content after parent node path', () => {
-      const actual = CSHelpers.isContextSwitcherDetailsView(
-        currentPath,
-        parentNodePath
-      );
+      const actual = CSHelpers.isContextSwitcherDetailsView(currentPath, parentNodePath);
       assert.isTrue(actual);
     });
   });
@@ -333,62 +302,43 @@ describe('Context-switcher', function() {
         assert: undefined
       },
       {
-        it:
-          'returns undefined if parent node path is not included in current path',
+        it: 'returns undefined if parent node path is not included in current path',
         parentNodePath: '/home/nomatch',
         assert: undefined
       }
     ].forEach(t => {
       it(t.it, () => {
-        const selectedId = CSHelpers.getSelectedId(
-          currentPath,
-          [env1, env2],
-          t.parentNodePath
-        );
+        const selectedId = CSHelpers.getSelectedId(currentPath, [env1, env2], t.parentNodePath);
         assert.equal(selectedId, t.assert);
       });
     });
 
     [
       {
-        it:
-          'returns undefined if last path segment from parent node is not a full match in currentPath',
+        it: 'returns undefined if last path segment from parent node is not a full match in currentPath',
         currentPath: '/home/projectsandmore/pr1',
         assert: undefined
       },
       {
-        it:
-          'returns undefined if current path has no content after parent node path',
+        it: 'returns undefined if current path has no content after parent node path',
         currentPath: '/home/projects',
         assert: undefined
       }
     ].forEach(t => {
       it(t.it, () => {
-        const selectedId = CSHelpers.getSelectedId(
-          t.currentPath,
-          [env1, env2],
-          parentNodePath
-        );
+        const selectedId = CSHelpers.getSelectedId(t.currentPath, [env1, env2], parentNodePath);
         assert.equal(selectedId, t.assert);
       });
     });
 
     it('returns id if current path has id after parent node path', () => {
-      const selectedId = CSHelpers.getSelectedId(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
+      const selectedId = CSHelpers.getSelectedId(currentPath, [env1, env2], parentNodePath);
       assert.equal(selectedId, 'pr1');
     });
 
     it('returns id even if current path has params after id', () => {
       currentPath = '/home/projects/pr1?foo=bar&test=false';
-      const selectedId = CSHelpers.getSelectedId(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
+      const selectedId = CSHelpers.getSelectedId(currentPath, [env1, env2], parentNodePath);
       assert.equal(selectedId, 'pr1');
     });
   });
@@ -411,62 +361,43 @@ describe('Context-switcher', function() {
         assert: undefined
       },
       {
-        it:
-          'returns undefined if parent node path is not included in current path',
+        it: 'returns undefined if parent node path is not included in current path',
         parentNodePath: '/home/nomatch',
         assert: undefined
       }
     ].forEach(t => {
       it(t.it, async () => {
-        const selectedOption = await CSHelpers.getSelectedOption(
-          currentPath,
-          [env1, env2],
-          t.parentNodePath
-        );
+        const selectedOption = await CSHelpers.getSelectedOption(currentPath, [env1, env2], t.parentNodePath);
         assert.equal(selectedOption, t.assert);
       });
     });
 
     [
       {
-        it:
-          'returns undefined if last path segment from parent node is not a full match in currentPath',
+        it: 'returns undefined if last path segment from parent node is not a full match in currentPath',
         currentPath: '/home/projectsandmore/pr1',
         assert: undefined
       },
       {
-        it:
-          'returns undefined if current path has no content after parent node path',
+        it: 'returns undefined if current path has no content after parent node path',
         currentPath: '/home/projects',
         assert: undefined
       }
     ].forEach(t => {
       it(t.it, async () => {
-        const selectedOption = await CSHelpers.getSelectedOption(
-          t.currentPath,
-          [env1, env2],
-          parentNodePath
-        );
+        const selectedOption = await CSHelpers.getSelectedOption(t.currentPath, [env1, env2], parentNodePath);
         assert.equal(selectedOption, t.assert);
       });
     });
 
     it('returns option if current path has id after parent node path', async () => {
-      const selectedOption = await CSHelpers.getSelectedOption(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
+      const selectedOption = await CSHelpers.getSelectedOption(currentPath, [env1, env2], parentNodePath);
       assert.deepEqual(selectedOption, { label: 'Env 1', id: 'pr1' });
     });
 
     it('returns option even if current path has params after id', async () => {
       currentPath = '/home/projects/pr1?foo=bar&test=false';
-      const selectedOption = await CSHelpers.getSelectedOption(
-        currentPath,
-        [env1, env2],
-        parentNodePath
-      );
+      const selectedOption = await CSHelpers.getSelectedOption(currentPath, [env1, env2], parentNodePath);
       assert.deepEqual(selectedOption, { label: 'Env 1', id: 'pr1' });
     });
   });
@@ -475,24 +406,12 @@ describe('Context-switcher', function() {
     const parentNodePath = '/environment';
 
     it('returns undefined when path only partially contains parentNodePath', async () => {
-      const result = await CSHelpers.getSelectedLabel(
-        '/environmentWhatever',
-        [],
-        parentNodePath,
-        myResolverFn,
-        false
-      );
+      const result = await CSHelpers.getSelectedLabel('/environmentWhatever', [], parentNodePath, myResolverFn, false);
       assert.equal(result, undefined);
     });
 
     it('returns undefined if outside current path', async () => {
-      const result = await CSHelpers.getSelectedLabel(
-        '/something',
-        [],
-        parentNodePath,
-        myResolverFn,
-        false
-      );
+      const result = await CSHelpers.getSelectedLabel('/something', [], parentNodePath, myResolverFn, false);
       assert.equal(result, undefined);
     });
 

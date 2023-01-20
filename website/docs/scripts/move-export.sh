@@ -13,13 +13,13 @@ if [ -d $LUIGI_DIR ]; then
 fi
 
 mkdir -p $LUIGI_DIR
-mv $EXPORT_DIR/luigi/* $LUIGI_DIR
+mv $EXPORT_DIR/applaunchpad/* $LUIGI_DIR
 
 mkdir -p $LUIGI_DIR/docu-microfrontend
 mv $EXPORT_DIR/* $LUIGI_DIR/docu-microfrontend
 
 # copy generated-json afterwards, since static files are only copied once by sapper in the beginning
-cp $BASE_DIR/../static/luigi/navigation-generated.json $LUIGI_DIR/
+cp $BASE_DIR/../static/applaunchpad/navigation-generated.json $LUIGI_DIR/
 
 # copy redirects file for netlify
 cp $LUIGI_DIR/../src/_redirects $LUIGI_DIR/
@@ -28,5 +28,5 @@ echo ""
 echo "Documentation was exported to $LUIGI_DIR"
 
 echo ""
-echo -e "Type ${BIBlue}npm run export:serve${Color_Off} to run Luigi with the docu micro-frontend."
+echo -e "Type ${BIBlue}npm run export:serve${Color_Off} to run AppLaunchpad with the docu micro-frontend."
 echo ""

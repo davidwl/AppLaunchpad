@@ -15,7 +15,7 @@
     StateHelpers,
     EventListenerHelpers,
   } from '../utilities/helpers';
-  import { LuigiConfig, LuigiElements, LuigiNavigation } from '../core-api';
+  import { AppLaunchpadConfig, AppLaunchpadElements, AppLaunchpadNavigation } from '../core-api';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
   import BadgeCounter from './BadgeCounter.svelte';
   import StatusBadge from './StatusBadge.svelte';
@@ -162,7 +162,7 @@
         if (typeof sideNavAccordionModeOverride !== 'undefined') {
           sideNavAccordionMode = sideNavAccordionModeOverride;
         } else {
-          sideNavAccordionMode = LuigiConfig.getConfigBooleanValue(
+          sideNavAccordionMode = AppLaunchpadConfig.getConfigBooleanValue(
             'navigation.defaults.sideNavAccordionMode'
           );
         }
@@ -212,13 +212,13 @@
 
   onMount(() => {
     semiCollapsibleButton =
-      LuigiConfig.getConfigValue('settings.responsiveNavigation') ===
+      AppLaunchpadConfig.getConfigValue('settings.responsiveNavigation') ===
       'semiCollapsible';
-    addNavHrefForAnchor = LuigiConfig.getConfigValue('navigation.addNavHrefs');
-    hideNavComponent = LuigiConfig.getConfigBooleanValue(
+    addNavHrefForAnchor = AppLaunchpadConfig.getConfigValue('navigation.addNavHrefs');
+    hideNavComponent = AppLaunchpadConfig.getConfigBooleanValue(
       'settings.hideNavigation'
     );
-    sideNavCompactMode = LuigiConfig.getConfigBooleanValue(
+    sideNavCompactMode = AppLaunchpadConfig.getConfigBooleanValue(
       'settings.sideNavCompactMode'
     );
     expandedCategories = NavigationHelpers.loadExpandedCategories();
@@ -226,7 +226,7 @@
     StateHelpers.doOnStoreChange(
       store,
       () => {
-        footerText = LuigiConfig.getConfigValue('settings.sideNavFooterText');
+        footerText = AppLaunchpadConfig.getConfigValue('settings.sideNavFooterText');
       },
       ['settings.footer']
     );
@@ -239,7 +239,7 @@
     });
 
     EventListenerHelpers.addEventListener('message', (e) => {
-      if ('luigi.navigation.update-badge-counters' === e.data.msg) {
+      if ('applaunchpad.navigation.update-badge-counters' === e.data.msg) {
         setLeftNavData();
       }
     });
@@ -249,11 +249,11 @@
     if (!previousPathData || previousPathData != pathData) {
       setLeftNavData();
     }
-    sideNavCompactMode = LuigiConfig.getConfigBooleanValue(
+    sideNavCompactMode = AppLaunchpadConfig.getConfigBooleanValue(
       'settings.sideNavCompactMode'
     );
     semiCollapsibleButton =
-      LuigiConfig.getConfigValue('settings.responsiveNavigation') ===
+      AppLaunchpadConfig.getConfigValue('settings.responsiveNavigation') ===
       'semiCollapsible';
   });
 
@@ -351,10 +351,10 @@
     //Calculate top/bottom position for flyout sublist
     const parent = el.closest('.fd-nested-list__item');
     const parentTopPosition = parent.offsetTop;
-    const shellbarHeight = LuigiElements.getShellbar().offsetHeight;
+    const shellbarHeight = AppLaunchpadElements.getShellbar().offsetHeight;
     let containerHeight;
-    if (LuigiElements.isCustomLuigiContainer()) {
-      containerHeight = LuigiElements.getCustomLuigiContainer().clientHeight;
+    if (AppLaunchpadElements.isCustomAppLaunchpadContainer()) {
+      containerHeight = AppLaunchpadElements.getCustomAppLaunchpadContainer().clientHeight;
     } else {
       containerHeight = window.innerHeight;
     }
@@ -408,7 +408,7 @@
     }
 
     console.warn('Could not resolve "up"-node, redirecting to root');
-    LuigiNavigation.navigate('/');
+    AppLaunchpadNavigation.navigate('/');
   }
 
   export function setExpandedState(nodes, value) {
@@ -536,7 +536,7 @@
               <i
                 class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
                 role="presentation"
-                title={$getTranslation('luigi.navigation.up')}
+                title={$getTranslation('applaunchpad.navigation.up')}
                 on:click|preventDefault={handleUp}
               />
             {/if}
@@ -1005,7 +1005,7 @@
     -ms-user-select: none;
   }
 
-  :global(html.luigi-app-in-custom-container) {
+  :global(html.applaunchpad-app-in-custom-container) {
     .fd-app__sidebar {
       position: absolute;
     }
@@ -1014,7 +1014,7 @@
   :global(.lui-global-nav-visible) .fd-app__sidebar {
     left: $globalNavWidth;
     .fd-side-nav {
-      width: var(--luigi__left-sidenav--width);
+      width: var(--applaunchpad__left-sidenav--width);
     }
   }
 
@@ -1040,7 +1040,7 @@
   }
 
   :global(.lui-breadcrumb) .fd-app__sidebar {
-    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+    top: calc(#{$topNavHeight} + var(--applaunchpad__breadcrumb--height));
   }
 
   .fd-app__sidebar {
@@ -1058,7 +1058,7 @@
 
     .lui-nav-title {
       height: $navHeaderHeight;
-      width: var(--luigi__left-sidenav--width);
+      width: var(--applaunchpad__left-sidenav--width);
       border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid
         var(--sapList_BorderColor, #e4e4e4);
       border-right: var(--sapList_BorderWidth, 0.0625rem) solid
@@ -1098,7 +1098,7 @@
 
     .fd-side-nav {
       height: 100%;
-      width: var(--luigi__left-sidenav--width);
+      width: var(--applaunchpad__left-sidenav--width);
       &.fd-side-nav--condensed {
         width: $leftNavWidthCollapsed;
       }

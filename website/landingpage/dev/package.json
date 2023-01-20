@@ -1,7 +1,7 @@
 {
-  "name": "luigi-landingpage",
+  "name": "applaunchpad-landingpage",
   "version": "1.0.0",
-  "description": "Luigi landingpage template",
+  "description": "AppLaunchpad landingpage template",
   "main": "gulpfile.babel.js",
   "scripts": {
     "start": "gulp",

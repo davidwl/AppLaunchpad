@@ -6,7 +6,7 @@ import { afterEach } from 'mocha';
 import { SplitViewSvc } from '../../src/services';
 import { GenericHelpers, IframeHelpers, RoutingHelpers } from '../../src/utilities/helpers';
 import { Navigation } from '../../src/navigation/services/navigation';
-import { LuigiConfig, LuigiElements } from '../../src/core-api';
+import { AppLaunchpadConfig, AppLaunchpadElements } from '../../src/core-api';
 
 describe('SplitViewSvc', () => {
   let node;
@@ -25,8 +25,8 @@ describe('SplitViewSvc', () => {
 
     sinon.stub(component, 'set').callThrough();
     sinon.stub(component, 'get').callThrough();
-    sinon.stub(LuigiConfig);
-    sinon.stub(LuigiElements);
+    sinon.stub(AppLaunchpadConfig);
+    sinon.stub(AppLaunchpadElements);
     sinon.stub(RoutingHelpers);
     sinon.stub(IframeHelpers);
     sinon.stub(GenericHelpers);
@@ -163,7 +163,7 @@ describe('SplitViewSvc', () => {
       };
 
       const shellbarHeight = 30;
-      LuigiElements.getShellbar.returns({
+      AppLaunchpadElements.getShellbar.returns({
         clientHeight: shellbarHeight
       });
 
@@ -189,7 +189,7 @@ describe('SplitViewSvc', () => {
 
       const setMockReturns = () => {
         GenericHelpers.getPathWithoutHash.returns(pathUrlRaw);
-        LuigiConfig.getConfigValueAsync.returns(navigationNodes);
+        AppLaunchpadConfig.getConfigValueAsync.returns(navigationNodes);
         Navigation.getNavigationPath.returns(pathData);
         RoutingHelpers.parseParams.returns(params);
         RoutingHelpers.getNodeParams.returns(nodeParams);
@@ -330,7 +330,7 @@ describe('SplitViewSvc', () => {
       SplitViewSvc.sendMessageToClients('test', mockData);
 
       sinon.assert.calledWithExactly(IframeHelpers.sendMessageToVisibleIframes, {
-        msg: `luigi.navigation.splitview.test`,
+        msg: `applaunchpad.navigation.splitview.test`,
         data: mockData
       });
     });

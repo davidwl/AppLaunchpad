@@ -1,6 +1,6 @@
 import { GenericHelpers } from '../../utilities/helpers';
 import { Routing } from '../../services/routing';
-import { LuigiConfig } from '../../core-api';
+import { AppLaunchpadConfig } from '../../core-api';
 
 export const ContextSwitcherHelpers = {
   _fallbackLabels: new Map(),
@@ -12,7 +12,7 @@ export const ContextSwitcherHelpers = {
   getPreparedParentNodePath(config) {
     if (!config.parentNodePath || !config.parentNodePath.startsWith('/')) {
       console.error(
-        'Luigi Config Error: navigation.contextSwitcher.parentNodePath must be defined as an absolute path.'
+        'AppLaunchpad Config Error: navigation.contextSwitcher.parentNodePath must be defined as an absolute path.'
       );
     }
     if (config.parentNodePath) {
@@ -57,10 +57,10 @@ export const ContextSwitcherHelpers = {
 
     return Boolean(
       parentNodePath &&
-      currentPathNormalized &&
-      typeof currentPathNormalized === 'string' &&
-      currentPathNormalized.startsWith(parentNodePathNormalized) &&
-      currentPathNormalized !== parentNodePathNormalized
+        currentPathNormalized &&
+        typeof currentPathNormalized === 'string' &&
+        currentPathNormalized.startsWith(parentNodePathNormalized) &&
+        currentPathNormalized !== parentNodePathNormalized
     );
   },
 
@@ -69,7 +69,9 @@ export const ContextSwitcherHelpers = {
       return id;
     }
 
-    const useFallbackLabelCache = LuigiConfig.getConfigBooleanValue('navigation.contextSwitcher.useFallbackLabelCache');
+    const useFallbackLabelCache = AppLaunchpadConfig.getConfigBooleanValue(
+      'navigation.contextSwitcher.useFallbackLabelCache'
+    );
     const labelCache = ContextSwitcherHelpers._fallbackLabels;
     if (useFallbackLabelCache) {
       if (labelCache.has(id)) {
@@ -132,11 +134,11 @@ export const ContextSwitcherHelpers = {
   },
 
   async fetchOptions(existingOptions = []) {
-    const config = LuigiConfig.getConfigValue('navigation.contextSwitcher');
+    const config = AppLaunchpadConfig.getConfigValue('navigation.contextSwitcher');
     if (!config.lazyloadOptions && existingOptions.length) {
       return existingOptions;
     }
-    const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.options');
+    const contextSwitcherOptions = await AppLaunchpadConfig.getConfigValueAsync('navigation.contextSwitcher.options');
     return await ContextSwitcherHelpers.generateSwitcherNav(config, contextSwitcherOptions);
   }
 };

@@ -9,23 +9,23 @@ module.exports = {
   watch: false,
   mode: 'production',
   entry: {
-    extendedConfiguration: './src/luigi-config/extended/main.js',
-    coreStyles: './src/luigi-config/styles/index.scss'
+    extendedConfiguration: './src/applaunchpad-config/extended/main.js',
+    coreStyles: './src/applaunchpad-config/styles/index.scss'
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'static/luigi/')
+    path: path.resolve(__dirname, 'static/applaunchpad/')
   },
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'node_modules/@luigi-project/core',
-          to: 'luigi-core'
+          from: 'node_modules/@applaunchpad-project/core',
+          to: 'applaunchpad-core'
         },
         {
-          from: 'node_modules/@luigi-project/client',
-          to: '../luigi-client'
+          from: 'node_modules/@applaunchpad-project/client',
+          to: '../applaunchpad-client'
         },
         {
           from: 'node_modules/docsearch.js/dist/cdn/docsearch.min.css',
@@ -49,7 +49,7 @@ module.exports = {
       `
       Don't be afraid!
       This file was generated automatically and you should not modify it.
-      The documentation (located in /docs) will tell you how to modify Luigi configuration with pleasure.
+      The documentation (located in /docs) will tell you how to modify AppLaunchpad configuration with pleasure.
       `
     ),
     new MiniCssExtractPlugin({

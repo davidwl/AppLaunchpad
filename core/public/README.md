@@ -1,11 +1,11 @@
-# Luigi Core
+# AppLaunchpad Core
 
 ## Overview
 
-Luigi is a micro frontend orchestration framework written in Svelte. Use Luigi Core to implement the core application, and Luigi Client to ensure communication between the application and the micro frontend it hosts. 
+AppLaunchpad is a micro frontend orchestration framework written in Svelte. Use AppLaunchpad Core to implement the core application, and AppLaunchpad Client to ensure communication between the application and the micro frontend it hosts. 
 
-For details on Luigi Core, see [this](https://github.com/SAP/luigi/tree/master/core) document.
+For details on AppLaunchpad Core, see [this](https://github.com/davidwl/applaunchpad/tree/master/core) document.
 
-If you want to try Luigi out, see the [examples](https://github.com/SAP/luigi/tree/master/core/examples).
+If you want to try AppLaunchpad out, see the [examples](https://github.com/davidwl/applaunchpad/tree/master/core/examples).
 
-For documentation on Luigi Core, see [Luigi documentation](https://docs.luigi-project.io).
+For documentation on AppLaunchpad Core, see [AppLaunchpad documentation](https://docs.applaunchpad-project.io).

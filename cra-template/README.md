@@ -1,17 +1,17 @@
-# Luigi Project Create React App Microfrontend Template
+# AppLaunchpad Project Create React App Microfrontend Template
 
-The [SAP Luigi](https://luigi-project.io/) template for [Create React App](https://github.com/facebook/create-react-app)
+The [AppLaunchpad](https://applaunchpad-project.io/) template for [Create React App](https://github.com/facebook/create-react-app)
 
 ## Usage
 
-To use this template within your project, add `--template @luigi-project/luigi-microfrontend` when creating a new app.
+To use this template within your project, add `--template @applaunchpad-project/applaunchpad-microfrontend` when creating a new app.
 
 For example:
 
 ```sh
-npx create-react-app my-app --template @luigi-project/luigi-microfrontend
+npx create-react-app my-app --template @applaunchpad-project/applaunchpad-microfrontend
 
 # or
 
-yarn create react-app my-app --template @luigi-project/luigi-microfrontend
+yarn create react-app my-app --template @applaunchpad-project/applaunchpad-microfrontend
 ```

@@ -3,12 +3,12 @@
 
 kind: Component
 metadata:
-  displayName: Luigi Client
-  description: Library for building Luigi micro frontends
+  displayName: AppLaunchpad Client
+  description: Library for building AppLaunchpad micro frontends
   labels:
     language: javascript
   tags:
-    - luigi
+    - applaunchpad
 spec:
   type:
     name: ui

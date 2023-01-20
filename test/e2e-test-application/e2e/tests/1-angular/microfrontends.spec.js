@@ -41,7 +41,7 @@ describe('Modal Microfrontend', () => {
         .should('not.be.visible');
     });
 
-    it('can be closed by the Luigi client', () => {
+    it('can be closed by the AppLaunchpad client', () => {
       cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
@@ -187,7 +187,7 @@ describe('iframeCreationInterceptor test', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/projects/pr2');
     cy.window().then(win => {
-      const config = win.Luigi.getConfig();
+      const config = win.AppLaunchpad.getConfig();
       config.tag = 'iframeInterceptorTest';
       config.settings.iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => {
         const style = 'border: 3px dashed ';
@@ -206,7 +206,7 @@ describe('iframeCreationInterceptor test', () => {
             break;
         }
       };
-      win.Luigi.configChanged();
+      win.AppLaunchpad.configChanged();
     });
   });
 
@@ -250,7 +250,7 @@ describe('Context Update Listener test', () => {
           .find('#console')
           .should('have.text', 'InitListener called');
 
-        win.Luigi.configChanged();
+        win.AppLaunchpad.configChanged();
         cy.wait(500);
 
         cy.wrap($iframeBody)
@@ -280,7 +280,7 @@ describe('Context Update Listener test', () => {
           .should('have.text', 'InitListener called');
 
         cy.window().then(win => {
-          win.Luigi.configChanged();
+          win.AppLaunchpad.configChanged();
           cy.wait(500);
 
           cy.wrap($iframeBody)

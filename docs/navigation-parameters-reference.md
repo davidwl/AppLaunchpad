@@ -17,9 +17,9 @@ meta -->
 # Navigation parameters reference
 
 <!-- add-attribute:class:success -->
-> **TIP:** To see the navigation parameters in use, see the [navigation configuration example](navigation-configuration-example.md) or configure a test application in the [Luigi Fiddle](https://fiddle.luigi-project.io).
+> **TIP:** To see the navigation parameters in use, see the [navigation configuration example](navigation-configuration-example.md) or configure a test application in the [AppLaunchpad Fiddle](https://fiddle.applaunchpad-project.io).
 
-Use the parameters and functions in this reference to configure your Luigi navigation structure.
+Use the parameters and functions in this reference to configure your AppLaunchpad navigation structure.
 
 * [Routing parameters](#routing-parameters)
 * [Navigation parameters](#navigation-parameters)
@@ -32,7 +32,7 @@ Use the parameters and functions in this reference to configure your Luigi navig
 
 
 ## Routing parameters
-You can configure the way Luigi tackles routing in your application in the `routing:` section of the configuration file. For example, you can choose the routing strategy to apply in your application as either hash or path location routing.
+You can configure the way AppLaunchpad tackles routing in your application in the `routing:` section of the configuration file. For example, you can choose the routing strategy to apply in your application as either hash or path location routing.
 
 ### disableBrowserHistory
   - **type** boolean
@@ -41,20 +41,20 @@ You can configure the way Luigi tackles routing in your application in the `rout
 
 ### modalPathParam
 - **type**: string
-- **description**: sets the parameter name when using the `LuigiClient.linkManager().openAsModal()` function, which provides a simple way to bookmark a modal view URL. It is appended as query param to the base URL. An example would be `example.com/your/path?modal=/another/path`. This setting requires [`routing.showModalPathInUrl`](#showModalPathInUrl) to be set to `true` to be effective.
+- **description**: sets the parameter name when using the `AppLaunchpadClient.linkManager().openAsModal()` function, which provides a simple way to bookmark a modal view URL. It is appended as query param to the base URL. An example would be `example.com/your/path?modal=/another/path`. This setting requires [`routing.showModalPathInUrl`](#showModalPathInUrl) to be set to `true` to be effective.
 - **default**: the default parameter name is `modal`, but you may also define a custom one.
 
 ### nodeParamPrefix
 - **type**: string
-- **description**: sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a simple way to attach query parameters to a view URL for activities such as sorting and filtering. Only this prefix can pass query parameters to micro frontends. A different prefix has to be used to pass parameters to the Luigi app itself to avoid potential conflicts between the two.
+- **description**: sets the prefix character when using the `AppLaunchpadClient.linkManager().withParam()` function, which provides a simple way to attach query parameters to a view URL for activities such as sorting and filtering. Only this prefix can pass query parameters to micro frontends. A different prefix has to be used to pass parameters to the AppLaunchpad app itself to avoid potential conflicts between the two.
 - **default**: the default prefix character is `~`, but you may also define a custom one.
 
 ### pageNotFoundHandler
 - **type**: any
-- **description**: defines custom behavior when a `404` error occurs.  Luigi handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** and  **keepURL** as parameters. You can use the **redirectTo** parameter if you want Luigi to redirect to a specific navigation path after execution. Setting the **keepURL** parameter to `true` will keep the erroneous URL onto the browser's address bar. 
+- **description**: defines custom behavior when a `404` error occurs.  AppLaunchpad handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** and  **keepURL** as parameters. You can use the **redirectTo** parameter if you want AppLaunchpad to redirect to a specific navigation path after execution. Setting the **keepURL** parameter to `true` will keep the erroneous URL onto the browser's address bar. 
 - **attributes**:
   - **wrongPath** (string): the path that the user tried navigating to.
-  - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
+  - **wasAnyPathFitted** (bool): it is true if AppLaunchpad managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
 ### preserveQueryParams
 - **type**: boolean
@@ -122,12 +122,12 @@ config.navigation.defaults = {
 > **NOTE**: The **pageErrorHandler** only works if the [loading indicator](#loadingindicatorenabled) is not disabled.
 
 - **type**: object
-- **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
+- **description**: gives you the possibility to handle a situation in which AppLaunchpad Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
 - **default**: the parameter **defaults.pageErrorHandler** is not specified by default, and you can overwrite it using the **pageErrorHandler** value on a single node level.
 - **attributes**:
   - **timeout** amount of time after which redirection will take effect.
   - **viewUrl** specifies the location to redirect to on the micro frontend level (the main URL is not changed).
-  - **redirectPath** specifies the location to redirect to on the Luigi level (the main URL is changed).
+  - **redirectPath** specifies the location to redirect to on the AppLaunchpad level (the main URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
 - **since**: v1.0.1
 - **example**:
@@ -166,12 +166,12 @@ config.navigation.defaults = {
 
 ### intentMapping
 - **type**: array
-- **description**: contains an array of abstract intent objects that can be used to navigate through micro frontends through the [LuigiClient linkManager.navigate()](luigi-client-api.md#navigate) method. The attributes contained in each intent object of the array are abstract notations which can be used to define the target mapping of your desired intent navigation in a semantic way.
+- **description**: contains an array of abstract intent objects that can be used to navigate through micro frontends through the [AppLaunchpadClient linkManager.navigate()](applaunchpad-client-api.md#navigate) method. The attributes contained in each intent object of the array are abstract notations which can be used to define the target mapping of your desired intent navigation in a semantic way.
 Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
 - **attributes**:
   - **semanticObject**(string): may represent a business entity such as a sales order or a product. It enables navigating to such entities in an abstract implementation-independent way. It can only only contain alphanumerical characters.
   - **action**(string): defines an operation, i.e.: `display`, `approve` or `edit`. The operation is intended to be performed on a **semanticObject** such as a sales order or a certain product. It can only contain alphanumerical characters but also the underscore character.
-  - **pathSegment**(string): represents the target of the navigation. In order to use it as a target link, it has to be defined under navigation nodes in the Luigi configuration.
+  - **pathSegment**(string): represents the target of the navigation. In order to use it as a target link, it has to be defined under navigation nodes in the AppLaunchpad configuration.
   - **externalLink**(object): used to resolve the intent to an external link. This parameter is optional. When used, the **pathSegment** parameter is ignored.
     - **attributes**:
       - **url**(string): URL the intent gets resolved to.
@@ -179,7 +179,7 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
 
 ### nodeAccessibilityResolver
 - **type**: any
-- **description**: receives all values defined in the node configuration. It allows you to define a permission checker function that gets executed on every node. If it returns `false`, Luigi removes the node and its children from the navigation structure. See [angular navigation.js](../test/e2e-test-application/src/luigi-config/extended/navigation.js) for an example.
+- **description**: receives all values defined in the node configuration. It allows you to define a permission checker function that gets executed on every node. If it returns `false`, AppLaunchpad removes the node and its children from the navigation structure. See [angular navigation.js](../test/e2e-test-application/src/applaunchpad-config/extended/navigation.js) for an example.
 
 ### nodeChangeHook
 - **type**: function
@@ -206,13 +206,13 @@ settings: {
 - **type**: object
 - **description**: contains key-object pairs, where the key is the view group name as specified in the node parameters, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
 - **attributes**:
-  - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It cannot be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter
+  - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It cannot be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports AppLaunchpad Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter
  is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
   - **loadOnStartup**(boolean): when set to `true`, it loads the respective view group with the respective **preloadUrl** in the background as soon as the app first starts. 
 
 
 ## Node parameters
-Node parameters are all the parameters that can be added to an individual navigation node in the `nodes:` section of the Luigi configuration file.
+Node parameters are all the parameters that can be added to an individual navigation node in the `nodes:` section of the AppLaunchpad configuration file.
 
 ### altText
 - **type**: string
@@ -228,7 +228,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **attributes**:
   - **label** is the label of the badge.
   - **count** is a function or asynchronous function that returns a number.
-  Gets updated when you click the navigation. Use `Luigi.navigation().updateTopNavigation()` in Luigi Core or trigger it in Luigi Client by using the custom message feature.
+  Gets updated when you click the navigation. Use `AppLaunchpad.navigation().updateTopNavigation()` in AppLaunchpad Core or trigger it in AppLaunchpad Client by using the custom message feature.
 
 ### category
 - **type**: string or object
@@ -246,7 +246,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 ### children
 - **type**: array | function
 - **description**:  in this element, you can specify children nodes. All children nodes will have the same parent prefix URL.
-For example, if you look at our [Fiddle showcase](https://fiddle.luigi-project.io/), you will see that home node has different children: this hierarchy will be reflected in children URLs.
+For example, if you look at our [Fiddle showcase](https://fiddle.applaunchpad-project.io/), you will see that home node has different children: this hierarchy will be reflected in children URLs.
 ```javascript
 navigation: {
     nodes: [{
@@ -259,8 +259,8 @@ navigation: {
             icon: 'home',
             viewUrl: '/examples/microfrontends/multipurpose.html',
             context: {
-                title: 'Welcome to Luigi Fiddle!',
-                content: 'Click on "Modify Config" at the bottom right and play around with your Luigi configuration'
+                title: 'Welcome to AppLaunchpad Fiddle!',
+                content: 'Click on "Modify Config" at the bottom right and play around with your AppLaunchpad configuration'
             }
         },
         ...
@@ -289,7 +289,7 @@ navigation: {
 
 ### clientPermissions.urlParameters
 - **type**: object
-- **description** Specify if the micro frontend behind this node can read and write the Luigi Core search query parameter. See also [Routing API](luigi-core-api.md#routing)
+- **description** Specify if the micro frontend behind this node can read and write the AppLaunchpad Core search query parameter. See also [Routing API](applaunchpad-core-api.md#routing)
 - **example**:
 ```javascript
 clientPermissions:{
@@ -349,7 +349,7 @@ Web components can communicate over an event bus.
     - **description**: Array of web component nodes.
     - **attributes**:
       - **id**: unique `id` of the web component.
-      - **viewUrl**: URL which points to the web component `.js` file. If you are using [localization](https://docs.luigi-project.io/docs/i18n) and translating your page into different languages, you can also add a **{i18n.currentLocale}** parameter to the viewUrl part of your configuration.
+      - **viewUrl**: URL which points to the web component `.js` file. If you are using [localization](https://docs.applaunchpad-project.io/docs/i18n) and translating your page into different languages, you can also add a **{i18n.currentLocale}** parameter to the viewUrl part of your configuration.
       - **context**: object, which you can pass to the web component.
       - **layoutConfig**: config object to define the position of an item in a grid. The properties are `row` and `column` and get the same values as in the CSS grid standard. If you want to use the mechanism of nested web components, you can define a `slot` property with the slot name instead of the config object. In that case this web component node will be plugged in the parent web component.
       - **eventListeners**
@@ -380,7 +380,7 @@ Web components can communicate over an event bus.
   },
 ```
 
-Below is Luigi's web component example configuration which shows 3 web components in a grid layout. It also includes the configuration for the event bus. The `input` web component sends the typed input. The `header` web component listens to a `sendInput` event from a web component with the id `input1`. Received data will be converted. An `update` event will be triggered, changing the `header` web component where an `update` event listener is registered.
+Below is AppLaunchpad's web component example configuration which shows 3 web components in a grid layout. It also includes the configuration for the event bus. The `input` web component sends the typed input. The `header` web component listens to a `sendInput` event from a web component with the id `input1`. Received data will be converted. An `update` event will be triggered, changing the `header` web component where an `update` event listener is registered.
 
 ```javascript
 {
@@ -459,7 +459,7 @@ Below is Luigi's web component example configuration which shows 3 web component
 
 ### defaultChildNode
 - **type**: string
-- **description**: sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
+- **description**: sets the child node that AppLaunchpad activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.
 
 <!-- add-attribute:class:warning -->
 >**NOTE:** To define a root-level **defaultChildNode** which is different than the first header navigation node, set an object with **defaultChildNode** and **children** set to `navigation.nodes` instead of an array of nodes.
@@ -490,10 +490,10 @@ settings: {
 ### defaults.runTimeErrorHandler
 
 <!-- add-attribute:class:warning -->
-> **NOTE**:  The **runTimeErrorHandler** only works if the micro frontend uses Luigi Client and [disable-luigi-runtime-error-handling](advanced-options-luigi-client.md#disable-luigi-core-runtime-error-handling) is not disabled.
+> **NOTE**:  The **runTimeErrorHandler** only works if the micro frontend uses AppLaunchpad Client and [disable-applaunchpad-runtime-error-handling](advanced-options-applaunchpad-client.md#disable-applaunchpad-core-runtime-error-handling) is not disabled.
 
 - **type**: object
-- **description**: allows you to handle errors on the Core level. The error handler receives all unhandled errors from the micro frontends which are using the Luigi Client.
+- **description**: allows you to handle errors on the Core level. The error handler receives all unhandled errors from the micro frontends which are using the AppLaunchpad Client.
 - **default**: the parameter **defaults.runTimeErrorHandler** is not specified by default, and you can overwrite it using the **runTimeErrorHandler** value on a single node level.
 - **attributes**:
   - **errorFn**:(function) gets an object `error` as parameter. The properties of this object are the properties of the [error event](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent). The inherited properties from [event](https://developer.mozilla.org/en-US/docs/Web/API/Event) are not part of the object. Current node is the second parameter.
@@ -511,7 +511,7 @@ runTimeErrorHandler: {
 - **attributes**:
   - **sameWindow** defines if the external URL is opened in a new or current tab. The default value for this parameter
  is `false`.
-  - **URL** is the external URL that the node leads to. If you are using [localization](https://docs.luigi-project.io/docs/i18n) and translating your page into different languages, you can also add a **{i18n.currentLocale}** parameter to the URL part of your configuration.
+  - **URL** is the external URL that the node leads to. If you are using [localization](https://docs.applaunchpad-project.io/docs/i18n) and translating your page into different languages, you can also add a **{i18n.currentLocale}** parameter to the URL part of your configuration.
 
 ### hideFromNav
 - **type**: boolean
@@ -559,7 +559,7 @@ runTimeErrorHandler: {
    ```
 ### loadingIndicator.hideAutomatically
 - **type**: boolean
-- **description**: if set to `false`, it disables the automatic hiding of the loading indicator once the micro frontend is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `LuigiClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `LuigiClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro frontend during the startup.
+- **description**: if set to `false`, it disables the automatic hiding of the loading indicator once the micro frontend is loaded. It is only considered if the loading indicator is enabled. It does not apply if the loading indicator is activated manually with the `AppLaunchpadClient.uxManager().showLoadingIndicator()` function. If the loading indicator is enabled and automatic hiding is disabled, use `AppLaunchpadClient.uxManager().hideLoadingIndicator()` to hide it manually in your micro frontend during the startup.
 - **default**: `true`
 - **example**:
     ```javascript
@@ -570,7 +570,7 @@ runTimeErrorHandler: {
 
 ### navigationContext
 - **type**: string
-- **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using ` LuigiClient.linkManager().fromContext('contextname')`.
+- **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using ` AppLaunchpadClient.linkManager().fromContext('contextname')`.
 
 
 ### onNodeActivation
@@ -590,11 +590,11 @@ runTimeErrorHandler: {
 > **NOTE**: The **pageErrorHandler** only works if the [loading indicator](#loadingindicatorenabled) is not disabled.
 
 - **type**: object
-- **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
+- **description**: gives you the possibility to handle a situation in which AppLaunchpad Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
 - **attributes**:
   - **timeout** amount of time after which redirection will take effect.
   - **viewUrl** specifies the location to redirect to on the micro frontend level (the main URL is not changed).
-  - **redirectPath** specifies the location to redirect to on the Luigi level (the main URL is changed).
+  - **redirectPath** specifies the location to redirect to on the AppLaunchpad level (the main URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
   - **since**: v1.0.1
 
@@ -603,7 +603,7 @@ runTimeErrorHandler: {
 - **description**: specifies the partial URL of the current segment. **pathSegment** must not contain slashes.
 - **examples**:
   - A static **pathSegment** of value `settings` results in `example.com/settings`.
-  - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-advanced.md#dynamically-changeable-paths).
+  - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in AppLaunchpad [here](navigation-advanced.md#dynamically-changeable-paths).
 
 ### sideNavAccordionMode
 - **type**: boolean
@@ -703,14 +703,14 @@ settings: {
 
 ### viewUrl
 - **type**: string
-- **description**: contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node. **viewUrl** can contain variables from:
+- **description**: contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. If **viewUrl** is undefined, AppLaunchpad activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, AppLaunchpad opens the first child of the current node. **viewUrl** can contain variables from:
   * dynamic path segments
   * node parameters
 
 
 ### virtualTree
 - **type**: boolean
-- **description**: marks the node as the beginning of a virtual tree. Allows navigation to any of its children's paths without the need of specifying nested children. The path that comes after the node marked as **virtualTree** is appended to its **viewUrl**. [**keepSelectedForChildren**](#keepSelectedForChildren) is automatically applied. This feature is often used in combination with [LinkManager().withoutSync().navigate](luigi-client-api.md#withoutsync) to be able to keep a micro frontend's existing router links.
+- **description**: marks the node as the beginning of a virtual tree. Allows navigation to any of its children's paths without the need of specifying nested children. The path that comes after the node marked as **virtualTree** is appended to its **viewUrl**. [**keepSelectedForChildren**](#keepSelectedForChildren) is automatically applied. This feature is often used in combination with [LinkManager().withoutSync().navigate](applaunchpad-client-api.md#withoutsync) to be able to keep a micro frontend's existing router links.
 - **example**:
     In this example, navigating to `core.tld/settings/some/nested/view` will result in opening `/sampleapp.html#/settings/some/nested/view`.
     ```javascript
@@ -822,16 +822,16 @@ The context switcher is a drop-down list available in the top navigation bar. It
 
 ### useFallbackLabelCache
 - **type**: boolean
-- **description**: if set to `true`, the labels retrieved through **fallbackLabelResolver** are cached within Luigi. This is useful, if **fallbackLabelResolver** is an async function which does a remote server call to fetch its value.
+- **description**: if set to `true`, the labels retrieved through **fallbackLabelResolver** are cached within AppLaunchpad. This is useful, if **fallbackLabelResolver** is an async function which does a remote server call to fetch its value.
 - **since**: 1.4.0
 
 ## Profile
 
-The profile section is a configurable drop-down list available in the top navigation bar. Within the configuration, you can override the logout item content (if authorization is configured) and/or add links to Luigi navigation nodes. To do so, add the **profile** parameter to the **navigation** object using the following optional parameters:
+The profile section is a configurable drop-down list available in the top navigation bar. Within the configuration, you can override the logout item content (if authorization is configured) and/or add links to AppLaunchpad navigation nodes. To do so, add the **profile** parameter to the **navigation** object using the following optional parameters:
 
 ### items
 - **type**: array
-- **description**: an array of objects, each one being a link to a Luigi navigation node or an external URL.
+- **description**: an array of objects, each one being a link to a AppLaunchpad navigation node or an external URL.
 - **attributes**:
   - **label** defines the text for the link.
   - **testId** is a string where you can define your own custom `testId` for E2E tests. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
@@ -882,7 +882,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 
 ### items
 - **type**: array
-- **description**: an array of objects, each one being a link to a Luigi navigation node or an external URL. An item can have several attributes.
+- **description**: an array of objects, each one being a link to a AppLaunchpad navigation node or an external URL. An item can have several attributes.
 - **attributes**:
   - **label** defines the text for the link.
   - **subTitle** defines an additional text line for the link.
@@ -909,7 +909,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 ## App switcher
 
 The app switcher is a dropdown list available in the top navigation bar. It allows you to switch between application elements displayed in the dropdown. To use it, you need to:
-1. Define a [header object](general-settings.md#headerlogo) in the `settings:` section of your Luigi configuration.
+1. Define a [header object](general-settings.md#headerlogo) in the `settings:` section of your AppLaunchpad configuration.
 2. Add the **appSwitcher** parameter to the **navigation** object using the optional parameters listed below.
 
 ### itemRenderer
@@ -929,10 +929,10 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
         let a = document.createElement('a');
         a.setAttribute('class', 'fd-menu__link');
         a.addEventListener('click', e => {
-          Luigi.navigation().navigate(item.link);
+          AppLaunchpad.navigation().navigate(item.link);
           appSwitcherApiObj.closeDropDown();
           e.stopPropagation();
-          Luigi.configChanged('navigation')
+          AppLaunchpad.configChanged('navigation')
         });
         let span = document.createElement('span');
         span.setAttribute('class', 'fd-menu__addon-before');
@@ -958,21 +958,21 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
 - **type**: array
 - **description**: defines the list of application elements.
 - **attributes**:
-  - **title** defines the application title. This is shown in the **appSwitcher** drop-down as well as the title in the header of the Luigi application if a user is in the context of the app.
-  - **subTitle** defines the application sub-title. This is shown as the sub-title in the header of the Luigi application if a user is in the context of the app.
-  - **link** is a link within the Luigi application that defines the root of the app. It is used to switch to the application if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header.
+  - **title** defines the application title. This is shown in the **appSwitcher** drop-down as well as the title in the header of the AppLaunchpad application if a user is in the context of the app.
+  - **subTitle** defines the application sub-title. This is shown as the sub-title in the header of the AppLaunchpad application if a user is in the context of the app.
+  - **link** is a link within the AppLaunchpad application that defines the root of the app. It is used to switch to the application if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header.
 
 ### showMainAppEntry
 - **type**: boolean
-- **description**: includes the link to the root of the Luigi application in the drop-down using the **title** specified in the **settings/header** section of the configuration as a label.
+- **description**: includes the link to the root of the AppLaunchpad application in the drop-down using the **title** specified in the **settings/header** section of the configuration as a label.
 
 ## Global search
 
-The global search is an input field available in the top navigation bar. The search is available if the Luigi configuration file contains on its root level a section called `globalSearch`. Within this section you can implement and configure a search provider object.
+The global search is an input field available in the top navigation bar. The search is available if the AppLaunchpad configuration file contains on its root level a section called `globalSearch`. Within this section you can implement and configure a search provider object.
 
 ### disableInputHandlers
 - **type**: boolean
-- **description**: disables the on:keyUp and other internal handlers on the search input field. It is a plain input field then, which can be used to attach your own handlers. If set to `true`, a **searchProvider** must be defined in order to show the search field, which can contain your custom logic. It is recommended to initialize your custom logic in the [**lifeCycle.luigiAfterInit**](lifecycle-hooks.md#luigiafterinit) hook.
+- **description**: disables the on:keyUp and other internal handlers on the search input field. It is a plain input field then, which can be used to attach your own handlers. If set to `true`, a **searchProvider** must be defined in order to show the search field, which can contain your custom logic. It is recommended to initialize your custom logic in the [**lifeCycle.applaunchpadAfterInit**](lifecycle-hooks.md#applaunchpadafterinit) hook.
 - **since**: 1.5.0
 
 ### globalSearchCenteredCancelButton
@@ -1000,7 +1000,7 @@ The global search is an input field available in the top navigation bar. The sea
     - **description**: will be executed when the user presses 'Escape'.
   - **customSearchResultRenderer**
     - **type**: Function
-    - **description**: This function allows you to append your custom search result to a slot which Luigi provides for you. If this function is implemented the default search result popover is disabled.
+    - **description**: This function allows you to append your custom search result to a slot which AppLaunchpad provides for you. If this function is implemented the default search result popover is disabled.
     - **attributes**:
       - **searchResults**
         - **type**: Array
@@ -1027,7 +1027,7 @@ The global search is an input field available in the top navigation bar. The sea
   - **onSearchResultItemSelected**
     - **type**: Function
     - **description**: will be executed when the user clicks on a `searchResultItem`.
-    - **attribute** [searchResultItem](luigi-core-api.md#globalsearch)
+    - **attribute** [searchResultItem](applaunchpad-core-api.md#globalsearch)
   - **inputPlaceholder**
     - **type**: string
     - **description**: This text will be used as placeholder in the search input field.

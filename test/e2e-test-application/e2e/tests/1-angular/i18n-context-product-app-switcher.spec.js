@@ -13,7 +13,7 @@ describe('Context switcher', () => {
     cy.expectPathToBe('/environments/env1');
 
     // check label
-    cy.get('[data-testid="luigi-contextswitcher-button"]').should('contain', 'Environment 1');
+    cy.get('[data-testid="applaunchpad-contextswitcher-button"]').should('contain', 'Environment 1');
   });
 
   it('Add and remove project with context switcher', () => {
@@ -26,7 +26,7 @@ describe('Context switcher', () => {
     cy.goToOverviewPage();
     cy.expectPathToBe('/overview');
 
-    cy.get('[data-testid=luigi-alert]').should('not.exist');
+    cy.get('[data-testid=applaunchpad-alert]').should('not.exist');
 
     // add project
 
@@ -38,9 +38,9 @@ describe('Context switcher', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Project Two');
     cy.get('.fd-app__sidebar').should('contain', 'Project 5');
 
-    cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
+    cy.get('[data-testid=applaunchpad-alert]').should('have.class', 'fd-message-strip--information');
 
-    cy.get('[data-testid=luigi-alert]').should('contain', 'Project 5 created.');
+    cy.get('[data-testid=applaunchpad-alert]').should('contain', 'Project 5 created.');
 
     cy.goToOverviewPage();
     cy.expectPathToBe('/overview');
@@ -77,7 +77,7 @@ describe('Context switcher', () => {
     cy.get('.fd-app__sidebar').should('not.contain', 'Project Two');
     cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
 
-    cy.get('[data-testid="luigi-contextswitcher-popover"]').should('not.contain', 'Remove Project');
+    cy.get('[data-testid="applaunchpad-contextswitcher-popover"]').should('not.contain', 'Remove Project');
 
     // add projects again
 
@@ -89,7 +89,7 @@ describe('Context switcher', () => {
     cy.get('.fd-app__sidebar').should('not.contain', 'Project 2');
     cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
 
-    cy.get('[data-testid="luigi-contextswitcher-popover"]').should('contain', 'Remove Project');
+    cy.get('[data-testid="applaunchpad-contextswitcher-popover"]').should('contain', 'Remove Project');
 
     cy.selectContextSwitcherItem('New Project');
 
@@ -99,14 +99,14 @@ describe('Context switcher', () => {
     cy.get('.fd-app__sidebar').should('contain', 'Project 2');
     cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
 
-    cy.get('[data-testid="luigi-contextswitcher-popover"]').should('contain', 'Remove Project');
+    cy.get('[data-testid="applaunchpad-contextswitcher-popover"]').should('contain', 'Remove Project');
 
     cy.expectPathToBe('/projects');
   });
 
   it('Preserve sub path on switch', () => {
     cy.window().then(win => {
-      const config = win.Luigi.getConfig();
+      const config = win.AppLaunchpad.getConfig();
       config.navigation.contextSwitcher.preserveSubPathOnSwitch = true;
       const environmentsNode = config.navigation.nodes.find(element => element.pathSegment === 'environments');
       environmentsNode.hideFromNav = false;
@@ -123,7 +123,7 @@ describe('Context switcher', () => {
           viewUrl: '/sampleapp.html#/environments/:environmentId'
         }
       ];
-      win.Luigi.configChanged('navigation');
+      win.AppLaunchpad.configChanged('navigation');
 
       cy.selectContextSwitcherItem('Environment 1');
 
@@ -147,9 +147,9 @@ describe('Context switcher', () => {
 
   it('aways show dropdown option - many options', () => {
     cy.window().then(win => {
-      const config = win.Luigi.getConfig();
+      const config = win.AppLaunchpad.getConfig();
       config.navigation.contextSwitcher.alwaysShowDropdown = false;
-      win.Luigi.configChanged('navigation');
+      win.AppLaunchpad.configChanged('navigation');
 
       cy.selectContextSwitcherItem('Environment 1');
 
@@ -165,7 +165,7 @@ describe('Context switcher', () => {
 
   it('aways show dropdown option - one option only', () => {
     cy.window().then(win => {
-      const config = win.Luigi.getConfig();
+      const config = win.AppLaunchpad.getConfig();
       config.navigation.contextSwitcher.alwaysShowDropdown = false;
       config.navigation.contextSwitcher.options = [
         {
@@ -174,7 +174,7 @@ describe('Context switcher', () => {
         }
       ];
       config.navigation.contextSwitcher.actions = [];
-      win.Luigi.configChanged('navigation');
+      win.AppLaunchpad.configChanged('navigation');
 
       cy.selectContextSwitcherItem('Environment 1');
 
@@ -284,10 +284,10 @@ describe('AppSwitcher', () => {
   });
   it('Clicking around the app switcher', () => {
     cy.window().then(win => {
-      const config = win.Luigi.getConfig();
+      const config = win.AppLaunchpad.getConfig();
 
       // check initial title and subtitle
-      cy.get('[data-testid="luigi-topnav-title"]').should('contain', config.settings.header.title);
+      cy.get('[data-testid="applaunchpad-topnav-title"]').should('contain', config.settings.header.title);
       cy.get('.fd-shellbar__subtitle').should('contain', config.settings.header.subTitle);
       // check available dropdown items
       cy.get('[data-testid="app-switcher"]').click();
@@ -314,14 +314,14 @@ describe('AppSwitcher', () => {
       cy.expectPathToBe('/projects/pr2');
 
       // check the title and subtlitle
-      cy.get('[data-testid="luigi-topnav-title"]').should('contain', 'Application Two');
+      cy.get('[data-testid="applaunchpad-topnav-title"]').should('contain', 'Application Two');
       cy.get('.fd-shellbar__subtitle').should('contain', 'the second app');
 
       // navigate to project 1 using plain navigation
       cy.visit('/projects/pr1/developers');
 
       // check if app switcher got updated
-      cy.get('[data-testid="luigi-topnav-title"]').should('contain', 'Application One');
+      cy.get('[data-testid="applaunchpad-topnav-title"]').should('contain', 'Application One');
       cy.get('.fd-shellbar__subtitle').should('contain', 'the first app');
 
       // check available dropdown items
@@ -362,18 +362,18 @@ describe('I18N', () => {
     cy.expectPathToBe('/projects/pr1');
 
     cy.window().then(win => {
-      let config = win.Luigi.getConfig();
+      let config = win.AppLaunchpad.getConfig();
       const mySettings = {
         customTranslationImplementation: () => {
           return {
             getTranslation: (key, interpolations, locale) => {
-              return '*' + key + '* ' + (locale || win.Luigi.i18n().getCurrentLocale());
+              return '*' + key + '* ' + (locale || win.AppLaunchpad.i18n().getCurrentLocale());
             }
           };
         }
       };
       config.settings = mySettings;
-      win.Luigi.configChanged();
+      win.AppLaunchpad.configChanged();
     });
     cy.get('.fd-app__sidebar').should('contain', '*Developers* en');
 

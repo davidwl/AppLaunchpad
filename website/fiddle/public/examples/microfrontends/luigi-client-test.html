@@ -7,7 +7,7 @@
       rel="stylesheet"
     />
     <link href="../../styles/styles.css" rel="stylesheet" />
-    <script src="/vendor/luigi-client/luigi-client.js"></script>
+    <script src="/vendor/applaunchpad-client/applaunchpad-client.js"></script>
     <style>
       .hide {
         display: none;
@@ -35,19 +35,23 @@
     </section>
     <script>
       function addSearchParams() {
-        LuigiClient.addCoreSearchParams({ q: 'test', luigi: 'rocks', tets: 'tets' });
+        AppLaunchpadClient.addCoreSearchParams({
+          q: 'test',
+          applaunchpad: 'rocks',
+          tets: 'tets'
+        });
       }
       function deleteSearchParam() {
-        LuigiClient.addCoreSearchParams({ q: undefined });
+        AppLaunchpadClient.addCoreSearchParams({ q: undefined });
       }
       function addNodeParams() {
-        LuigiClient.addNodeParams({ q: 'test', luigi: 'rocks' });
+        AppLaunchpadClient.addNodeParams({ q: 'test', applaunchpad: 'rocks' });
       }
       function deleteNodeParam() {
-        LuigiClient.addNodeParams({ q: undefined, luigi: 'rocks' });
+        AppLaunchpadClient.addNodeParams({ q: undefined, applaunchpad: 'rocks' });
       }
       function getSearchParam() {
-        const params = LuigiClient.getCoreSearchParams();
+        const params = AppLaunchpadClient.getCoreSearchParams();
         document.getElementById('currentSearchParams').innerHTML = JSON.stringify(params);
       }
     </script>

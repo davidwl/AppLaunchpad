@@ -16,25 +16,25 @@ meta -->
 
 # Versions
 
-Read about the versions of Luigi in this document.
+Read about the versions of AppLaunchpad in this document.
 
 - [Changelog](#changelog)
-- [Luigi 1.x upgrades](#luigi-1x-upgrades)
+- [AppLaunchpad 1.x upgrades](#applaunchpad-1x-upgrades)
 - [Docs for earlier versions](#docs-for-earlier-versions)
 
 ## Changelog
 
-Our [changelog](https://bit.ly/2W47Ewv) contains information on all the updates and features which were added to Luigi starting from its initial release.
+Our [changelog](https://bit.ly/2W47Ewv) contains information on all the updates and features which were added to AppLaunchpad starting from its initial release.
 
-## Luigi 1.x upgrades
+## AppLaunchpad 1.x upgrades
 
-Luigi versions 1.0 and above differ from earlier versions in some important ways. Luigi npm packages (previously under `kyma-project`) are under a new npm org. The new packages are:
-- @luigi-project/client
-- @luigi-project/client-ie11
-- @luigi-project/core
-- @luigi-project/core-ie11
-- @luigi-project/plugin-auth-oauth2
-- @luigi-project/plugin-auth-oidc
+AppLaunchpad versions 1.0 and above differ from earlier versions in some important ways. AppLaunchpad npm packages (previously under `kyma-project`) are under a new npm org. The new packages are:
+- @applaunchpad-project/client
+- @applaunchpad-project/client-ie11
+- @applaunchpad-project/core
+- @applaunchpad-project/core-ie11
+- @applaunchpad-project/plugin-auth-oauth2
+- @applaunchpad-project/plugin-auth-oidc
 
 You can read more about the other changes below:
 
@@ -42,14 +42,14 @@ You can read more about the other changes below:
 
 ### Authorization Providers
 
-We have excluded the default authorization providers from Luigi Core and published them as separate modules.
+We have excluded the default authorization providers from AppLaunchpad Core and published them as separate modules.
 The property `customIdpProvider` has been renamed to `idpProvider`, since you now always need to define a provider.
 Additionally, you need to copy callback assets to your Core application.
 
 To install the plugins, follow these installation guides:
 
-- [OAuth2 Implicit Grant](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oauth2)
-- [OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc)
+- [OAuth2 Implicit Grant](https://github.com/davidwl/applaunchpad/tree/master/plugins/auth/public/auth-oauth2)
+- [OpenID Connect (OIDC)](https://github.com/davidwl/applaunchpad/tree/master/plugins/auth/public/auth-oidc)
 
 <!-- add-attribute:class:warning -->
 > **NOTE:** If you already had a custom provider defined, you only need to rename the provider key to `idpProvider`.
@@ -60,39 +60,39 @@ IE11-related content is now in a separate package.
 
 If you want to support IE11, install the client in your project using npm:
 ```bash
-npm install @luigi-project/client-ie11
-npm install @luigi-project/core-ie11
+npm install @applaunchpad-project/client-ie11
+npm install @applaunchpad-project/core-ie11
 ```
 
 Import the client in places where you want to use it, depending on the environment of your choice:
 ```javascript
-var LuigiClient = require('@luigi-project/client-ie11');
-var LuigiCore = require('@luigi-project/core-ie11');
+var AppLaunchpadClient = require('@applaunchpad-project/client-ie11');
+var AppLaunchpadCore = require('@applaunchpad-project/core-ie11');
 ```
 or
 ```javascript
-import LuigiClient from '@luigi-project/client-ie11';
-import LuigiCore from '@luigi-project/core-ie11';
+import AppLaunchpadClient from '@applaunchpad-project/client-ie11';
+import AppLaunchpadCore from '@applaunchpad-project/core-ie11';
 ```
-or, if you are not using any bundler, Luigi is still available as a global object:
+or, if you are not using any bundler, AppLaunchpad is still available as a global object:
 ```javascript
-window.LuigiClient
-window.Luigi
+window.AppLaunchpadClient
+window.AppLaunchpad
 ```
 
 ### Fundamental Library Styles
 
 Following an upgrade from SAP Fundamentals to Fundamental Library Styles, there were changes in the HTML structure. Some classes were renamed or removed completely. You can find the full list of Fundamental Library Styles changes [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes).
 
-Within Luigi, we renamed the `lui-tendant-menu__control` class to `lui-ctx-switch-menu`.
+Within AppLaunchpad, we renamed the `lui-tendant-menu__control` class to `lui-ctx-switch-menu`.
 
-With Luigi version v1.3.0, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi side navigation. You can see the updated layout [here](https://sap.github.io/fundamental-styles/components/side-navigation.html).
+With AppLaunchpad version v1.3.0, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the AppLaunchpad side navigation. You can see the updated layout [here](https://sap.github.io/fundamental-styles/components/side-navigation.html).
 
-With Luigi v1.4.0, the new v0.11.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi Alerts. The classes `fd-overlay fd-overlay--message-strip` were removed from Fundamental Library Styles and we added a new class `luigi-alert--overlay` to keep the same look and feel as in the past. You can see all breaking changes of Fundamental Library Styles [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes#0110).
+With AppLaunchpad v1.4.0, the new v0.11.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the AppLaunchpad Alerts. The classes `fd-overlay fd-overlay--message-strip` were removed from Fundamental Library Styles and we added a new class `applaunchpad-alert--overlay` to keep the same look and feel as in the past. You can see all breaking changes of Fundamental Library Styles [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes#0110).
 
-With Luigi v1.9.0, the new v0.14.0 of Fundamental Library Styles were included. Its previous v0.12.0 led to having breaking changes in the Luigi left side navigation and the shellbar. All icons were moved out from pseudo-classes into a dedicated tag `<i class="sap-icon sap-icon--{modifier}"></i>` under the button. You can see all breaking changes of Fundamental Library Styles v0.12.0 [here](https://github.com/SAP/fundamental-styles/releases?after=v0.12.1-rc.7).
+With AppLaunchpad v1.9.0, the new v0.14.0 of Fundamental Library Styles were included. Its previous v0.12.0 led to having breaking changes in the AppLaunchpad left side navigation and the shellbar. All icons were moved out from pseudo-classes into a dedicated tag `<i class="sap-icon sap-icon--{modifier}"></i>` under the button. You can see all breaking changes of Fundamental Library Styles v0.12.0 [here](https://github.com/SAP/fundamental-styles/releases?after=v0.12.1-rc.7).
 
-With Luigi v1.13.0, the new v0.17.0 of Fundamental Library Styles were included. It led to having breaking changes in the Luigi Dialog/Modal layout and Shellbar Counter. New HTML attributes were added to those components to increase accesibility. You can see the new layout of these components here: [Dialog](https://sap.github.io/fundamental-styles/?path=/docs/components-dialog--default-dialog) and [Shellbar Counter](https://sap.github.io/fundamental-styles/?path=/docs/components-shellbar--primary)
+With AppLaunchpad v1.13.0, the new v0.17.0 of Fundamental Library Styles were included. It led to having breaking changes in the AppLaunchpad Dialog/Modal layout and Shellbar Counter. New HTML attributes were added to those components to increase accesibility. You can see the new layout of these components here: [Dialog](https://sap.github.io/fundamental-styles/?path=/docs/components-dialog--default-dialog) and [Shellbar Counter](https://sap.github.io/fundamental-styles/?path=/docs/components-shellbar--primary)
 
 In order to use TNT icons or businessSuiteInAppSymbols icons suite, it is recommended to add ```@font-face``` from [Fundamental Styles](https://sap.github.io/fundamental-styles/?path=/docs/introduction-overview--page#project-configuration) project configuration, to your custom styles.
 <!-- accordion:end -->
@@ -100,7 +100,7 @@ In order to use TNT icons or businessSuiteInAppSymbols icons suite, it is recomm
 
 ## Docs for earlier versions
 
-The current documentation page describes the latest Luigi version. The documentation for earlier Luigi versions is provided as Markdown files in our GitHub repository.
+The current documentation page describes the latest AppLaunchpad version. The documentation for earlier AppLaunchpad versions is provided as Markdown files in our GitHub repository.
 
 
 <!-- oldVersionsDropdown -->

@@ -5,13 +5,13 @@ const babelSettings = JSON.parse(readFileSync('.babelrc'));
 
 module.exports = {
   entry: {
-    luigiClient: './src/luigi-client.js'
+    applaunchpadClient: './src/applaunchpad-client.js'
   },
 
   output: {
-    filename: 'luigi-client.js',
+    filename: 'applaunchpad-client.js',
     libraryExport: 'default',
-    library: 'LuigiClient',
+    library: 'AppLaunchpadClient',
     libraryTarget: 'umd',
     path: path.join(path.resolve(__dirname), 'public')
   },
@@ -32,15 +32,15 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: 'luigi-client.d.ts',
+        from: 'applaunchpad-client.d.ts',
         to: '.'
       },
       {
-        from: 'luigi-element.d.ts',
+        from: 'applaunchpad-element.d.ts',
         to: '.'
       },
       {
-        from: 'src/luigi-element.js',
+        from: 'src/applaunchpad-element.js',
         to: '.'
       }
     ])

@@ -1,5 +1,5 @@
 <section class="fd-section" *ngIf="nodeParams">
-  <div class="fd-layout-panel luigi__margin-bottom--small">
+  <div class="fd-layout-panel applaunchpad__margin-bottom--small">
     <div class="fd-layout-panel__body">
       <div class="fd-message-strip" role="alert">
         <div class="fd-message-strip__text">
@@ -9,7 +9,7 @@
       </div>
     </div>
   </div>
-  <div class="fd-layout-panel luigi__margin-bottom--small" *ngIf="hasBack">
+  <div class="fd-layout-panel applaunchpad__margin-bottom--small" *ngIf="hasBack">
     <div class="fd-layout-panel__body">
       <p>
         Advanced: node Params and preserveView active. <br />
@@ -34,7 +34,7 @@
 </section>
 
 <section class="fd-section" *ngIf="preservedViewCallbackContext">
-  <div class="fd-layout-panel luigi__margin-bottom--small">
+  <div class="fd-layout-panel applaunchpad__margin-bottom--small">
     <div class="fd-layout-panel__body">
       <div class="fd-message-strip" role="alert">
         <div class="fd-message-strip__text">
@@ -58,7 +58,7 @@
     <div class="fd-layout-panel__header">
       <div class="fd-layout-panel__head">
         <h3 class="fd-layout-panel__title">
-          LuigiClient hasBack/GoBack
+          AppLaunchpadClient hasBack/GoBack
         </h3>
       </div>
     </div>
@@ -67,7 +67,7 @@
         <div class="fd-form-item">
           <label class="fd-form-label"
             >Modify goBackContext value, that you receive then via
-            LuigiClient.addContextUpdateListener():
+            AppLaunchpadClient.addContextUpdateListener():
           </label>
           <input type="text" class="fd-input" [(ngModel)]="callbackValue" />
         </div>
@@ -93,7 +93,7 @@
     <div class="fd-layout-panel__header">
       <div class="fd-layout-panel__head">
         <h3 class="fd-layout-panel__title">
-          LuigiClient Modal
+          AppLaunchpadClient Modal
         </h3>
       </div>
     </div>
@@ -112,7 +112,7 @@
     <div class="fd-layout-panel__header">
       <div class="fd-layout-panel__head">
         <h3 class="fd-layout-panel__title">
-          LuigiClient User Settings
+          AppLaunchpadClient User Settings
         </h3>
       </div>
     </div>
@@ -128,7 +128,7 @@
 </section>
 
 <section class="fd-section">
-  <div class="fd-layout-panel luigi__margin-bottom--small">
+  <div class="fd-layout-panel applaunchpad__margin-bottom--small">
     <div class="fd-layout-panel__header">
       <div class="fd-layout-panel__head">
         <h3 class="fd-layout-panel__title">Navigate</h3>
@@ -533,7 +533,11 @@
           </app-code-snippet>
         </li>
         <li class="fd-list__item">
-          <a href="javascript:void(0)" class="fd-link" (click)="linkManager().goBack(true)">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="linkManager().goBack(true)"
+          >
             go back: single iframe, standard history back</a
           >
           <app-code-snippet data="linkManager().goBack()"> </app-code-snippet>
